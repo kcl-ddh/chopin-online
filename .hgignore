@@ -1,0 +1,18 @@
+syntax: glob
+.vagrant
+*~
+*.db
+*.log
+*.pyc
+.DS_Store
+db.*
+dumpdata.sh
+loaddata.sh
+local.py
+logs
+import.sh
+node_modules
+static
+import_pdf
+pdfs
+0001_initial.py

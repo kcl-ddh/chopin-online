@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+
+{% for library in libraries %}
+<li>
+<a href="{% pageurl library %}">{{ library }}</a>
+</li>
+{% endfor %}

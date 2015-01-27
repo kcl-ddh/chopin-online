@@ -1,0 +1,10 @@
+<script type="text/javascript">
+$(document).ready(function() {
+    display = new PDFDisplay();
+    display.display_pdf("{{ pdf_url }}", '{% if canvas_id %}{{ canvas_id }}{% else %}pdf-canvas{% endif %}');
+
+    $('a#view-full-pdf').click(function() {
+        location.href = '{{ pdf_url }}#' + display.pdfObj.pageNum;
+    });
+});
+</script>

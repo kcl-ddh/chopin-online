@@ -1,0 +1,47 @@
+{% extends "catalogue/base.html" %}
+{% load catalogue_tags wagtailcore_tags %}
+
+{% block meta_title %}{{ self.title }}{% endblock %}
+
+{% block breadcrumbs %}
+{% get_site_root as site_root %}
+{% if work %}
+{% breadcrumbs root=site_root current_page=self extra=work %}
+{% else %}
+{% breadcrumbs root=site_root current_page=self %}
+{% endif %}
+{% endblock %}
+
+{% block local_menu %}
+{% include "catalogue/includes/publisher_index_page_local_menu.html" with page=self.get_parent %}
+{% endblock %}
+
+{% block title %}
+{{ self.title }}
+{% if publisher.city %}, {{ publisher.city }}{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if impressions %}
+<h2>{{ work.title }} impressions</h2>
+<ul class="impressions search-results">
+    {% for impression in impressions %}
+    <li>
+        {% include "catalogue/includes/impression.html" %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% elif self.works %}
+<h2>Works</h2>
+<ul class="works search-results">
+    {% for work in self.works %}
+    <li>
+        <a href="{{ work.slug }}">{{ work.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

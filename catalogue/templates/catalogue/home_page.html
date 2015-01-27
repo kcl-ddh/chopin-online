@@ -1,0 +1,12 @@
+{% extends "catalogue/base.html" %}
+{% load wagtailcore_tags catalogue_tags %}
+
+{% block title %}{% endblock %}
+
+{% block local_menu %}{% endblock %}
+
+{% block content %}
+<div class="large-12 columns">
+    {% block main %}{{ self.content|pdfdisplay|richtext }}{% endblock %}
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+<h4>
+    <a href="{% pageurl impression %}">{{ impression.title }}</a>
+</h4>
+<p>
+{{ impression.impression.comments|truncatechars:125 }}
+</p>

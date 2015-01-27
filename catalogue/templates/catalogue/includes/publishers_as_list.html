@@ -1,0 +1,11 @@
+{% load catalogue_tags wagtailcore_tags %}
+
+{% for publisher in publishers|order_by:'title' %}
+<li>
+    <a href="{% pageurl publisher %}">{{ publisher.title }}</a>
+    {% if publisher.name %} {{ publisher.name }}{% endif %}
+    {% if show_city %}
+    {% if publisher.city %} {{ publisher.city }}{% endif %}
+    {% endif %}
+</li>
+{% endfor %}

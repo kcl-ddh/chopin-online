@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags catalogue_tags static %}
+
+{% block meta_title %}{{ self.title }}{% endblock %}
+
+{% block title %}{{ self.title }}{% endblock %}
+
+{% block header_scripts %}
+{{ block.super }}
+<script src="{% static 'vendor/pdfjs-dist/build/pdf.js' %}"></script>
+<script src="{% static 'javascripts/display_pdf.js' %}"></script>
+{% endblock header_scripts %}
+
+{% block main_menu %}
+{% get_site_root as site_root %}
+{% main_menu root=site_root current_page=self %}
+{% endblock %}
+
+{% block main %}{{ self.content|pdfdisplay|richtext }}{% endblock %}
+
+{% block local_menu %}
+{% local_menu current_page=self %}
+{% endblock %}

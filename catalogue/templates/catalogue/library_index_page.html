@@ -1,0 +1,38 @@
+{% extends "catalogue/base.html" %}
+{% load catalogue_tags wagtailcore_tags %}
+
+{% block local_menu %}
+{% include "catalogue/includes/library_index_page_local_menu.html" with page=self %}
+{% endblock %}
+
+{% block title %}
+{{ self.title }}
+{% endblock %}
+
+{% block main %}
+
+{% block index_page_introduction %}
+{% include "catalogue/includes/introduction.html" with introduction=self.introduction only %}
+{% endblock %}
+
+{% block index_page_children %}
+<ul class="works search-results">
+    {% if cities %}
+    {% for city in cities %}
+        <li><h4>{{ city.name }}, {{ city.country.name }}</h4></li>
+
+        {% include "catalogue/includes/libraries.html" with libraries=city.libraries.all %}
+    {% endfor %}
+    {% elif countries %}
+    {% for country in countries %}
+        <li><h4>{{ country.name }}</h4></li>
+
+        {% include "catalogue/includes/libraries.html" with libraries=country.libraries %}
+        {% endfor %}
+    {% else %}
+        {% include "catalogue/includes/libraries.html" with libraries=self.libraries %}
+    {% endif %}
+</ul>
+{% endblock %}
+
+{% endblock %}

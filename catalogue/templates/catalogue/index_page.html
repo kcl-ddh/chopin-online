@@ -1,0 +1,13 @@
+{% extends "catalogue/base.html" %}
+
+{% block main %}
+
+{% block index_page_introduction %}
+{% include "catalogue/includes/introduction.html" with introduction=self.introduction only %}
+{% endblock %}
+
+{% block index_page_children %}
+{% include "catalogue/includes/index_page_children.html" with title="In this section" %}
+{% endblock %}
+
+{% endblock %}

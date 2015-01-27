@@ -1,0 +1,30 @@
+{% extends "catalogue/base.html" %}
+{% load catalogue_tags wagtailcore_tags %}
+
+{% block meta_title %}{{ self.title }}{% endblock %}
+
+{% block local_menu %}
+{% include "catalogue/includes/catalogue_local_menu.html" with page=self.get_parent %}
+{% endblock %}
+
+{% block overtitle %}
+<h1>{{ self.title }}</h1>
+{% endblock %}
+
+{% block main %}
+{% include "catalogue/includes/pdf_display.html" %}
+
+<h2>Impressions</h2>
+<ul class="impressions search-results">
+    {% for impression in self.impressions|order_by:'impression__sort_order' %}
+    <li>
+    {% include "catalogue/includes/impression.html" with impression=impression %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+{% block footer_scripts %}
+{{ block.super }}
+{% include "catalogue/includes/pdf_script.html" with pdf_url=self.pdf.file.url %}
+{% endblock %}

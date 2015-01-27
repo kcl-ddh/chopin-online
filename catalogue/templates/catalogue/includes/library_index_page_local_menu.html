@@ -1,0 +1,16 @@
+{% load catalogue_tags wagtailcore_tags %}
+
+<nav class="local">
+    <ul class="side-nav">
+        <li>Libraries and Private Collections</li>
+        <li>
+        <a href="{% pageurl page %}">All libraries</a>
+        </li>
+        <li>
+        <a href="{% catalogueurl  page 'libraries-by-city' %}">Libraries by city</a>
+        </li>
+        <li>
+        <a href="{% catalogueurl  page 'libraries-by-country' %}">Libraries by country</a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,58 @@
+{% extends "catalogue/base.html" %}
+{% load catalogue_tags wagtailcore_tags %}
+
+{% block local_menu %}
+{% include "catalogue/includes/publisher_index_page_local_menu.html" with page=self %}
+{% endblock %}
+
+{% block title %}
+{{ self.title }}
+{% endblock %}
+
+{% block main %}
+
+{% block index_page_introduction %}
+{% include "catalogue/includes/introduction.html" with introduction=self.introduction only %}
+{% endblock %}
+
+{% block index_page_children %}
+{% if cities %}
+<ul class="works search-results">
+    {% for city in cities %}
+    {% if city.publishers.all %}
+    <li><h4>{{ city.name }}, {{ city.country.name }}</h4></li>
+
+    {% include "catalogue/includes/publishers_as_list.html" with publishers=city.publishers.all %}
+    {% endif %}
+    {% endfor %}
+</ul>
+
+{% elif countries %}
+<ul class="works search-results">
+    {% for country in countries %}
+    {% if country.publishers.all %}
+    <li><h4>{{ country.name }}</h4></li>
+
+    {% include "catalogue/includes/publishers_as_list.html" with publishers=country.publishers show_city="yes" %}
+    {% endif %}
+    {% endfor %}
+</ul>
+
+{% else %}
+<table>
+    <thead>
+        <tr>
+            <th>Siglum</th>
+            <th>Name of firm as found on select Chopin TPs/wrappers/covers</th>
+            <th>Abbreviated form also used in <em>Annotated Catalogue</em></th>
+            <th>Location of firm</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% include "catalogue/includes/publishers.html" with publishers=publishers %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% endblock %}

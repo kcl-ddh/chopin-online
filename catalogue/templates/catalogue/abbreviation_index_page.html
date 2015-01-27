@@ -1,0 +1,35 @@
+{% extends "catalogue/base.html" %}
+{% load catalogue_tags wagtailcore_tags %}
+
+{% block title %}
+{{ self.title }}
+{% endblock %}
+
+{% block main %}
+
+{% block index_page_introduction %}
+{% include "catalogue/includes/introduction.html" with introduction=self.introduction only %}
+{% endblock %}
+
+{% block index_page_children %}
+{% if abbreviations %}
+<table>
+    <thead>
+        <tr>
+            <th>Abbreviation</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for abbr in abbreviations %}
+        <tr>
+            <td>{{ abbr.abbreviation }}</td>
+            <td>{{ abbr.description|safe }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% endblock %}

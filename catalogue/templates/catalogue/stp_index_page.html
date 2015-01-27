@@ -1,0 +1,75 @@
+{% extends "catalogue/base.html" %}
+{% load catalogue_tags wagtailcore_tags %}
+
+{% block local_menu %}
+<nav class="local">
+    <ul class="side-nav">
+        <li>Series Title Pages</li>
+        <li>
+        <a href="{% pageurl self %}">All Publishers</a>
+        </li>
+        {% if stp %}
+        <li>
+        <a href="{% catalogueurl self stp.publisher_name_slug %}">{{ stp.publisher_name }}</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}
+
+{% block title %}
+{% if stps %}
+{{ stps.first.publisher_name }}
+{% elif stp %}
+{{ stp.publisher_name }}
+{% else %}
+{{ self.title }}
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if stps %}
+
+<ul class="stps search-results">
+    {% for stp in stps %}
+    <li>
+    <h4>
+        <a href="{% catalogueurl self stp.publisher_name_slug stp.rubric_slug  %}">{{ stp.rubric }}</a>
+    </h4>
+    </li>
+    {% endfor %}
+</ul>
+
+{% elif stp %}
+
+<h2>{{ stp.rubric }}</h2>
+
+{% include "catalogue/includes/pdf_display.html" with pdf_url=stp.pdf.file.url %}
+
+{% else %}
+
+{% block index_page_introduction %}
+{% include "catalogue/includes/introduction.html" with introduction=self.introduction only %}
+{% endblock %}
+
+{% block index_page_children %}
+<ul class="publishers search-results">
+{% for publisher in publishers %}
+<li>
+<h4>
+<a href="{% catalogueurl self publisher.publisher_name_slug %}">{{ publisher.publisher_name }}</a>
+</h4>
+</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+{% endif %}
+
+{% endblock %}
+
+{% block footer_scripts %}
+{{ block.super }}
+{% include "catalogue/includes/pdf_script.html" with pdf_url=stp.pdf.file.url %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% load catalogue_tags wagtailcore_tags %}
+
+<nav class="local">
+    <ul class="side-nav">
+        <li>Sigla of publishers</li>
+        {% if publisher %}
+        <li>
+        <a href="{% pageurl publisher %}">{{ publisher.title }}</a>
+        </li>
+        {% endif %}
+        <li>
+        <a href="{% pageurl page %}">All publishers</a>
+        </li>
+        <li>
+        <a href="{% catalogueurl  page 'publishers-by-city' %}">Publishers by city</a>
+        </li>
+        <li>
+        <a href="{% catalogueurl  page 'publishers-by-country' %}">Publishers by country</a>
+        </li>
+    </ul>
+</nav>

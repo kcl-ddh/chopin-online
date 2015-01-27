@@ -1,0 +1,12 @@
+{% load wagtailcore_tags %}
+
+<nav class="local">
+    <ul class="side-nav">
+        <li><h4>{{ menu_label }}</h4></li>
+        {% for page in menu_pages %}
+        <li class="{% if page.url == current_page.url %}active{% endif %}">
+        <a href="{% pageurl page %}">{{ page.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</nav>

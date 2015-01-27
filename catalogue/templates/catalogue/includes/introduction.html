@@ -1,0 +1,5 @@
+{% load wagtailcore_tags catalogue_tags %}
+
+{% if introduction %}
+    {{ introduction|pdfdisplay|richtext }}
+{% endif %}

@@ -1,0 +1,16 @@
+{% load catalogue_tags wagtailcore_tags %}
+
+<div class="row">
+    <div class="large-12 columns">
+        <ul class="pagination" id="{% if canvas_id %}{{ canvas_id }}{% else %}pdf-canvas{% endif %}-pagination">
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="large=12 columns">
+        <a id='view-full-pdf' alt="PDF" title="Click to view full PDF">
+            <canvas id="{% if canvas_id %}{{ canvas_id }}{% else %}pdf-canvas{% endif %}"></canvas>
+        </a>
+    </div>
+</div>

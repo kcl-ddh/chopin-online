@@ -1,0 +1,37 @@
+@import '../vendor/foundation/scss/normalize';
+
+@import 'fonts';
+
+@import 'settings';
+
+@import '../vendor/foundation/scss/foundation';
+
+$fa-font-path: '../../vendor/font-awesome/fonts';
+@import '../vendor/font-awesome/scss/font-awesome.scss';
+
+$borderColor: #e7e7e7;
+$workspaceNavColor: #e7e7e7;
+$menuToggleColor: darken( $workspaceNavColor, 5%);
+$buttonColor: $primary-color;
+
+$footerColor: #e7e7e7;
+$collectionsColor: #a8a8a8;
+
+$ocve-primary-color: #7d0000;
+$cfeo-primary-color: #2a86ad;
+
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@import 'app';
+@import 'annotated-catalogue';
+@import 'animations';
+@import 'browse';
+@import 'expandable-list';
+@import 'faceted-navigation';
+@import 'footer';
+@import 'header';
+@import 'local-navigation';

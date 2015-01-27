@@ -1,0 +1,28 @@
+.header h1 {
+    /* display:  inline-block; */
+    font-family: "Hero", Sans-serif;
+    font-size:  3.2em;
+    margin:  0;
+    padding:  30px 0;
+}
+
+.header h1 a {
+    display: block;
+}
+
+.header h2 {
+    display:  inline-block;
+    font-family: "Museo-Sans", Sans-serif;
+    font-size:  1.2em;
+    margin:  0;
+    padding:  0;
+}
+
+.header-menu {
+    font-family: "Museo-Sans", Sans-serif;
+    /* padding: 0 0 0 100px !important; */
+}
+
+.header-search {
+    /* padding: 0 100px 0 0 !important; */
+}

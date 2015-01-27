@@ -1,0 +1,455 @@
+/* Browse page */
+
+.results-summary {
+	margin-bottom:20px;
+	padding-bottom:20px;
+	border-bottom:1px dotted $borderColor;
+}
+.view-more {
+	clear:both;
+	font-size: 12px;
+	font-weight: 700;
+	margin:10px 0;
+}
+
+.source-summary {
+	margin:0;
+	li {
+		list-style-type:none;
+		
+	}
+}
+
+.opus-edition {
+	margin-top:10px;
+	padding-top:10px;
+}
+
+.pageList {
+	margin:0;
+	display:block;
+	clear:both;
+	li {
+		position:relative;
+		list-style-type:none;
+		margin:0 20px 20px 0;
+		width: 80px;
+		height:120px;
+		vertical-align:top;
+		display:inline-block;
+		padding: 5px;
+		}
+		li.hidden {
+			display:none;
+		}
+		.page-label {
+			display: block;
+			font-size:12px;
+		}
+		a.pageView {
+			display:block;
+			float:none;
+			overflow:auto;
+		}
+		img { 
+			display: block;
+			height:80px;
+			max-height:80px;
+		}      
+	}
+
+
+	#full-page-view {
+		overflow: auto;
+	}
+
+
+/* Elliott's temp styles for browse prototype */
+.source {
+    display: block;
+}
+
+.thumbnail {
+    position: relative;
+    z-index: 0;
+}
+
+.thumbnail:hover {
+    background-color: transparent;
+    z-index: 50;
+}
+
+.thumbnail span {
+    /*CSS for enlarged image*/
+    position: absolute;
+    background-color: lightyellow;
+    padding: 5px;
+    left: -1000px;
+    border: 1px dashed gray;
+    visibility: hidden;
+    color: black;
+    text-decoration: none;
+}
+
+.thumbnail span img {
+    /*CSS for enlarged image*/
+    border-width: 0;
+    padding: 2px;
+}
+
+.thumbnail:hover span {
+    /*CSS for enlarged image on hover*/
+    visibility: visible;
+    top: 0;
+    left: 60px; /*position where enlarged image should offset horizontally */
+
+}
+
+
+
+/*.page.hidden {
+	display:none;
+}*/
+
+.page label {
+    font-size: 9px;
+    font-weight: 700
+}
+
+.page img.thumbnail {
+    max-height: 100px !important;
+    max-width: 85px !important
+}
+
+.page img.hover {
+    display: none;
+}
+
+.page a:hover img.hover {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+	}
+/* end Elliott's temp styles */
+
+/* page view */
+b.divider {
+	display: block;
+	height:15px;
+	border-top:1px solid $borderColor;
+}
+.content-section.page-view {
+	
+	.tiny.button.ctrl.back {
+		margin-top:10px;
+	}
+}
+
+.image-viewer {
+	margin-top: 15px;
+	display: table;
+	.page-control {
+		display:table-cell;
+		padding:30px;
+		a {
+			font-size: 24px;
+		}
+	}
+	.page-image {
+		display:table-cell;
+		position: relative;
+	}	
+}
+
+.thumbnail-carousel {
+	margin-top:30px;
+	a {
+		padding:15px;
+		
+	}
+	img {
+		max-width:100px;
+		max-height:200px;
+		border:1px solid $borderColor;
+		display:inline-block;
+		padding:5px;
+	
+	}
+	.carousel-image {
+		padding: 15px;
+	}
+}
+
+#sample-comment {
+	position: absolute;
+	top:100px;
+	left:140px;
+	background-color:#fff;
+	border: 2px solid #333;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 700;
+	opacity: 0.9;
+	padding: 6px;	/* Browse page */
+
+.results-summary {
+	margin-bottom:20px;
+	padding-bottom:20px;
+	border-bottom:1px dotted $borderColor;
+}
+.view-more {
+	clear:both;
+	font-size: 12px;
+	font-weight: 700;
+	margin:10px 0;
+}
+
+.source-summary {
+	margin:0;
+	li {
+		list-style-type:none;
+		
+	}
+}
+
+.opus-edition {
+	margin-top:10px;
+	padding-top:10px;
+}
+
+.pageList {
+	margin:0;
+	display:block;
+	clear:both;
+	li {
+		position:relative;
+		list-style-type:none;
+		margin:0 20px 20px 0;
+		width: 80px;
+		height:120px;
+		vertical-align:top;
+		display:inline-block;
+		padding: 5px;
+		}
+		li.hidden {
+			display:none;
+		}
+		.page-label {
+			display: block;
+			font-size:12px;
+		}
+		a.pageView {
+			display:block;
+			float:none;
+			overflow:auto;
+		}
+		img { 
+			display: block;
+			height:80px;
+			max-height:80px;
+		}      
+	}
+
+
+	#full-page-view {
+		overflow: auto;
+	}
+
+
+/* Elliott's temp styles for browse prototype */
+.source {
+    display: block;
+}
+
+.thumbnail {
+    position: relative;
+    z-index: 0;
+}
+
+.thumbnail:hover {
+    background-color: transparent;
+    z-index: 50;
+}
+
+.thumbnail span {
+    /*CSS for enlarged image*/
+    position: absolute;
+    background-color: lightyellow;
+    padding: 5px;
+    left: -1000px;
+    border: 1px dashed gray;
+    visibility: hidden;
+    color: black;
+    text-decoration: none;
+}
+
+.thumbnail span img {
+    /*CSS for enlarged image*/
+    border-width: 0;
+    padding: 2px;
+}
+
+.thumbnail:hover span {
+    /*CSS for enlarged image on hover*/
+    visibility: visible;
+    top: 0;
+    left: 60px; /*position where enlarged image should offset horizontally */
+
+}
+
+
+
+/*.page.hidden {
+	display:none;
+}*/
+
+.page label {
+    font-size: 9px;
+    font-weight: 700
+}
+
+.page img.thumbnail {
+    max-height: 100px !important;
+    max-width: 85px !important
+}
+
+.page img.hover {
+    display: none;
+}
+
+.page a:hover img.hover {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+	}
+/* end Elliott's temp styles */
+
+/* page view */
+b.divider {
+	display: block;
+	height:15px;
+	border-top:1px solid $borderColor;
+}
+.content-section.page-view {
+	
+	.tiny.button.ctrl.back {
+		margin-top:10px;
+	}
+}
+
+.image-viewer {
+	margin-top: 15px;
+	display: table;
+	.page-control {
+		display:table-cell;
+		padding:30px;
+		a {
+			font-size: 24px;
+		}
+	}
+	.page-image {
+		display:table-cell;
+		position: relative;
+	}	
+}
+
+.thumbnail-carousel {
+	margin-top:30px;
+	a {
+		padding:15px;
+		
+	}
+	img {
+		max-width:100px;
+		max-height:200px;
+		border:1px solid $borderColor;
+		display:inline-block;
+		padding:5px;
+	
+	}
+	.carousel-image {
+		padding: 15px;
+	}
+}
+
+#sample-comment {
+	position: absolute;
+	top:100px;
+	left:140px;
+	background-color:#fff;
+	border: 2px solid #333;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 700;
+	opacity: 0.9;
+	padding: 6px;	
+}
+
+/* Source info etc */
+.contextual-info {
+	font-size: 16px;
+	vertical-align: middle;
+}
+.contextual-label {
+	@include grid-column(2);
+	p {
+		font-size: rem-calc(14px);
+		font-weight:700;
+	}
+}
+.contextual-value {
+	@include grid-column(10);
+	p {
+		font-size: rem-calc(14px);
+	}
+}
+
+.contextual-modal.reveal-modal {
+	overflow-y: auto;
+	top:50px;
+}
+
+.contextual-further {
+	border-top:1px solid $borderColor;
+	padding-top:15px;
+	h5 {
+		font-weight: 700;
+	}
+}
+}
+
+/* Source info etc */
+.contextual-info {
+	font-size: 16px;
+	vertical-align: middle;
+}
+.contextual-label {
+	@include grid-column(2);
+	p {
+		font-size: rem-calc(14px);
+		font-weight:700;
+	}
+}
+.contextual-value {
+	@include grid-column(10);
+	p {
+		font-size: rem-calc(14px);
+	}
+}
+
+.contextual-modal.reveal-modal {
+	overflow-y: auto;
+	top:50px;
+}
+
+.contextual-further {
+	border-top:1px solid $borderColor;
+	padding-top:15px;
+	h5 {
+		font-weight: 700;
+	}
+}

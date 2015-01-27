@@ -1,0 +1,85 @@
+@font-face {
+    font-family: Hero;
+    src: url('../../fonts/Hero.otf');
+}
+
+@font-face {
+    font-family: ocve-composer;
+    src: url('../../fonts/composer.ttf');
+}
+
+.composer {
+    font-family: ocve-composer;
+}
+
+@font-face {
+    font-family: ocve-debussy;
+    src: url('../../fonts/debussy_.ttf');
+}
+
+.debussy {
+    font-family: ocve-debussy;
+    font-size: .875em;
+    margin-left: -2px;
+}
+
+@font-face {
+    font-family: ocve-gesetz;
+    src: url('../../fonts/gesetz.ttf');
+}
+
+.gesetz {
+    font-family: ocve-gesetz;
+}
+
+@font-face {
+    font-family: ocve-lefti;
+    src: url('../../fonts/lefti.ttf');
+}
+
+.lefti {
+    font-family: ocve-lefti;
+}
+
+@font-face {
+    font-family: ocve-new;
+    src: url('../../fonts/new.ttf');
+}
+
+.new {
+    font-family: ocve-polsp;
+}
+
+@font-face {
+    font-family: ocve-symbol;
+    src: url('../../fonts/symbol.ttf');
+}
+
+.symbol {
+    font-family: ocve-symbol;
+    font-size: 75%;
+}
+
+@font-face {
+    font-family: ocve-symps__;
+    src: url('../../fonts/symps__.ttf');
+}
+
+.symps__ {
+    font-family: ocve-symps__;
+}
+
+@font-face {
+    font-family: ocve-timesg;
+    src: url('../../fonts/timesg.ttf');
+}
+
+.timesg {
+    font-family: ocve-timesg;
+}
+
+.times {
+    font-family: Times;
+}
+
+$ocve-font-family: ocve-polsp, ocve-symbol, ocve-symps__;

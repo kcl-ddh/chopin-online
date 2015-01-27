@@ -1,0 +1,78 @@
+.footer-section {
+    background-color: $footerColor;
+    border-top: 1px solid #f5f5f5;
+    overflow: hidden;
+    margin: 20px 0 0;
+}
+
+.footer-section.non-sticky {
+    position:relative;
+}
+
+.footer-logos {
+    float: left;
+    overflow: auto;
+    margin-left:0;
+    padding: 20px 0 0 0;
+    li {
+        list-style-type:none;
+        display:inline-block;
+        float:left;
+    }
+}
+
+.footer-text {
+    p {
+        margin-top:rem-calc(15px);
+        font-size:rem-calc(14px);
+    }
+}
+
+.logo {
+    margin-right:15px;
+    a {
+        text-indent: -9999px;
+        display:block;
+        background-size:contain;
+        background-repeat:no-repeat;
+    }
+}
+
+.logo.cambridge {
+    a {
+        width: 180px;
+        height: 30px;
+        background-image:url(../../images/logo-cambridge.png);
+    }
+}
+
+.logo.kcl-ddh {
+    a {
+        width: 90px;
+        height:87px;
+        background-image:url(../../images/logo-kcl-ddh.png);
+    }
+}
+
+.footer-menus {
+    float: left;
+}
+
+.footer-menu {
+    display: inline-block;
+    font-family: "Museo-Sans", sans-serif;
+    list-style: none;
+    padding: 15px 0 0 50px;
+}
+
+.ocve-link {
+    color: #7d0000 !important;
+}
+
+.cfeo-link {
+    color: #5b9fbd !important;
+}
+
+.annot-link {
+    color: #326e50 !important;
+}

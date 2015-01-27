@@ -1,0 +1,182 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hero', sans-serif;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+a {
+    color: $buttonColor;
+}
+a:active {
+    color: $buttonColor;
+}
+a:focus {
+    color: $buttonColor;
+}
+a:hover {
+    color: darken( $primary-color, 10% );
+}
+
+p {
+    margin-bottom: .5em;
+}
+
+li {
+    margin-bottom: .5em;
+}
+
+li p {
+    margin: 0;
+}
+
+.clear {
+    display:block;
+    clear: both;
+}
+
+/* reveal modal fix 
+https://github.com/zurb/foundation/issues/2971
+ */
+    .reveal-modal.large-image {
+        text-align:center;
+        img {
+            margin:0 auto;
+        }
+    }
+
+
+
+    html, body {
+        height:100%;
+    }
+
+
+    .hidden {
+        display:none;
+    }
+    body {
+        position: relative;
+        //overflow:hidden;
+    }
+
+    /* comments */
+    .comment.panel {
+        max-width:600px;
+        margin:15px;
+        clear:both;
+    }
+
+    .spinner {
+        left:0 !important;
+    }
+
+    /* General styles and AC-specific styles */
+    .main.content-section {
+        margin-top:rem-calc(20px);
+        /*min-height:700px;*/
+        a.exit-off-canvas {
+            box-shadow:none !important;
+        }
+        .pdf-pagination {
+            margin-right: 5px;
+            float: none !important;
+        }
+        canvas {
+            border:1px dotted $borderColor;
+            margin:0 0 rem-calc(15px) 0 !important;
+        }
+        svg {
+            border:1px dotted $borderColor;
+            margin:0 0 rem-calc(15px) 0 !important;
+        }
+    }
+
+    .impressions.search-results {
+        li {
+            border-bottom:1px dotted $borderColor;
+        }
+        h4 {
+            margin-bottom:0;
+
+        }
+        p {
+            font-size: rem-calc(14px); 
+            max-width: rem-calc(600px);
+        }
+    }
+
+    /* Links to digital images */
+    .more-information {
+        h4 {
+
+        }
+        p {
+            display:inline-block;
+            margin-bottom:0;
+            font-size: rem-calc(14px);
+        }
+        ul.image-links {
+            margin-top:0;
+            li {
+                list-style-type:square;
+                font-size: rem-calc(14px);
+                margin-bottom:rem-calc(15px);
+            }
+        }
+
+        .ocve {
+            color: $ocve-primary-color;
+        }
+
+        .cfeo {
+            color: $cfeo-primary-color;
+        }
+
+    }
+
+/** Homepage specific styles **/
+
+.homepage .landing {
+    padding: 2em 0;
+}
+
+.homepage h1,
+.homepage .home-block-header {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1rem;
+}
+
+.homepage h1 {
+    font-size: 4em;
+}
+
+.homepage .panel {
+    border: 10px solid white;
+}
+
+.homepage .ocve h2 {
+    color: $primary-color-ocve;
+}
+.homepage .aco h2 {
+    color: $primary-color-aco;
+}
+.homepage .cfeo h2 {
+    color: $primary-color-cfeo;
+}
+.homepage .ocve a.button {
+    background: $primary-color-ocve;
+}
+
+.homepage .aco a.button {
+    background: $primary-color-aco;
+}
+
+.homepage .cfeo a.button {
+    background: $primary-color-cfeo;
+}
+
+.homepage footer a {
+    color: #666;
+}

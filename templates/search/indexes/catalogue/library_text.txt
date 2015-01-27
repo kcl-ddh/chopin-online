@@ -1,0 +1,4 @@
+{{ object.title }}
+{{ object.name }}
+{{ object.city.name }}
+{{ object.city.country.name }}

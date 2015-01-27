@@ -1,0 +1,79 @@
+{% extends "frontend/uimaster.html" %}
+
+{% block title %}Page Comparison{% endblock %}
+
+{% block javascript %}
+  
+    <script type="text/javascript"
+            src="/static/assets/bower_components/jquery/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}assets/js/slick.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}assets/bower_components/modernizr/modernizr.js" type="text/javascript"
+            charset="utf-8"></script>
+    <!-- Foundation javascripts -->
+    <script src="{{ STATIC_URL }}assets/bower_components/foundation/js/foundation.min.js" type="text/javascript"
+            charset="utf-8"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/js/pageview.js"></script>
+    <script type="text/javascript">
+        //http://ocve2.cch.kcl.ac.uk/iip/iipsrv.fcgi?FIF=jp2/ocvejp2-proc/38/79/04/Image04.jp2&OBJ=Max-size
+
+
+    </script>
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+            //Set div width/height as proprortion of available screen
+
+            var docWidth = parseInt($('body').width());
+            var docHeight = parseInt($(window).height());
+            var fullWidth = docWidth - Math.round(docWidth * .30);
+            var fullHeight = docHeight - Math.round(docHeight * .30);
+
+            $("#image_one").css('width', fullWidth + "px").css("height", fullHeight + "px")
+            $("#image_two").css('width', fullWidth + "px").css("height", fullHeight + "px")
+            imgToOSD();
+        });
+    </script>
+
+    <script src="{{ STATIC_URL }}assets/js/openseadragon/openseadragon.js"></script>
+    <script src="{{ STATIC_URL }}assets/js/osd-iip-connector.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="large-12 columns">
+        <header><h1>Page Comparison</h1></header>
+    </div>
+</div>
+
+<div class="row">
+    <div class="large-6 columns">
+        {% if pi_left %}
+            <header><h3>{{pi_left.page.sourcecomponent.source}}, Page {{ pi_left.page.label }}</h3></header>
+
+            <img src="/iip/iipsrv.fcgi?FIF={{ pi_left.getJP2Path }}&CVT=JPG" height="800" width="500" id="image_one"
+                                 class="osd-iip">
+
+
+        {% else %}
+        <header><h3>Left Comparison</h3></header>
+
+        <p>You haven't added a left comparison page yet.</p>
+        {% endif %}
+    </div>
+
+     <div class="large-6 columns">
+        {% if pi_right %}
+            <header><h3>{{pi_right.page.sourcecomponent.source}}, Page {{ pi_right.page.label }}</h3></header>
+
+         <img src="/iip/iipsrv.fcgi?FIF={{ pi_right.getJP2Path }}&CVT=JPG" height="800" width="500" id="image_two" class="osd-iip">
+        {% else %}
+        
+        <header><h3>Right Comparison</h3></header>
+
+        <p>You haven't added a right comparison page yet.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

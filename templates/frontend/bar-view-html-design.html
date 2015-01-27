@@ -1,0 +1,346 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCVE bar view</title>
+    <link rel="stylesheet" href="/static/assets/stylesheets/app.css">
+    
+		
+	
+		<!-- typekit -->
+		<script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
+		<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+	
+	
+		<script src="/static/assets/bower_components/modernizr/modernizr.js" type="text/javascript" charset="utf-8"></script>
+	
+  </head>
+  
+  
+  <body>
+    	<header class="header">
+    		<nav class="top-bar" data-topbar="">
+    			<ul class="title-area">
+    				<li class="name">
+    					<h1><a href="#">OCVE</a></h1>
+    				</li>
+    				<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    			</ul>
+    			<section class="top-bar-section">
+    			    <!-- Left Nav Section -->
+    			    <ul class="right">
+    			    	<li class="active"><a href="#">About</a></li>
+    				  	<li class="divider"></li>
+    				  	<li><a href="#">Historical background</a></li>
+    					<li class="divider"></li>
+    					<li><a href="bar-view.html">Variorum edition</a></li>
+    				</ul>
+    			</section>
+    		</nav>
+    	</header>
+    	<section class="main content-section">
+				<div class="row">
+				
+					<div class="large-12 columns">
+					
+						<!-- off-canvas navigation for left hand tree / faceted browse -->
+						<div class="off-canvas-wrap" data-offcanvas="">
+							<div class="inner-wrap">
+								
+								<!-- contextual menu bar -->
+								<nav class="tab-bar">
+									<section class="left-small">
+										<a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+									</section>
+									<section class="middle tab-bar-section">
+										<ul class="left inline-list contextual-menu">
+											<li><div class="menu-item opus-title">Op. 23</div></li>
+											<li><div class="menu-item"><a href="#" class="ctrl prev"><span class="fa fa-caret-left"></span></a></div></li>
+											<li><div class="menu-item"><a href="#" class="ctrl next"><span class="fa fa-caret-right"></span></a></div></li>
+											<li>
+												<div class="menu-item">
+													<a href="#" data-dropdown="available-sources">Select sources</a>
+													<ul id="available-sources" class="f-dropdown" data-dropdown-content="">
+														<li><div class="dropdown-select toggle-all"><input type="checkbox" value="all"> Select all</div></li>
+														<li><div class="dropdown-select"><input type="checkbox" value="23-a"> Op. 23: A</div></li>
+														<li><div class="dropdown-select"><input type="checkbox" value="23-a"> Op. 23: F1</div></li>
+														<li><div class="dropdown-select"><input type="checkbox" value="23-a"> Op. 23: F2</div></li>
+														<li><div class="dropdown-select"><input type="checkbox" value="23-a"> Op. 23: G1</div></li>
+														
+													</ul>
+												</div>
+											</li>
+											<li>
+												<div class="menu-item has-button">
+													<label>Opus navigator</label>
+													<a id="toggle-opus-navigator" class="button tiny" href="">Off</a>
+												</div>
+											</li>
+										</ul>
+										
+									</section>
+									
+								</nav><!-- end tab-bar -->
+								
+								
+								
+							
+								<!-- off-canvas menu -->
+								<aside class="left-off-canvas-menu">
+									<ul class="off-canvas-list">
+										<li><label>LEFT HAND NAVIGATION</label></li>
+										<li><a href="#">Left hand links</a></li>
+										<li><a href="#">Possibly facets</a></li>
+									</ul>
+								</aside>
+							
+								<!-- main content -->
+								<div class="opus-navigation hidden" id="opus-navigator">
+									<div class="row">
+										<div class="large-12 columns">
+											<div id="slider" class="slider">
+												<span class="slider-tail"></span>
+												<a href="#" id="slider-drag"><span class="slider-control">
+													<img src="/static/assets/images/navigator-slider-bg.png">
+												</span></a>
+											</div>
+											<div class="row witnesses">
+												<div class="large-2 columns">
+													<span class="header">F1 <a href="#" data-tooltip="" title="Description of witness"><span class="icon-info-sign"></span></a></span> 
+												</div>
+												<div class="large-10 columns">
+													<div class="bars">
+														<span class="musical-units"></span>
+													</div>
+												</div>
+											</div>
+											<div class="row witnesses">
+												<div class="large-2 columns">
+													<span class="header">G1 <a href="#" data-tooltip="" title="Description of witness"><span class="icon-info-sign"></span></a></span>
+												</div>
+												<div class="large-10 columns">
+													<div class="bars">
+														<span class="musical-units"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div><!-- end opus navigator -->
+								<div class="bar-images">
+									<ul class="images inline-list">
+										<li>
+											<div class="caption">A</div>
+											<div class="image">
+												<img src="/static/assets/images/bar-image-1.jpg" alt="A. b.1">
+												<div class="close"><a href="#" class="ctrl close"><span class="fa fa-times-circle"></span></a></div>
+												<div class="annotations"><a href="#" class="ctrl show-annotations" data-tooltip="" title="2 annotations">2</a></div>
+											</div>
+											<div class="controls">
+												<ul class="inline-list">
+													<li><a href="#" data-reveal-id="large-image-1" class="ctrl enlarge" data-tooltip="" title="Enlarge"><span class="fa fa-search-plus"></span></a></li>
+													<li><a href="#" data-reveal-id="view-in-page-1" class="ctrl view-in-context" data-tooltip="" title="View in page"><span class="fa fa-file-text"></span></a></li>
+													<li><a href="#" class="ctrl add" data-tooltip="" title="Add to collection"><span class="fa fa-plus-circle"></span></a></li>	
+												</ul>
+												<div class="collection-feedback">
+													<div class="panel">
+														<p>Added to collection</p>
+													</div>
+												</div>
+											</div>
+										</li>
+										<li>
+											<div class="caption">F1</div>
+											<div class="image">
+												<img src="/static/assets/images/bar-image-2.jpg" alt="A. b.1">
+												<div class="close"><a href="#" class="ctrl close"><span class="fa fa-times-circle"></span></a></div>
+												<div class="annotations"><a href="#" class="ctrl show-annotations" data-annotations="ballade-op-23">2</a></div>
+											</div>
+											<div class="controls">
+												<ul class="inline-list">
+													<li><a href="#" data-reveal-id="large-image-1" class="ctrl enlarge"><span class="fa fa-search-plus"></span></a></li>
+													<li><a href="#" class="ctrl view-in-context"><span class="fa fa-file-text"></span></a></li>
+													<li><a href="#" class="ctrl add"><span class="fa fa-plus-circle"></span></a></li>
+												</ul>
+													<div class="collection-feedback">
+														<div class="panel">
+															<p>Added to collection</p>
+														</div>
+													</div>
+												</div>
+											</div>
+											
+										</li>
+									</ul>
+								</div><!-- end bar-images -->
+					
+								<!-- end main content  -->
+								
+								<!-- close off-canvas menu -->
+								<a class="exit-off-canvas"></a>
+							</div><!-- end inner-wrap -->
+						
+						</div><!-- end off-canvas-wrap -->					
+				</div><!-- end cols -->
+			</div><!-- end row -->
+		</section><!-- end coontent-section -->
+		
+		<footer class="footer-section">
+			<div class="row">
+				<div class="large-12 columns">
+					<p>Footer</p>
+				</div>
+			</div>
+			
+		</footer>
+		
+		<!-- collection area -->
+		<!-- feedback message -->
+		<div class="feedback-message image-added">
+			<div class="row">
+				<div class="large-12 columns">
+					<div class="feedback-success">
+						<p>[Image details] added to your collection <span class="icon-ok"></span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="collection-section" id="personal-collection">
+			<div class="row">
+				<div class="large-12 columns">
+					<div class="toggle-switch">
+						<a href="#" class="ctrl minimise" id="controls-minimise"><span class="fa fa-angle-double-down"></span></a>
+					</div>
+					<ul class="inline-list collection-images">
+						<li>
+							<h4>Collection</h4>
+							<div class="actions">
+								<p><a href="#" class="ctrl download"><span class="icon-download"></span> Download images</a></p>
+							</div>
+						</li>
+						<li><a class="th radius added" href="annotate.html"><img src="/static/assets/images/cfeo.jpg" alt="" class="thumbnail"></a></li>
+						<li><a class="th radius" href="annotate.html"><img src="/static/assets/images/cfeo.jpg" alt="" class="thumbnail"></a></li>
+						<li><a class="th radius" href="annotate.html"><img src="/static/assets/images/cfeo.jpg" alt="" class="thumbnail"></a></li>
+						<li><a class="th radius" href="annotate.html"><img src="/static/assets/images/cfeo.jpg" alt="" class="thumbnail"></a></li>
+						<li><div class="actions"><p><a href="#" class="ctrl remove" id="remove-all-from-collection"><span class="icon-remove"></span> Remove all</a></p></div></li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</section>
+
+		<div id="collection-toggle">
+			<div class="row">
+				<div class="large-12 columns">
+					<div class="toggle-switch">
+						<a href="#" id="collection-toggler"><span class="fa fa-angle-double-up"></span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+
+		
+		
+		
+		
+		<!-- context panel -->
+		<div id="context-panel" class="mod context-panel annotations">
+			<div class="close"><a href="#" id="close-context-panel">Close <span class="icon-double-angle-right"></span></a></div>
+			<div class="loading"><img src="/static/assets/images/spinner.svg" alt="Loading"></div>
+			<div class="panel-content" id="panel-content">
+				<h2>Annotations</h2>
+				
+			
+				<div class="annotation-box" id="comment-1">
+					<p class="annotation-details">Comment on Ballade Op.23, p.1, b1.</p>
+					<p class="annotation-posted">By user1, 10 March 2013</p>
+					<div class="annotation">
+						<p>Here is an annotation.</p>
+					</div>
+					<div class="actions">
+						<span class="reply-button">
+							<a href="#" class="ctrl reply" data-reply-to="">Reply</a>
+						</span>
+						
+					</div>
+					<div class="reply-box" data-reply-area="comment-1"> 
+						<span class="saving"></span>
+						<p class="annotation-details">Reply to Comment on Ballade Op.23, p.1, b1</p>
+						<p class="annotation-posted">By user2, 11 March 2013, 16:00</p>
+						<textarea data-reply-text="comment-1"></textarea>
+						<div class="states">
+							<ul class="inline-list">
+								<li>
+									<input type="radio" name="state" value="private" checked=""> Private
+								</li>
+								<li>
+									<input type="radio" name="state" value="public"> Public
+								</li>
+							</ul>
+							<ul class="inline-list">
+								<li><a href="#" class="button tiny ctrl save-reply" data-reply-to="comment-1">Save</a></li>
+								<li><a href="#" class="ctrl trash"><span class="icon-trash"></span></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="saved-reply" data-saved-reply="comment-1" data-reply-area="comment-1">
+						<span class="saving"></span>
+						
+						<div class="actions">
+							<ul class="inline-list">
+								<li><a href="#" class="ctrl edit" data-edit="comment-1"><span class="icon-pencil"></span></a></li>
+								<li><a href="#" class="ctrl trash"><span class="icon-trash"></span></a></li>
+							</ul>
+						</div>
+						<textarea disabled="disabled" data-reply-text="comment-1" class="disabled">My saved annotation
+						</textarea>
+						<ul class="inline-list edit-actions">
+							<li><a href="#" class="button tiny ctrl save-reply" data-reply-to="comment-1" data-reply-area="comment-1">Save</a></li>
+							<li class="cancel"><a href="#" class="button tiny ctrl cancel" data-reply-to="comment-1">Cancel</a></li>
+						</ul>
+						
+						<!-- comment -->
+						<div class="panel">
+							<p>Annotations should include title (optional) and user details</p>
+							<p>Users should be able to switch status of annotation between public and private</p>
+						</div>
+				</div>
+
+
+				</div>
+			</div>
+			
+		</div>
+		
+		<!-- reveal modals -->
+		<!-- enlarge image -->
+		<div id="large-image-1" class="reveal-modal" data-reveal="">
+			<img src="/static/assets/images/bar-image-1-larger.jpg" alt="Ballade Op.23 b.1">
+			<a class="close-reveal-modal"><span class="fa fa-times"></a>
+		</div>
+		
+		<!-- view in page -->
+		<div id="view-in-page-1" class="reveal-modal large-image" data-reveal="">
+			<img src="/static/assets/images/ocve-full-page.png" alt="Ballade Op.23 p.2">
+			<a class="close-reveal-modal"><span class="fa fa-times"></span></a>
+		</div>
+		
+		
+	    <!-- jQuery -->
+	  	<script src="/static/assets/bower_components/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	  
+	    <!-- Foundation javascripts -->	    
+	    <script src="/static/assets/bower_components/foundation/js/foundation.min.js" type="text/javascript" charset="utf-8"></script>
+	    
+	    
+		
+			<script type="text/javascript" src="/static/assets/js/app.js"></script>
+  
+  </body>
+  
+  
+  
+</html>

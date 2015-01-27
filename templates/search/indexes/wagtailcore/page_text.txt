@@ -1,0 +1,6 @@
+{{ object.title }}
+{% if object.specific.content %}
+{{ object.specific.content|striptags }}
+{% else %}
+{{ object.specific.introduction|striptags }}
+{% endif %}

@@ -1,0 +1,11 @@
+{{ object.title }}
+{% if object.name %}
+{{ object.name }}
+{% endif %}
+{% if object.abbreviation %}
+{{ object.abbreviation }}
+{% endif %}
+{% if object.city %}
+{{ object.city.name }}
+{{ object.city.country.name }}
+{% endif %}

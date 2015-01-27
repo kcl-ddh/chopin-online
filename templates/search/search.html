@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load catalogue_tags highlight wagtailcore_tags %}
+
+{% block meta_title %}Search Results{% if query %} for {{ query }}{% endif %}{% endblock %}
+
+{% block body_class %}body-search-results{% endblock %}
+
+{% block breadcrumbs %}
+{% get_site_root as site_root %}
+<ul class="breadcrumbs">
+    <li>
+        <a href="{% pageurl site_root %}">{{ site_root.title }}</a>
+    </li>
+    <li>Search</li>
+</ul>
+{% endblock %}
+
+{% block main_menu %}
+{% get_site_root as site_root %}
+{% main_menu root=site_root %}
+{% endblock %}
+
+{% block content %}
+<div class="large-3 columns facets">
+    <section data-section="non-expandable"
+    data-expandable-group-member="facets"
+    class="expandable-list fixed-open" id="catalogue-filter">
+    {% for facet in facets.fields %}
+        <div class="list-item">
+            <div class="list-header">
+                <h4><span class="header">Filter by {{ facet }}</span></h4>
+            </div>
+            <div class="list-content">
+                <ul>
+                    {% for term in facets.fields|get_item:facet %}
+                    <li>
+                        <a href="{{ request.get_full_path }}&amp;selected_facets=document:{{ term.0|urlencode }}">
+                        {{ term.0 }}
+                        </a>
+                        <span class="label radius">{{ term.1 }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
+    </section>
+</div>
+
+<div class="large-9 columns">
+    {% block overtitle %}
+    <h1>Search Results <small>(in order of relevance)</small></h1>
+    {% endblock %}
+
+    {% block main %}
+    {% include 'includes/search_box.html' %}
+
+    {% if query %}
+    <h3>Found {{ page.paginator.count }} results</h3>
+
+    <ul class="impressions search-results">
+        {% for result in page.object_list %}
+        <li>
+            <h4>
+                <a title="Filter by {{ result.document }}"
+                class="label secondary" href="{{ request.get_full_path }}&amp;selected_facets=document:{{ result.document|urlencode }}">
+               {{ result.document }}
+               </a>
+               <a href="{{ result.url }}">{{ result.title }}</a>
+           </h4>
+            <p>
+            {% highlight result.text with query html_tag 'strong' max_length 120 %}
+            </p>
+        </li>
+        {% empty %}
+        <li>No results found</li>
+        {% endfor %}
+    </ul>
+
+    {% include 'includes/search_pagination.html' %}
+    {% endif %}
+
+    {% endblock %}
+</div>
+{% endblock %}

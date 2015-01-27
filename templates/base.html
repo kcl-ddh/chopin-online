@@ -1,0 +1,80 @@
+{% load compress staticfiles wagtailuserbar %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block meta_title %}{% endblock %}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
+    <script type="text/javascript">try {
+        Typekit.load();
+    } catch (e) {}
+    </script>
+
+    {% compress js %}
+    {% block header_scripts %}{% endblock header_scripts %}
+    {% endcompress %}
+
+    {% compress css %}
+    {# SCSS compilation relies on django compressor #}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}" />
+    {% endcompress %}
+
+    <script src="{% static 'vendor/modernizr/modernizr.js' %}"></script>
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+    <header class="header">
+    {% block header %}
+    {% include 'includes/header.html' %}
+    {% endblock %}
+    </header>
+
+    {% include 'includes/navigation.html' %}
+
+    <div class="row">
+        <div class="large-12 columns">
+            <section class="main content-section">
+                <div class="row">
+                    {% block breadcrumbs %}
+                    {% include 'includes/breadcrumbs.html' %}
+                    {% endblock %}
+
+                    {% block content %}
+                    <div class="large-2 columns navigation">
+                        {% block local_menu %}
+                        {% include 'includes/local_menu.html' %}
+                        {% endblock %}
+                    </div>
+
+                    <div class="large-10 columns">
+                        {% block overtitle %}
+                        <h1>{% block title %}{% endblock %}</h1>
+                        {% endblock %}
+                        {% block main %}{% endblock %}
+                    </div>
+                    {% endblock %}
+                </div>
+            </section>
+        </div>
+    </div><!-- .row -->
+
+    <footer class="footer-section">
+        {% block footer %}
+        {% include 'includes/footer.html' %}
+        {% endblock %}
+    </footer>
+
+    {% block footer_scripts %}
+    <script src="{% static 'vendor/foundation/js/foundation.min.js' %}"></script>
+    {% endblock %}
+
+    {# wagtailuserbar #}
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+{% load wagtailbase_tags %}
+
+{% has_local_menu current_page=self as has_local_menu %}
+{% if has_local_menu %}
+    {% block local_menu %}
+    {% local_menu current_page=self %}
+    {% endblock %}
+{% endif %}

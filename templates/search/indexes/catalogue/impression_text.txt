@@ -1,0 +1,6 @@
+{% load  catalogue_tags %}
+
+{{ object.impression.title|clean }}
+{{ object.get_parent.work.title|clean }}
+{{ object.impression.content|clean }}
+{{ object.impression.publisher }}

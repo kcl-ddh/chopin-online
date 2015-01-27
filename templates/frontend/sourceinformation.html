@@ -1,0 +1,184 @@
+<div class="contextual">
+    <h1>{{ work }} {{ s.label }} </h1>
+
+{% autoescape off %}
+    <div class="row">
+        <div class="contextual-label"><p>Publisher</p></div>
+        <div class="contextual-value"><p>{{ si.publisher }}</p></div>
+    </div>
+
+
+    {% if mode == "OCVE" %}
+        <div class="row">
+            <div class="contextual-label"><p>Title</p></div>
+            <div class="contextual-value"><p>
+                {% if mode == "OCVE" %}{{ si.title }}{% else %}{{ si.title }}{% endif %}</p></div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="contextual-label"><p>Publication Title</p></div>
+            <div class="contextual-value"><p>
+                {% if mode == "OCVE" %}{{ si.title }}{% else %}{{ si.publicationtitle }}{% endif %}</p></div>
+        </div>
+    {% endif %}
+<div class="row">
+            <div class="contextual-label"><p>Copyright</p></div>
+            <div class="contextual-value"><p>{{ si.copyright }}</p></div>
+        </div>
+    {% if mode == "OCVE" %}
+        <div class="row">
+            <div class="contextual-label"><p>Source of images</p></div>
+            <div class="contextual-value"><p>{{ si.imagesource }}</p></div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="contextual-label"><p>Dedicatee</p></div>
+        <div class="contextual-value"><p>{{ si.dedicatee }}</p></div>
+    </div>
+
+    <div class="row">
+        <div class="contextual-label"><p>Plate Number</p></div>
+        <div class="contextual-value"><p>{{ si.platenumber }}</p></div>
+    </div>
+
+    <div class="row">
+        <div class="contextual-label"><p>Publication Date</p></div>
+        <div class="contextual-value"><p>{{ si.datepublication }}</p></div>
+    </div>
+    {% if mode == "OCVE" %}
+        <div class="row">
+            <div class="contextual-label"><p>Source code</p></div>
+            <div class="contextual-value"><p>{{ si.sourcecode }}</p></div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="contextual-label"><p>Annotated catalogue code</p></div>
+            <div class="contextual-value"><p>{{ si.accode }}</p></div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="contextual-label"><p>Contents Summary</p></div>
+        <div class="contextual-value"><p>{% if mode == "OCVE" %}{{ si.contentssummary }}{% else %}{{ si.leaves }}{% endif %}</p></div>
+    </div>
+{% endautoescape %}
+   <!-- <div class="row">
+        <div class="contextual-label">
+            <p>Contents</p>
+        </div>
+        <div class="contextual-value">
+
+            <ul class="pageList">
+                {% for pi in pageimages %}
+                    <li class="page initial">
+                        p. {{ pi.page.label }}{% if mode == "OCVE" %}{% if pi.startbar != '0' or pi.endbar != '0' %} bs
+                        {{ pi.startbar }}-{{ pi.endbar }}{% endif %}{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>-->
+    {% autoescape off %}
+
+        <div class="row">
+            <div class="contextual-label"><p>Displayed copy</p></div>
+            <div class="contextual-value"><p>{{ si.displayedcopy }}</p></div>
+        </div>
+
+        {% if mode == "CFEO" %}
+            <div class="row">
+                <div class="contextual-label"><p>Information on subsequent reprints</p></div>
+                <div class="contextual-value"><p>{{ si.reprints }}</p></div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="contextual-label"><p>Additional information</p></div>
+                <div class="contextual-value"><p>{{ si.additionalInformation }}</p></div>
+            </div>
+            <div class="row">
+            <div class="contextual-label"><p>Key Features</p></div>
+            <div class="contextual-value"><p>{{ si.keyFeatures }}</p></div>
+        </div>
+            <div class="row">
+            <div class="contextual-label"><p>Shelfmark</p></div>
+            <div class="contextual-value"><p>{{ si.shelfmark }}</p></div>
+        </div>
+        {% endif %}
+    {% endautoescape %}
+
+    <!--
+
+
+        <div class="row">
+            <div class="contextual-label"><p>seriestitle</p></div>
+            <div class="contextual-value"><p>{{ si.seriestitle }}</p></div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="contextual-label"><p>notes</p></div>
+            <div class="contextual-value"><p>{{ si.notes }}</p></div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="contextual-label"><p>imagesource</p></div>
+            <div class="contextual-value"><p>{{ si.imagesource }}</p></div>
+        </div>
+        <div class="row">
+            <div class="contextual-label"><p>platenumber</p></div>
+            <div class="contextual-value"><p>{{ si.platenumber }}</p></div>
+        </div>
+        <div class="row">
+            <div class="contextual-label"><p>additionalInformation</p></div>
+            <div class="contextual-value"><p>{{ si.additionalInformation }}</p></div>
+        </div>
+
+        <div class="row">
+            <div class="contextual-label"><p>Volume</p></div>
+            <div class="contextual-value"><p>{{ si.volume }}</p></div>
+        </div>
+
+        <div class="row">
+            <div class="contextual-label"><p>archive</p></div>
+            <div class="contextual-value"><p>{{ si.archive }}</p></div>
+        </div>
+
+            <div class="row">
+                <div class="contextual-label">
+                    <p>Source of images</p>
+                </div>
+                <div class="contextual-value">
+                    <p>The Fryderyk Chopin Institute, Warsaw (on licence from Mrs Daniel Drachman)</p>
+                </div>
+            </div>
+
+            <div class="row contextual-further">
+                <div class="large-12 columns">
+                    <h5>Key features</h5>
+
+                    <p>A number of lacunae characterise the history of this source between 1836, when the Ballade was
+                        published, and the unknown date when it was purchased by Professor Siegmund Lebert. The same is true
+                        of the period following Lebert's death in 1884 until 1931, when the autograph was acquired by Mme R.
+                        Calmann-Lévy.</p>
+
+                    <p>The plate number 'M. S. 1928.' inscribed on the title page appears to be in the handwriting of
+                        Maurice Schlesinger, while the annotated figures visible within the music text were entered by the
+                        engraver and correspond to the textual layout of the French first edition (e.g. bs 3, 8, 12, 17 &
+                        22). This correspondence clearly indicates the direct link between the two sources. A contains a
+                        number of unique variants (bs 103–104, 106–109, 113, 134, 135, 138 & 238) as well as numerous
+                        imperfections (bs 34, 47, 78, 108, 134, 135, 155, 162, 164, 165, 170, 193 & 231). The bar-level
+                        commentary (which is not exhaustive) provides an indication of their nature and extent.</p>
+
+                    <p><a href="#" class="ctrl close-modal" data-close-modal-id="witness-info">Close</a></p>
+
+
+                </div>
+            </div>
+
+    -->
+</div>
+<a class="close-reveal-modal xlarge">&#215;</a>

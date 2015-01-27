@@ -1,0 +1,6 @@
+{% load catalogue_tags %}
+
+{% block breadcrumbs %}
+{% get_site_root as site_root %}
+{% breadcrumbs root=site_root current_page=self %}
+{% endblock %}

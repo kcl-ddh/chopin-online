@@ -1,0 +1,110 @@
+{% load compress staticfiles wagtailuserbar %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>{% block meta_title %}{% endblock %}</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+<script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
+<script type="text/javascript">try {
+Typekit.load();
+} catch (e) {}
+</script>
+
+{% compress js %}
+{% block header_scripts %}{% endblock header_scripts %}
+{% endcompress %}
+
+{% compress css %}
+{# SCSS compilation relies on django compressor #}
+<link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}" />
+{% endcompress %}
+
+<script src="{% static 'vendor/modernizr/modernizr.js' %}"></script>
+</head>
+
+<body class="homepage">
+<div class="row">
+    <div class="large-6 large-centered columns landing">
+        <h1>Chopin Online</h1>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="large-4 columns panel ocve">
+        <div class="home-block-header">
+            <h2>OCVE</h2>
+            <p>Online Chopin Variorum Edition</p>
+        </div>
+        <div class="home-block-content">
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum.</p>
+        </div>
+        <img src="{% static 'images/homepage-ocve.jpg' %}" alt="OCVE">
+        <a href="#" class="button expand">Go to site <i class="fa fa-angle-double-right"></i></a>
+    </div>
+    <div class="large-4 columns panel aco">
+        <div class="home-block-header">
+            <h2>AC Online</h2>
+            <p>Annotated Catalogue of Chopin’s First Editions</p>
+        </div>
+        <div class="home-block-content">
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum.</p>
+        </div>
+        <img src="{% static 'images/homepage-aco.jpg' %}" alt="ACO">
+        <a href="#" class="button expand">Go to site <i class="fa fa-angle-double-right"></i></a>
+    </div>
+    <div class="large-4 columns panel cfeo">
+        <div class="home-block-header">
+            <h2>CFEO</h2>
+            <p>Chopin’s First Editions Online</p>
+        </div>
+        <div class="home-block-content">
+            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum.</p>
+        </div>
+        <img src="{% static 'images/homepage-cfeo.jpg' %}" alt="CFEO">
+        <a href="#" class="button expand">Go to site <i class="fa fa-angle-double-right"></i></a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="row">
+        <div class="large-12 columns">
+            <ul class="footer-logos">
+                <li class="logo cambridge">
+                <a href="//www.cam.ac.uk">University of Cambridge</a>
+                </li>
+                <li class="logo kcl-ddh">
+                <a href="//www.kcl.ac.uk/ddh">Department of Digital Humanities, King's College London</a>
+                </li>
+            </ul>
+            <div class="footer-menus">
+                <ul class="footer-menu">
+                    <li><a href="#">Chopin Online</a></li>
+                    <li><a href="/ovce/ui" class="ocve-link">OCVE</a></li>
+                    <li><a href="/cfeo/ui" class="cfeo-link">CFEO</a></li>
+                    <li><a href="/aco/ui" class="annot-link">Annotated Catalogue Online</a></li>
+                </ul>
+                <ul class="footer-menu">
+                    <li><a href="#">About Annotated Catalouge Online</a></li>
+                    <li><a href="#">About Chopin Online</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% block footer_scripts %}
+<script src="{% static 'vendor/foundation/js/foundation.min.js' %}"></script>
+{% endblock %}
+
+{# wagtailuserbar #}
+
+</body>
+</html>

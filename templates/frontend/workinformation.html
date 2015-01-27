@@ -1,0 +1,23 @@
+<div>
+    <h1>{{ work.label }}</h1>
+    {% autoescape off %}
+        {% if mode == "OCVE" %}
+            {{ workinformation.OCVE }}
+        {% else %}
+            <div class="row">
+                <div class="contextual-label"><p>General Information </p></div>
+                <div class="contextual-value"><p>{{ workinformation.generalinfo }}</p></div>
+            </div>
+            <div class="row">
+                <div class="contextual-label"><p>Relevant Manuscripts </p></div>
+                <div class="contextual-value"><p>{{ workinformation.relevantmanuscripts }}</p></div>
+            </div>
+            <div class="row">
+                <div class="contextual-label"><p>Analysis</p></div>
+                <div class="contextual-value"><p>{{ workinformation.analysis }}</p></div>
+            </div>
+        {% endif %}
+        <p><a href="#" class="ctrl close-modal" data-close-modal-id="opus-info">Close</a></p>
+    {% endautoescape %}
+</div>
+<a class="close-reveal-modal">&#215;</a>

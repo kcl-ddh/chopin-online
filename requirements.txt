@@ -1,0 +1,18 @@
+django
+-r ddhldap/requirements.txt
+django-compressor
+django-grappelli
+django-haystack
+django-libsass
+django-modelcluster
+django-model-utils
+django-redis
+django-taggit
+elasticsearch
+lxml
+-r ocve/requirements.txt
+parsley
+--allow-unverified git+ssh://git@github.com/euske/pdfminer.git
+psycopg2
+pyparsing
+wagtail

@@ -29,7 +29,7 @@
 
 <body class="{% block body_class %}{{ BASE_URL }}-page{% endblock %}">
 
-    <header class="header">
+    <header class="header header-{{ BASE_URL }}">
     {% block header %}
     {% include 'includes/header.html' %}
     {% endblock %}

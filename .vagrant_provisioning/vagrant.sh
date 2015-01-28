@@ -7,13 +7,13 @@ debconf-set-selections <<< 'mysql-server mysql-server/root_password_again passwo
 apt-get update
 
 apt-get -y install zsh
-sudo su - vagrant -c 'wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh'
+sudo su - vagrant -c 'wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh 2>/dev/null 1>&2'
 chsh -s /bin/zsh vagrant
 
 cp /vagrant/.vagrant_provisioning/zshrc /home/vagrant/.zshrc
 
 apt-get -y install ack-grep mercurial vim-nox
-sudo su - vagrant -c 'curl http://j.mp/spf13-vim3 -L -o - | sh'
+sudo su - vagrant -c 'curl http://j.mp/spf13-vim3 -L -o - | sh 2>/dev/null 1>&2'
 
 apt-get -y install python-dev python-setuptools
 sudo easy_install pip

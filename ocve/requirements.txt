@@ -1,5 +1,0 @@
-django-registration-redux
-django-tinymce
-MySQL-python
-xlwt
-xlrd

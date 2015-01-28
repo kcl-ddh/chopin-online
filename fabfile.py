@@ -16,14 +16,14 @@ from socket import gethostname
 project_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(project_root)
 
-django.project('moi')
+django.project('chopin')
 from django.conf import settings
 
-REPOSITORY = 'https://scm.cch.kcl.ac.uk/hg/moi-django'
+REPOSITORY = 'https://scm.cch.kcl.ac.uk/hg/chopin-django'
 
 env.user = settings.FABRIC_USER
-env.hosts = ['moi.dighum.kcl.ac.uk']
-env.root_path = '/vol/moi/webroot/'
+env.hosts = ['ocve3.dighum.kcl.ac.uk']
+env.root_path = '/vol/ocve3/webroot/'
 env.envs_path = os.path.join(env.root_path, 'envs')
 
 
@@ -67,7 +67,7 @@ def localhost():
     """ local server """
     env.srvr = 'local'
     env.path = os.path.dirname(os.path.realpath(__file__))
-    env.within_virtualenv = 'workon moi'
+    env.within_virtualenv = 'workon chopin'
     env.hosts = [gethostname()]
     env.user = getuser()
 
@@ -265,7 +265,7 @@ def own_django_log():
 def touch_wsgi():
     require('srvr', 'path', 'within_virtualenv', provided_by=env.servers)
 
-    with cd(os.path.join(env.path, 'moi')), prefix(env.within_virtualenv):
+    with cd(os.path.join(env.path, 'chopin')), prefix(env.within_virtualenv):
         run('touch wsgi.py')
 
 @task

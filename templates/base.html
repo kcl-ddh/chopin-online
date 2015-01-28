@@ -27,7 +27,7 @@
     <script src="{% static 'vendor/modernizr/modernizr.js' %}"></script>
 </head>
 
-<body class="{% block body_class %}{% endblock %}">
+<body class="{% block body_class %}{{ BASE_URL }}-page{% endblock %}">
 
     <header class="header">
     {% block header %}

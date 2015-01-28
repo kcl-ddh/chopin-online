@@ -1,7 +1,48 @@
 <div class="row">
+    {% if BASE_URL = 'aco' %}
     <div class="large-12 columns">
         <h1>
-            <a href="/">{{ PROJECT_TITLE }}</a>
+            <a href="/{{ BASE_URL }}">{{ PROJECT_TITLE }}</a>
         </h1>
     </div>
+    {% else %}
+    <div class="large-10 columns">
+        <h1>
+            <a href="/{{ BASE_URL }}">{{ BASE_URL|upper }}</a>
+        </h1>
+        <h2>
+            <a href="/{{ BASE_URL }}">{{ PROJECT_TITLE }}</a>
+        </h2>
+    </div>
+    <div class="large-2 columns">
+        {% if request.user.is_authenticated %}
+        <div class="user-box">
+            <ul>
+                <li>
+                    <a href="/accounts/profile"><i class="fa fa-user"></i>
+                        {% if request.user.first_name %}
+                        {{ request.user.first_name }}
+                        {% else %}
+                        {{ request.user }}
+                        {%endif%}
+                    </a>
+                    <span class="label radius secondary">
+                        <a href="/accounts/logout">Logout</a>
+                    </span>
+                </li>
+
+                {% if request.user.is_staff %}
+                <li>
+                    <span class="label radius secondary">
+                        <a href="/admin">Admin</a>
+                    </span>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
 </div>

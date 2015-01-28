@@ -5,17 +5,64 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-size: 2.5em;
 }
-a {
-    color: $buttonColor;
-}
-a:active {
-    color: $buttonColor;
-}
+
+/** Colours **/
+
+a,
+a:active,
 a:focus {
-    color: $buttonColor;
+    color: $primary-color;
 }
-a:hover {
-    color: darken( $primary-color, 10% );
+
+/* ACO */
+
+.aco-page {
+    a,
+    a:active,
+    a:focus {
+        color: $primary-color-aco;
+    }
+    a:hover {
+        color: darken( $primary-color-aco, 10% );
+    }
+    .contain-to-grid,
+    .top-bar {
+        background: $primary-color-aco;
+    }
+}
+
+/* OCVE */
+
+.ocve-page {
+    a,
+    a:active,
+    a:focus {
+        color: $primary-color-ocve;
+    }
+    a:hover {
+        color: darken( $primary-color-ocve, 10% );
+    }
+    .contain-to-grid,
+    .top-bar {
+        background: $primary-color-ocve;
+    }
+}
+
+/* CFEO */
+
+.cfeo-page {
+    a,
+    a:active,
+    a:focus {
+        color: $primary-color-cfeo;
+    }
+    a:hover {
+        color: darken( $primary-color-cfeo, 10% );
+    }
+    .contain-to-grid,
+    .top-bar {
+        background: $primary-color-cfeo;
+    }
 }
 
 p {
@@ -126,11 +173,11 @@ https://github.com/zurb/foundation/issues/2971
         }
 
         .ocve {
-            color: $ocve-primary-color;
+            color: $primary-color-ocve;
         }
 
         .cfeo {
-            color: $cfeo-primary-color;
+            color: $primary-color-cfeo;
         }
 
     }

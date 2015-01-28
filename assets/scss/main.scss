@@ -13,12 +13,12 @@ $borderColor: #e7e7e7;
 $workspaceNavColor: #e7e7e7;
 $menuToggleColor: darken( $workspaceNavColor, 5%);
 $buttonColor: $primary-color;
+$buttonColor-ocve: $primary-color-ocve;
+$buttonColor-cfeo: $primary-color-cfeo;
 
 $footerColor: #e7e7e7;
 $collectionsColor: #a8a8a8;
 
-$ocve-primary-color: #7d0000;
-$cfeo-primary-color: #2a86ad;
 
 @mixin borderRadius($radius) {
     -webkit-border-radius: $radius;

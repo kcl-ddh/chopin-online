@@ -2,9 +2,7 @@
 
 @import "fonts";
 
-$primary-color: #666;
-
-@import "settings";
+@import "colour-palette-cfeo", "settings";
 
 @import "../vendor/foundation/scss/foundation";
 
@@ -18,6 +16,7 @@ $buttonColor: $primary-color;
 
 $footerColor: #e7e7e7;
 $collectionsColor: #a8a8a8;
+
 
 @mixin borderRadius($radius) {
     -webkit-border-radius: $radius;

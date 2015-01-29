@@ -8,6 +8,11 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    {% compress css %}
+    {# SCSS compilation relies on django compressor #}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main-'|add:BASE_URL|add:'.scss' %}" />
+    {% endcompress %}
+
     <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
     <script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
     <script type="text/javascript">try {
@@ -17,11 +22,6 @@
 
     {% compress js %}
     {% block header_scripts %}{% endblock header_scripts %}
-    {% endcompress %}
-
-    {% compress css %}
-    {# SCSS compilation relies on django compressor #}
-    <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}" />
     {% endcompress %}
 
     <script src="{% static 'vendor/modernizr/modernizr.js' %}"></script>

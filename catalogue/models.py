@@ -116,10 +116,6 @@ class RichTextPage(Page):
     subpage_types = []
 
 RichTextPage.content_panels += [FieldPanel('content', classname='full')]
-HomePage.content_panels = [
-    FieldPanel('title', classname='full title'),
-    FieldPanel('content', classname='full'),
-]
 
 
 class Country(TimeStampedModel):

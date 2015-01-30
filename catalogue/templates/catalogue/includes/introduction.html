@@ -1,5 +1,5 @@
 {% load wagtailcore_tags catalogue_tags %}
 
 {% if introduction %}
-    {{ introduction|pdfdisplay|richtext }}
+    {{ introduction|pdfdisplay|richtext|add_special_characters }}
 {% endif %}

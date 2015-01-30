@@ -49,32 +49,3 @@ class Command(NoArgsCommand):
                             re.findall(r'\d+', link['href'])[0])
 
         return str(soup)
-
-    def _annotate_characters(self, html):
-        patterns = {
-            'start_tag': r'(?P<start_tag><[^>]*>)',
-            'end_tag': r'(?P<end_tag></[^>]*>)',
-            'code': r'(?P<code>.*?)',
-            'class': r'(?P<class>\w+)',
-        }
-        code_pattern = r'\[\[{class}\]{start_tag}?{code}{end_tag}?\]'.format(
-            **patterns)
-
-        return re.sub(code_pattern, self._format_code, html)
-
-    def _format_code(self, match):
-        try:
-            code = unichr(int(match.group('code')))
-        except ValueError:
-            code = match.group('code')
-
-        parts = {
-            'start_tag': match.group('start_tag') or '',
-            'end_tag': match.group('end_tag') or '',
-            'code': code,
-            'class': match.group('class').lower(),
-        }
-
-        repl = u'<span class="{class}">{start_tag}{code}{end_tag}</span>'.format(**parts)
-
-        return repl.encode('utf-8')

@@ -1,12 +1,15 @@
 from bs4 import BeautifulSoup
 
 from django import template
+from django.utils.safestring import mark_safe
 
 from wagtail.wagtailcore.models import Page
-from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl, slugurl
+from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl
 from wagtail.wagtaildocs.models import Document
 
 from ..models import HomePage
+
+import re
 
 
 register = template.Library()
@@ -104,19 +107,56 @@ def pdfdisplay(html):
     soup = BeautifulSoup(u'<div>{}</div>'.format(html))
     links = soup(linktype='document')
     keys = []
+
     for link in links:
         key = link.get('id')
+
         if key:
             try:
                 document = Document.objects.get(id=key)
             except:
                 continue
+
             canvas_id = 'pdf-{}'.format(key)
             pdf_url = document.file.url
             canvas = '{{% include "catalogue/includes/pdf_display.html" with canvas_id="{}" pdf_url="{}" %}}'.format(canvas_id, pdf_url)
             link.parent.replace_with(canvas)
             keys.append((canvas_id, pdf_url))
+
     for canvas_id, pdf_url in keys:
         script_include = '{{% include "catalogue/includes/pdf_script.html" with canvas_id="{}" pdf_url="{}" %}}'.format(canvas_id, pdf_url)
         soup.div.append(script_include)
+
     return template.Template(unicode(soup.div)).render(template.Context())
+
+@register.filter
+def add_special_characters(html):
+    patterns = {
+        'start_tag': r'(?P<start_tag><[^>]*>)',
+        'end_tag': r'(?P<end_tag></[^>]*>)',
+        'code': r'(?P<code>.*?)',
+        'class': r'(?P<class>\w+)',
+    }
+
+    code_pattern = r'\[\[{class}\]{start_tag}?{code}{end_tag}?\]'.format(
+        **patterns)
+
+    return mark_safe(re.sub(code_pattern, _format_code, html.encode('utf-8')))
+
+def _format_code(match):
+    try:
+        code = unichr(int(match.group('code')))
+    except ValueError:
+        code = match.group('code')
+
+    parts = {
+        'start_tag': match.group('start_tag') or '',
+        'end_tag': match.group('end_tag') or '',
+        'code': code,
+        'class': match.group('class').lower(),
+    }
+
+    repl = u'<span class="{class}">{start_tag}{code}{end_tag}</span>'.format(
+        **parts)
+
+    return repl.encode('utf-8')

@@ -6,7 +6,11 @@
 {% block local_menu %}{% endblock %}
 
 {% block content %}
-<div class="large-12 columns">
-    {% block main %}{{ self.content|pdfdisplay|richtext }}{% endblock %}
-</div>
+
+<section class="main content-section">
+	<div class="row">
+	{% block main %}{{ self.content|pdfdisplay|richtext }}{% endblock %}
+	</div>
+</section>
+
 {% endblock %}

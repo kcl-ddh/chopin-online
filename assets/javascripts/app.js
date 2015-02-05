@@ -692,10 +692,10 @@ function initInlineCollections()
 	});
 }
 
-function resizeModal(winHeight) {
+/* function resizeModal(winHeight) {
 	$('.reveal-modal').css('max-height', winHeight - 110 + 'px'); // 100 +10px to keep modal effect visible
 	$('.reveal-modal > img').css("display","block").css('max-height', winHeight  - 200 + 'px');
-}
+} */
 
 /* Expandable lists */
 function expandableList() {
@@ -756,12 +756,12 @@ function updateBrowseResults() {
 
 // Foundation JavaScript
 // Documentation can be found at: http://foundation.zurb.com/docs
-$(document).foundation();
+/* $(document).foundation();
 
 $(window).resize(function() {
 	winHeight = $(window).height();
 	resizeModal( winHeight );
-});
+}); */
 
 $(document).ready( function() {
 	
@@ -793,8 +793,8 @@ $(document).ready( function() {
 	});
 	
 	/* Modal fix: https://github.com/zurb/foundation/issues/2971 */
-	winHeight = $(window).height();
-	resizeModal(winHeight);
+	/* winHeight = $(window).height();
+	resizeModal(winHeight); */
 	
 	
 	/* Tree navigation */

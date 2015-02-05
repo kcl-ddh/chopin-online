@@ -13,6 +13,10 @@
     <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main-'|add:BASE_URL|add:'.scss' %}" />
     {% endcompress %}
 
+    {% block custom_stylesheets %}
+
+    {% endblock custom_stylesheets %}
+
     <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
     <script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
     <script type="text/javascript">try {
@@ -37,10 +41,10 @@
 
     {% include 'includes/navigation.html' %}
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="large-12 columns">
             <section class="main content-section">
-                <div class="row">
+                <div class="row"> -->
                     {% block breadcrumbs %}
                     {% if BASE_URL == 'aco' %}
                     {% include 'includes/breadcrumbs.html' %}
@@ -61,16 +65,25 @@
                         {% block main %}{% endblock %}
                     </div>
                     {% endblock %}
-                </div>
+                <!-- </div>
             </section>
         </div>
-    </div><!-- .row -->
+    </div> --><!-- .row -->
 
-    <footer class="footer-section">
+    <footer class="footer">
         {% block footer %}
         {% include 'includes/footer.html' %}
         {% endblock %}
     </footer>
+
+    <!-- TO BE REMOVED once I find out what pages are using it - GF -->
+    {% block collections %}
+    <div class="collections-inline">
+        <a href="#" class="close-collections-inline"><span class="fa fa-angle-double-down"></span></a>
+        <div class="inner"></div>
+    </div>
+    {% endblock %}
+    <!-- End TO BE REMOVED -->
 
     {% block footer_scripts %}
     <script src="{% static 'vendor/foundation/js/foundation.min.js' %}"></script>
@@ -78,6 +91,5 @@
     {% endblock %}
 
     {# wagtailuserbar #}
-
 </body>
 </html>

@@ -1204,7 +1204,8 @@ b.top-spacing {
 }
 
 .barList li .image img {
-    height: 200px;
+    height: 200px !important;
+    width: auto;
 }
 
 .barList li .caption {

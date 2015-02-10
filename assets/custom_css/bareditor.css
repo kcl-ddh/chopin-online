@@ -1,0 +1,137 @@
+div.olControlSaveFeaturesItemActive {
+    background-image: url("/static/assets/s/OpenLayers/theme/default/img/save_features_on.png");
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+div.olControlSaveFeaturesItemInactive {
+    background-image: url("/static/assets/s/OpenLayers/theme/default/img/save_features_off.png");
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlSelectFeatureItemInactive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/select_off.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlSelectFeatureItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/select_on.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDragFeatureItemInactive {
+
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/pan_off.png);
+
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDragFeatureItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/pan_on.png);
+
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlCreateSystemItemInactive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/add_point_off.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlCreateSystemItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/add_point_on.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlTransformFeatureItemInactive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/rotate_off.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlTransformFeatureItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/rotate_on.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDrawFeaturePathItemInactive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/draw_polygon_off.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDrawFeaturePathItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/draw_polygon_on.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemInactive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/rectangle_off.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDrawFeaturePolygonItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/rectangle_on.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDeleteFeatureItemInactive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/delete_off.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.olControlEditingToolbar .olControlDeleteFeatureItemActive {
+    background-image: url(/static/assets/s/OpenLayers/theme/default/img/delete_on.png);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+}
+
+.barnav {
+    overflow: hidden
+}
+
+.barnav * {
+    text-align: center;
+    margin: 0;
+    padding: 0
+}
+
+.barnav li {
+    list-style: none;
+}
+
+.barnav .prev {
+    position: absolute;
+    left: 0;
+}
+
+.barnav .next {
+    position: absolute;
+    right: 0;
+}
+
+.rightFrame {
+    float: right;
+    width: 200px
+}
+
+#map {
+    border: 1px black solid;
+}
+
+.box {
+    background: #efefef;
+    border: 1px solid #ccc;
+    padding: 10px
+}

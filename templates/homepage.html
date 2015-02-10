@@ -8,6 +8,11 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+{% compress css %}
+{# SCSS compilation relies on django compressor #}
+<link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}" />
+{% endcompress %}
+
 <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
 <script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
 <script type="text/javascript">try {
@@ -17,11 +22,6 @@ Typekit.load();
 
 {% compress js %}
 {% block header_scripts %}{% endblock header_scripts %}
-{% endcompress %}
-
-{% compress css %}
-{# SCSS compilation relies on django compressor #}
-<link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}" />
 {% endcompress %}
 
 <script src="{% static 'vendor/modernizr/modernizr.js' %}"></script>
@@ -72,39 +72,16 @@ Typekit.load();
 </div>
 
 <footer class="footer">
-    <div class="row">
-        <div class="large-12 columns">
-            <ul class="footer-logos">
-                <li class="logo cambridge">
-                <a href="//www.cam.ac.uk">University of Cambridge</a>
-                </li>
-                <li class="logo kcl-ddh">
-                <a href="//www.kcl.ac.uk/ddh">Department of Digital Humanities, King's College London</a>
-                </li>
-            </ul>
-            <div class="footer-menus">
-                <ul class="footer-menu">
-                    <li><a href="#">Chopin Online</a></li>
-                    <li><a href="/ovce/ui" class="ocve-link">OCVE</a></li>
-                    <li><a href="/cfeo/ui" class="cfeo-link">CFEO</a></li>
-                    <li><a href="/aco/ui" class="annot-link">Annotated Catalogue Online</a></li>
-                </ul>
-                <ul class="footer-menu">
-                    <li><a href="#">About Annotated Catalouge Online</a></li>
-                    <li><a href="#">About Chopin Online</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {% block footer %}
+    {% include 'includes/footer.html' %}
+    {% endblock %}
 </footer>
 
 {% block footer_scripts %}
 <script src="{% static 'vendor/foundation/js/foundation.min.js' %}"></script>
+<script src="{% static 'javascripts/app.js' %}"></script>
 {% endblock %}
 
 {# wagtailuserbar #}
-
 </body>
 </html>

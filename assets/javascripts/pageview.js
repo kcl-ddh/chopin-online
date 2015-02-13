@@ -178,7 +178,7 @@ $(document).ready(function () {
 
     /* Slick image carousel: http://kenwheeler.github.io/slick/ */
     $('.thumbnail-carousel').slick({
-        centerMode: true,
+        centerMode: false,
         infinite: false,
         centerPadding: '60px',
         slidesToShow: 9,

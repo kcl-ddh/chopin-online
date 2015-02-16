@@ -15,7 +15,7 @@ PROJECT_NAME = 'chopin'
 PROJECT_TITLE = 'Chopin Online'
 
 SITE_TITLE = {
-    'aco': 'Annotated Catalogue Online',
+    'aco': 'Annotated Catalogue of Chopin\'s First Editions',
     'cfeo': 'Chopin\'s First Editions Online',
     'ocve': 'Online Chopin Variorum Edition'
 }

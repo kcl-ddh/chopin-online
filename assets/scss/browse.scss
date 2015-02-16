@@ -28,21 +28,16 @@
 	padding-bottom: 5px;
 }
 
-.movement li:first-child {
+.movement li.flag{
 	border-left: 1px solid $primary-color-ocve;
 	border-top: 5px solid $primary-color-ocve;
 	padding-top: 0;
-}
-
-.movement li:first-child p {
-	color: #000;
 }
 
 .movement p {
 	font-size: 11px;
 	margin: 5px 0;
 	line-height: 1;
-	color: transparent;
 }
 
 .pageList {

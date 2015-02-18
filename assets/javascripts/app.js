@@ -66,7 +66,9 @@ loadCollection = function(){
 }
 
 function initBarView()
-{
+{// Foundation JavaScript
+// Documentation can be found at: http://foundation.zurb.com/docs
+    $(document).foundation();
 	if($(".bar-images").length)
 	{
 	
@@ -247,9 +249,17 @@ function initBarView()
 	    // Enables image zooming
 	    $("body").on("click", ".large-image-button", function(event)
 	    {
-	    	$("#large-image-img").attr("src", $(this).attr("data-img"));
+            var img=$("#large-image-img");
+	    	$(img).attr("src", $(this).attr("data-img"));
+            $(this).attr("data-img")
+            var regionid=$(this).attr("data-region_id");
+            $.post('/ocve/ui/getAnnotations/'+regionid+'/',function(data){
+                $('#modal-annotations').empty().html(data);
+
+            })
 	    });
-	    
+
+
 	    // Enables the close source button
 	    $("body").on("click", ".closeSource", function(event)
 	    {

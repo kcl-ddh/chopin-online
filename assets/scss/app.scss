@@ -156,7 +156,8 @@ p.annotation-posted {
 #commentary h4 .label,
 #notes h4 .label {
     margin-bottom: 0;
-    margin-top: -10px;
+    margin-top: -5px;
+    vertical-align: middle;
 }
 
 #annotationTools {
@@ -1263,4 +1264,95 @@ b.top-spacing {
     display: block;
     padding: 5px;
     width: 100%;
+}
+
+/** Special characters **/
+
+.symbol-os,
+.symbol-ie,
+.symbol-MEul,
+.symbol-12,
+.symbol-wesseldec,
+.symbol-iequotesitalics,
+.symbol-iundotteditalics,
+.symbol-ieitalics,
+.symbol-lithographersinitials,
+.symbol-HL,
+.symbol-Creversecedilla,
+.symbol-L,
+.symbol-eitalics,
+.symbol-ER {
+    height: 15px;
+    display: inline-block;
+    background-size: auto 15px !important;
+}
+
+.symbol-os {
+    background: url("/static/assets/images/special-characters/01-symbol-os-code-127.png") top center no-repeat;
+    width: 12px;
+}
+
+.symbol-ie {
+    background: url("/static/assets/images/special-characters/02-symbol-ie-code-65.png") top center no-repeat;
+    width: 7px;
+}
+
+.symbol-MEul {
+    background: url("/static/assets/images/special-characters/03-symbol-MEul.png") top center no-repeat;
+    width: 18px;
+}
+
+.symbol-12 {
+    background: url("/static/assets/images/special-characters/04-symbol-12-code-116.png") top center no-repeat;
+    width: 5px;
+}
+
+.symbol-wesseldec {
+    background: url("/static/assets/images/special-characters/05-symbol-wesseldec.png") top center no-repeat;
+    width: 44px;
+}
+
+.symbol-iequotesitalics {
+    background: url("/static/assets/images/special-characters/06-symbol-ie-italics-code-63.png") top center no-repeat;
+    width: 9px;
+}
+
+.symbol-iundotteditalics {
+    background: url("/static/assets/images/special-characters/07-symbol-iundotteditalics.png") top center no-repeat;
+    width: 6px;
+}
+
+.symbol-ieitalics {
+    background: url("/static/assets/images/special-characters/08-symbol-ie-italics.png") top center no-repeat;
+    width: 8px;
+}
+
+.symbol-lithographersinitials {
+    background: url("/static/assets/images/special-characters/09-symbol-lithographersinitials-code-193.png") top center no-repeat;
+    width: 21px;
+}
+
+.symbol-HL {
+    background: url("/static/assets/images/special-characters/10-symbol-HL-code-128.png") top center no-repeat;
+    width: 21px;
+}
+
+.symbol-Creversecedilla {
+    background: url("/static/assets/images/special-characters/11-symbol-Creversecedilla-code-244.png") top center no-repeat;
+    width: 10px;
+}
+
+.symbol-L {
+    background: url("/static/assets/images/special-characters/12-symbol-L-code-238.png") top center no-repeat;
+    width: 13px;
+}
+
+.symbol-eitalics {
+    background: url("/static/assets/images/special-characters/13-symbol-e=italics-code-97.png") top center no-repeat;
+    width: 9px;
+}
+
+.symbol-ER {
+    background: url("/static/assets/images/special-characters/14-symbol-ER-code-246.png") top center no-repeat;
+    width: 12px;
 }

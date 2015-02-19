@@ -61,6 +61,11 @@ a:focus {
     left: 0 !important;
 }
 
+.inline-list span {
+    margin-bottom: 0;
+    margin-top: .25em;
+}
+
 /* General styles and AC-specific styles */
 .main.content-section {
     margin-top: rem-calc(20px);

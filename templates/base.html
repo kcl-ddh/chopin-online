@@ -47,6 +47,10 @@
                 <div class="row"> -->
                     {% block breadcrumbs %}
                     {% if BASE_URL == 'aco' %}
+                    <div class="row">
+                        <div class="large-12 columns">
+                            <section class="main content-section">
+                                <div class="row">
                     {% include 'includes/breadcrumbs.html' %}
                     {% endif %}
                     {% endblock %}
@@ -65,6 +69,13 @@
                         {% block main %}{% endblock %}
                     </div>
                     {% endblock %}
+
+                    {% if BASE_URL == 'aco' %}
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                    {% endif %}
                 <!-- </div>
             </section>
         </div>

@@ -13,7 +13,7 @@
 
 .footer-logos {
     float: left;
-    padding: 20px 0 0 0;
+    padding: 20px 0 0;
 }
 
 .footer-menus {
@@ -24,15 +24,19 @@
     height: 30px;
 }
 
-.footer .logo:not(:last-child) {
-    margin-right: 20px;
+.footer .svg img {
+    height: 60px;
 }
+
+/* .footer .logo:not(:last-child) {
+    margin-right: 20px;
+} */
 
 .footer .footer-menu {
     display: inline-block;
     font-family: "Museo Sans", sans-serif;
     list-style: none;
-    padding: 15px 0 0 50px;
+    padding: 15px 0;
 }
 
 .ocve-link {

@@ -11,11 +11,11 @@ section.expandable-list {
 	a:hover {
 		background: #e8e8e8;
 	}
-	.list-item {
+	/* .list-item {
 		border-bottom: 1px solid $border-color;
-	} 
-	.list-item:last-child {
-		border-bottom: 0;
+	} */
+	.list-item li:last-child {
+		border-bottom: 0 !important;
 	}
 	.list-content {
 		display: none;

@@ -315,7 +315,7 @@ IMAGE_SERVER_URL = IIP_URL
 # OCVE
 # -----------------------------------------------------------------------------
 
-SOURCEJSONPATH = os.path.join(STATIC_ROOT, 'javascripts')
+SOURCEJSONPATH = os.path.join(BASE_DIR, 'assets/javascripts')
 
 IMAGE_UPLOAD_PATH = '/vol/ocve2/images/upload/'
 CONVERTED_UPLOAD_PATH = '/vol/ocve2/images/temp/'

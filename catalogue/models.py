@@ -15,6 +15,8 @@ from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailcore.models import Orderable, Page
 from wagtail.wagtaildocs.models import Document
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
+from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
+from wagtail.wagtailimages.models import Image
 from wagtail.wagtailsearch import index
 from wagtail.wagtailsnippets.edit_handlers import SnippetChooserPanel
 from wagtail.wagtailsnippets.models import register_snippet
@@ -77,6 +79,37 @@ class IndexPage(Page, Introducable):
 IndexPage.content_panels = [
     FieldPanel('title', classname='full title'),
     FieldPanel('introduction', classname='full'),
+]
+
+
+class LandingPageSection(Orderable):
+    landing_page = ParentalKey('LandingPage', related_name='sections')
+    title = models.CharField(max_length=256)
+    abbreviation = models.CharField(max_length=32)
+    css_class = models.CharField(max_length=64)
+    introduction = RichTextField()
+    image = models.ForeignKey(Image)
+    page = models.ForeignKey(Page)
+
+    panels = [
+        FieldPanel('title', classname='full title'),
+        FieldPanel('abbreviation', classname='full'),
+        FieldPanel('css_class', classname='full'),
+        FieldPanel('introduction', classname='full'),
+        ImageChooserPanel('image'),
+        PageChooserPanel('page', 'catalogue.HomePage')
+    ]
+
+
+class LandingPage(Page, Introducable):
+    search_fields = Page.search_fields + (index.SearchField('introduction'),)
+    search_name = 'Landing Page'
+    subpage_types = ['HomePage']
+
+LandingPage.content_panels = [
+    FieldPanel('title', classname='full title'),
+    FieldPanel('introduction', classname='full'),
+    InlinePanel(LandingPage, 'sections', label='Sections'),
 ]
 
 

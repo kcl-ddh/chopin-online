@@ -250,10 +250,10 @@ OCVE_BASE_URL = '/ocve/ui/acview/'
 WORKS_WITHOUT_OPUS = ['GDC', 'HEX', 'MEG', 'MFM', 'MazG&Bflat', 'PolGm', 'MM',
                       'VGNA']
 POSTHUMOUS_WORKS_WITH_OPUS = 66
-POSTHUMOUS_WORKS_WITHOUT_OPUS = ['MazC', 'MazD, Bflat, G, Lento', 'PolGflat',
-                                 'PolGsharpm', 'WaltzE', 'WaltzEm']
+POSTHUMOUS_WORKS_WITHOUT_OPUS = ['MazC', 'MazG&Bflat', 'Mazd,Bflat,G,Lento',
+                                 'PolGflat', 'PolGsharpm', 'Posth', 'WaltzE',
+                                 'WaltzEm']
 ALL_WORKS_WITHOUT_OPUS = WORKS_WITHOUT_OPUS + POSTHUMOUS_WORKS_WITHOUT_OPUS
-
 
 #------------------------------------------------------------------------------
 # CMS
@@ -355,3 +355,12 @@ TINYMCE_DEFAULT_CONFIG = {
 #------------------------------------------------------------------------------
 
 WAGTAIL_SITE_NAME = PROJECT_TITLE
+
+# Allow all manner of non-alphanumeric characters in filenames, since
+# the PDF files for Works/Impressions use them meaningfully.
+def get_valid_filename (s):
+    from django.utils.encoding import force_text
+    return force_text(s).strip().replace(' ', '_')
+
+import django.utils.text
+django.utils.text.get_valid_filename = get_valid_filename

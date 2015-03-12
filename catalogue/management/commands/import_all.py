@@ -1,7 +1,7 @@
 """Command to populate an empty database with data imported from
 various sources."""
 
-
+import cPickle
 import logging
 import os.path
 
@@ -13,18 +13,17 @@ from django.core.management.base import BaseCommand, CommandError
 from wagtail.wagtailcore.models import GroupPagePermission, Page, Site
 from wagtail.wagtaildocs.models import Document
 
-from catalogue.models import Abbreviation, Advert, City, Copy, Country, \
-    Library, STP
-from page_data import abbreviation_data, bad_library_codes, document_data, \
-    page_data
+from catalogue.models import Abbreviation, Advert, Catalogue, City, Copy, \
+    Country, HomePage, Library, LibraryIndexPage, PublisherIndexPage, STP
+from page_data import abbreviation_data, bad_library_codes, document_data
 from pdf_import_utils import import_adverts, import_libraries, import_stps, \
     import_works
 
 
 class Command (BaseCommand):
 
-    args = '<pdf_dir>'
-    help = 'Import all data into fresh database'
+    args = '<pdf_dir> <exported_page_data>'
+    help = 'Imports all data into fresh database.'
     logger = logging.getLogger(__name__)
 
     def __init__ (self, *args, **kwargs):
@@ -32,11 +31,12 @@ class Command (BaseCommand):
         self._pages = {}
 
     def handle (self, *args, **options):
-        if not args or len(args) != 1:
-            raise CommandError('Specify the pdf directory')
+        if not args or len(args) != 2:
+            raise CommandError('Specify the pdf directory and the exported page data file')
         pdf_dir = args[0]
+        exported_page_data = args[1]
         self._import_documents(pdf_dir)
-        self._import_pages()
+        self._import_pages(exported_page_data)
         self._import_snippets()
         self._import_pdfs(pdf_dir)
         self._add_permissions()
@@ -74,17 +74,20 @@ class Command (BaseCommand):
                 doc.file.save(filename, document_file)
             doc.save()
 
-    def _import_pages (self):
+    def _import_pages (self, exported_page_data):
         # Delete any existing pages.
         for page in Page.objects.all():
             page.delete()
+        with open(exported_page_data, 'r') as fh:
+            page_data = cPickle.load(fh)
         for page_name, info in page_data.items():
             self.logger.debug('Creating page {}'.format(page_name))
             page = info['class'](**info['kwargs'])
             page.save()
             self._pages[page_name] = page
         # Add a Wagtail Site, or nothing will appear anywhere.
-        site = Site(hostname='localhost', root_page=self._pages['home'],
+        home_page = HomePage.objects.all()[0]
+        site = Site(hostname='localhost', root_page=home_page,
                     is_default_site=True)
         site.save()
 
@@ -92,12 +95,17 @@ class Command (BaseCommand):
         advert_dir = os.path.join(pdf_dir, 'adverts')
         import_adverts(advert_dir)
         library_dir = os.path.join(pdf_dir, 'libraries')
-        import_libraries(library_dir, self._pages['library_appendix'])
+        library_page = LibraryIndexPage.objects.all()[0]
+        library_page.numchild = 0
+        import_libraries(library_dir, library_page)
         stp_dir = os.path.join(pdf_dir, 'stps')
         import_stps(stp_dir)
         work_dir = os.path.join(pdf_dir, 'works')
-        import_works(work_dir, self._pages['annotated_catalogue'],
-                     self._pages['reference_sigla'])
+        catalogue_page = Catalogue.objects.all()[0]
+        catalogue_page.numchild = 0
+        sigla_page = PublisherIndexPage.objects.all()[0]
+        sigla_page.numchild = 0
+        import_works(work_dir, catalogue_page, sigla_page)
 
     def _import_snippets (self):
         self._import_abbreviations()

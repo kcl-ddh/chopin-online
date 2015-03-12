@@ -28,15 +28,30 @@
 	padding-bottom: 5px;
 }
 
+li.flag {
+	border-left: 1px solid $primary-color;
+	border-top: 5px solid $primary-color;
+	padding-top: 0;
+	margin-top: 0 !important;
+}
+
+li.flag p {
+	font-size: 11px;
+	margin: 0 0 5px;
+	line-height: 1;
+	height: 24px;
+}
+
 .pageList {
 	margin: 0 0 10px 0;
 	display: none;
 	clear: both;
 	border-bottom: 1px solid #d8d8d8;
+	padding-bottom: 20px;
 	li {
 		position: relative;
 		list-style-type: none;
-		margin: 0 20px 20px 0;
+		margin: 33px 20px 20px 0;
 		width: 80px;
 		height: 120px;
 		vertical-align: top;
@@ -46,6 +61,10 @@
 	li.hidden {
 	display: none;
 	}
+	/* li:first-child {
+		border-left: 1px solid $primary-color-ocve;
+		border-top: 1px solid $primary-color-ocve;
+	} */
 	.page-label {
 		display: block;
 		font-size: 12px;

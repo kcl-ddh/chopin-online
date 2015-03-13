@@ -308,8 +308,8 @@ FABRIC_USER = getpass.getuser()
 # IIP
 # -----------------------------------------------------------------------------
 
-IIP_URL = 'https://ocve3-stg.dighum.kcl.ac.uk/iip/iipsrv.fcgi'
-IMAGE_SERVER_URL = IIP_URL
+IIP_URL = '/iip/iipsrv.fcgi'
+IMAGE_SERVER_URL = 'https://ocve3-stg.dighum.kcl.ac.uk/iip/iipsrv.fcgi'
 
 # -----------------------------------------------------------------------------
 # OCVE

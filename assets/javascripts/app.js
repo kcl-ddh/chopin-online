@@ -254,7 +254,14 @@ function initBarView()
             $(this).attr("data-img")
             var regionid=$(this).attr("data-region_id");
             $.post('/ocve/ui/getAnnotations/'+regionid+'/',function(data){
-                $('#modal-annotations').empty().html(data);
+               if (data.length > 0){
+                   $("#large-image div.row div.large-12.columns").attr('class','large-8 columns');
+                   $("#large-image div.row div.large-4.columns").show();
+               }else{
+                   $("#large-image div.row div.large-8.columns").attr('class','large-12 columns');
+                   $("#large-image div.row div.large-4.columns").hide();
+               }
+               $('#modal-annotations').empty().html(data);
 
             })
 	    });

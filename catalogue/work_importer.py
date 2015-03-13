@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 
+import glob
+import logging
+import os
+import re
+import zipfile
+
+from lxml import etree
+
 from django.conf import settings
 from django.core.files import File
 from django.utils.text import slugify
 
-from lxml import etree
-
-from models import (_d, Copy, Impression, ImpressionCopy, ImpressionPDF,
-                    Library, Publisher, Work, WorkPDF, safe_slugify)
-
-from pdf_parser import PDFParser
-
+from wagtail.wagtaildocs.models import Document
 from wagtail.wagtailcore.models import Page
 
-import glob
-import logging
-import os
-import zipfile
+from models import (Copy, Impression, ImpressionCopy, Library, Publisher,
+                    Work, safe_slugify)
+from pdf_parser import PDFParser
 
 
 class WorkImporter(object):
@@ -62,14 +63,19 @@ class WorkImporter(object):
             work.sort_order = settings.ALL_WORKS_WITHOUT_OPUS.index(work.code) + 74
         self.logger.debug('Work sort order: {}'.format(work.sort_order))
         # Heading filename.
-        heading_filename = glob.glob(os.path.join(self._work_path,
-                                                  '*.heading.pdf'))[0]
+        try:
+            heading_filename = glob.glob(os.path.join(self._work_path,
+                                                      '*.heading*.pdf'))[0]
+        except IndexError:
+            self.logger.error('No heading file found; skipping work {0}'.format(
+                work.code))
+            return
         work.heading = self._import_heading(heading_filename)
         work.title = work.heading.split('  ')[0].strip()
         work.slug = safe_slugify(work.title, Work)
 
-        # Create a WorkPDF Document.
-        document = WorkPDF(title=work.title)
+        # Create a Work PDF Document.
+        document = Document(title=work.title)
         with open(heading_filename, 'rb') as fh:
             pdf_file = File(fh)
             document.file.save(os.path.basename(heading_filename), pdf_file)
@@ -87,21 +93,22 @@ class WorkImporter(object):
         for root, dirs, files in os.walk(self._work_path):
             # loops through all the files
             for f in files:
+                self.logger.debug('Importing possible impression file {}'.format(f))
                 # checks it is an impression PDF
-                if f.endswith('.pdf') and not(f.endswith('.heading.pdf')):
-                    f_path = _d(os.path.abspath(os.path.join(self._work_path, f)))
+                if f.endswith('.pdf') and '.heading.' not in f:
+                    f_path = os.path.abspath(os.path.join(self._work_path, f))
                     self._import_impression(work, publishers_page, f_path)
 
     def _import_impression (self, work, publishers_page, f_path):
         # creates a new PDFParser to get the impression
-        self.logger.debug('Parsing {}'.format(f_path.encode('utf-8')))
+        self.logger.debug('Parsing {}'.format(f_path))
         parser = PDFParser(f_path)
         code = parser.get_impression_code()
         if code:
             self.logger.debug('Impression: ' + code)
 
-            # Create an ImpressionPDF Document.
-            document = ImpressionPDF(title=code)
+            # Create an Impression PDF Document.
+            document = Document(title=code)
             with open(f_path, 'rb') as fh:
                 pdf_file = File(fh)
                 document.file.save(os.path.basename(f_path), pdf_file)
@@ -114,10 +121,10 @@ class WorkImporter(object):
             impression.content = parser.get_text_content()
             impression.pdf = document
             try:
-                sort_order = self._order_of_impressions.index(code)
+                sort_order = self._order_of_impressions.index(code.lower())
             except Exception:
                 self.logger.error(
-                    u'{0} missing from order of impressions'.format(code))
+                    u'{0} missing from order of impressions, which consists of: {1}'.format(code, ', '.join(self._order_of_impressions)))
                 sort_order = 999
             impression.sort_order = sort_order
             impression.slug = safe_slugify(impression.title,
@@ -220,6 +227,7 @@ class WorkImporter(object):
 
             # add our completed paragraph text to the list of paragraph text
             if len(p_text) > 0:
-                order_of_impressions.append(p_text)
+                code = re.sub(r'\s', '', p_text, flags=re.U)
+                order_of_impressions.append(code.lower())
 
         return order_of_impressions

@@ -2,6 +2,7 @@
 
 import logging
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -91,7 +92,7 @@ class PDFParser (object):
             self.logger.debug('No comments found.')
             matches = [['']]
         elif len(matches) > 1:
-            self.logger.error('More than one set of comments found!')
+            self.logger.warning('More than one set of comments found!')
         return matches[0][0]
 
     def get_text_content(self):
@@ -104,7 +105,7 @@ class PDFParser (object):
         if not matches:
             self.logger.error('No code found.')
             matches = [['']]
-        return matches[0][0]
+        return re.sub(r'\s', '', matches[0][0], flags=re.U)
 
     def get_title(self):
         """Returns the Impression title."""
@@ -121,7 +122,7 @@ class PDFParser (object):
         matches = self._g['copies'].searchString(self._content)
         copies = {}
         if not matches:
-            self.logger.error('No copies found')
+            self.logger.warning('No copies found')
             copies = {}
         else:
             for match in matches[0]:

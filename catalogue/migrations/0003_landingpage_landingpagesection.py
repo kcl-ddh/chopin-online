@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('wagtailimages', '0005_make_filter_spec_unique'),
         ('wagtailcore', '0010_change_page_owner_to_null_on_delete'),
-        ('catalogue', '0005_auto_20150114_1131'),
+        ('catalogue', '0002_auto_20150224_1844'),
     ]
 
     operations = [
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('introduction', wagtail.wagtailcore.fields.RichTextField(blank=True)),
             ],
             options={
-                'verbose_name': 'landingpage',
+                'abstract': False,
             },
             bases=('wagtailcore.page', models.Model),
         ),
@@ -33,6 +33,7 @@ class Migration(migrations.Migration):
                 ('sort_order', models.IntegerField(null=True, editable=False, blank=True)),
                 ('title', models.CharField(max_length=256)),
                 ('abbreviation', models.CharField(max_length=32)),
+                ('css_class', models.CharField(max_length=64)),
                 ('introduction', wagtail.wagtailcore.fields.RichTextField()),
                 ('image', models.ForeignKey(to='wagtailimages.Image')),
                 ('landing_page', modelcluster.fields.ParentalKey(related_name='sections', to='catalogue.LandingPage')),

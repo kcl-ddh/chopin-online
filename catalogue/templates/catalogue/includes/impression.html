@@ -1,7 +1,7 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags catalogue_tags %}
 <h4>
     <a href="{% pageurl impression %}">{{ impression.title }}</a>
 </h4>
 <p>
-{{ impression.impression.comments|truncatechars:125 }}
+{{ impression.impression.comments|truncate_to_char:"." }}
 </p>

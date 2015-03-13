@@ -13,8 +13,8 @@ from wagtail.wagtailadmin.edit_handlers import (FieldPanel, InlinePanel,
                                                 PageChooserPanel)
 from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailcore.models import Orderable, Page
-from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtaildocs.models import Document
+from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailimages.models import Image
 from wagtail.wagtailsearch import index
@@ -37,7 +37,7 @@ def _d(str):
 def _e(str):
     return str.encode(settings.AC_ENCODING)
 
-def safe_slugify(text, model):
+def safe_slugify (text, model):
     """Return a slugified version of `text` that copes with the brain dead
     nature of Wagtail, which uses slugs as lookup keys and has a 50
     character limit on them."""
@@ -54,11 +54,15 @@ def safe_slugify(text, model):
 
 
 class HomePage(Page):
+
     content = RichTextField()
 
     search_fields = Page.search_fields + (index.SearchField('content'),)
     search_name = 'Home Page'
     subpage_types = ['IndexPage', 'RichTextPage']
+
+    class Meta:
+        verbose_name = 'homepage'
 
 HomePage.content_panels = [
     FieldPanel('title', classname='full title'),
@@ -67,6 +71,7 @@ HomePage.content_panels = [
 
 
 class IndexPage(Page, Introducable):
+
     search_name = 'Index Page'
     search_fields = Page.search_fields + (index.SearchField('introduction'),)
     subpage_type = ['IndexPage', 'RichTextPage']
@@ -109,6 +114,7 @@ LandingPage.content_panels = [
 
 
 class RichTextPage(Page):
+
     content = RichTextField()
 
     search_fields = Page.search_fields + (index.SearchField('content'),)
@@ -163,17 +169,13 @@ class City(TimeStampedModel):
 register_snippet(City)
 
 
-class LibraryPDF(Document):
-    pass
-
-
 class Library(Page):
     name = models.CharField(max_length=256)
     city = models.ForeignKey(
         City, blank=True, null=True, on_delete=models.SET_NULL,
         related_name='libraries')
     library_url = models.URLField(blank=True, null=True)
-    pdf = models.ForeignKey(LibraryPDF, null=True, blank=True,
+    pdf = models.ForeignKey(Document, null=True, blank=True,
                             on_delete=models.SET_NULL, related_name='+')
 
     class Meta:
@@ -199,6 +201,7 @@ Library.content_panels = [
 
 
 class LibraryIndexPage(RoutablePageMixin, Page, Introducable):
+
     search_name = 'Library Index Page'
     subpage_urls = (
         url(r'^$', 'serve_all_libraries', name='all_libraries'),
@@ -277,8 +280,11 @@ Publisher.content_panels = [
     SnippetChooserPanel('city', City)
 ]
 
+register_snippet(Publisher)
+
 
 class PublisherIndexPage(RoutablePageMixin, Page, Introducable):
+
     subpage_urls = (
         url(r'^$', 'serve_all_publishers', name='all_publishers'),
         url(r'^publishers-by-city/$', 'serve_publishers_by_city',
@@ -362,10 +368,6 @@ class ImpressionCopy(Orderable, TimeStampedModel):
         return u'{0}: {1}'.format(self.impression, self.copy)
 
 
-class ImpressionPDF(Document):
-    pass
-
-
 class Impression(Page):
     code_hash = models.CharField(max_length=32, editable=False)
     impression_title = models.TextField()
@@ -375,7 +377,7 @@ class Impression(Page):
     comments = models.TextField()
     content = models.TextField()
     sort_order = models.PositiveIntegerField()
-    pdf = models.ForeignKey(ImpressionPDF, null=True, blank=True,
+    pdf = models.ForeignKey(Document, null=True, blank=True,
                             on_delete=models.SET_NULL, related_name='+')
 
     search_fields = (
@@ -411,17 +413,13 @@ Impression.content_panels = [
 ]
 
 
-class WorkPDF(Document):
-    pass
-
-
 class Work(Page):
     code = models.CharField(max_length=32)
     heading = models.TextField()
     has_opus = models.BooleanField(default=False)
     is_posthumous = models.BooleanField(default=False)
     sort_order = models.PositiveIntegerField()
-    pdf = models.ForeignKey(WorkPDF, null=True, blank=True,
+    pdf = models.ForeignKey(Document, null=True, blank=True,
                             on_delete=models.SET_NULL, related_name='+')
 
     search_fields = Page.search_fields + (
@@ -520,18 +518,14 @@ Catalogue.content_panels = [
 ]
 
 
-class STPPDF(Document):
-    pass
-
-
 class STP(TimeStampedModel):
     publisher = models.ForeignKey(Publisher, blank=True, null=True,
                                   related_name='stps')
     publisher_name = models.CharField(max_length=256)
     publisher_name_slug = models.CharField(max_length=256, editable=False)
-    rubric = models.CharField(max_length=256)
+    rubric = RichTextField()
     rubric_slug = models.CharField(max_length=256, editable=False)
-    pdf = models.ForeignKey(STPPDF, blank=True, null=True,
+    pdf = models.ForeignKey(Document, blank=True, null=True,
                             on_delete=models.SET_NULL, related_name='+')
 
     class Meta:
@@ -610,18 +604,14 @@ STPIndexPage.content_panels = [
 ]
 
 
-class AdvertPDF(Document):
-    pass
-
-
 class Advert(TimeStampedModel):
     publisher = models.ForeignKey(Publisher, blank=True, null=True,
                                   related_name='adverts')
     publisher_name = models.CharField(max_length=256)
     publisher_name_slug = models.CharField(max_length=256, editable=False)
-    rubric = models.CharField(max_length=256)
+    rubric = RichTextField()
     rubric_slug = models.CharField(max_length=256, editable=False)
-    pdf = models.ForeignKey(AdvertPDF, null=True, blank=True,
+    pdf = models.ForeignKey(Document, null=True, blank=True,
                             on_delete=models.SET_NULL, related_name='+')
 
     class Meta:
@@ -655,6 +645,7 @@ register_snippet(Advert)
 
 
 class AdvertIndexPage(RoutablePageMixin, Page, Introducable):
+
     subpage_urls = (
         url(r'^$', 'serve_all_publishers', name='all_publishers'),
         url(r'^(?P<pn_slug>.*?)/(?P<r_slug>.*?)/$', 'serve_rubric',
@@ -719,6 +710,7 @@ register_snippet(Abbreviation)
 
 
 class AbbreviationIndexPage(RoutablePageMixin, Page, Introducable):
+
     subpage_urls = (
         url(r'^$', 'serve_all_abbreviations', name='all_abbreviations'),
     )
@@ -736,7 +728,8 @@ AbbreviationIndexPage.content_panels = [
 ]
 
 
-class GlossaryItem(TimeStampedModel):
+class GlossaryItem (TimeStampedModel):
+
     title = models.CharField(max_length=32, unique=True)
     description = RichTextField()
     slug = models.CharField(max_length=256, editable=False)
@@ -744,7 +737,7 @@ class GlossaryItem(TimeStampedModel):
     class Meta:
         ordering = ['title']
 
-    def save(self, *args, **kwargs):
+    def save (self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(GlossaryItem, self).save(*args, **kwargs)
 
@@ -756,12 +749,13 @@ GlossaryItem.panels = [
 register_snippet(GlossaryItem)
 
 
-class GlossaryIndexPage(RoutablePageMixin, Page, Introducable):
+class GlossaryIndexPage (RoutablePageMixin, Page, Introducable):
+
     subpage_urls = (
         url(r'^$', 'serve_all_glossary_items', name='all_glossary_items'),
     )
 
-    def serve_all_glossary_items(self, request):
+    def serve_all_glossary_items (self, request):
         '''Renders all glossary items.'''
         glossary_items = GlossaryItem.objects.all()
         return render(request, self.get_template(request),

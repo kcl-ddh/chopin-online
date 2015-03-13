@@ -16,3 +16,5 @@ node_modules
 static
 import_pdf
 pdfs
+.idea/*
+testupload/*

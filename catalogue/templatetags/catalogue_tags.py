@@ -160,3 +160,12 @@ def _format_code(match):
         **parts)
 
     return repl.encode('utf-8')
+
+@register.filter
+def truncate_to_char(value, char):
+    try:
+        index = value.index(char)
+        truncated = value[:index+1]
+    except ValueError:
+        truncated = value
+    return truncated

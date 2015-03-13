@@ -6,8 +6,9 @@ from django.core.files import File
 from django.db import transaction
 from django.utils.text import slugify
 
-from catalogue.models import Advert, AdvertPDF, City, Country, Library, \
-    LibraryPDF, STP, STPPDF
+from wagtail.wagtaildocs.models import Document
+
+from catalogue.models import Advert, City, Country, Library, STP
 from catalogue.pdf_parser import PDFParser
 from catalogue.work_importer import WorkImporter
 
@@ -33,7 +34,7 @@ def import_adverts (advert_dir):
         for filename in files:
             if filename.endswith('.pdf'):
                 rubric = _clean_rubric(filename)
-                document = AdvertPDF(title=u'{}; {}'.format(
+                document = Document(title=u'{}; {}'.format(
                     publisher_name, rubric))
                 with open(os.path.join(root, filename), 'rb') as fh:
                     pdf_file = File(fh)
@@ -128,8 +129,8 @@ def import_library (file_path, index_page):
         library.city = city
         library.name = name
 
-    # Create a LibraryPDF Document.
-    document = LibraryPDF(title=code)
+    # Create a Library PDF Document.
+    document = Document(title=code)
     with open(file_path, 'rb') as fh:
         pdf_file = File(fh)
         document.file.save(os.path.basename(file_path), pdf_file)
@@ -146,7 +147,7 @@ def import_stps (stps_dir):
         for filename in files:
             if filename.endswith('.pdf'):
                 rubric = _clean_rubric(filename)
-                document = STPPDF(title=u'{}; {}'.format(
+                document = Document(title=u'{}; {}'.format(
                     publisher_name, rubric))
                 with open(os.path.join(root, filename), 'rb') as fh:
                     pdf_file = File(fh)

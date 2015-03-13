@@ -17,7 +17,7 @@
 <ul class="works search-results">
     {% for work in works|order_by:'work__sort_order' %}
     <li>
-    <a href="{% pageurl work %}">{{ work.title }}</a>
+    <a href="{% pageurl work %}">{{ work.title|add_special_characters  }}</a>
     </li>
     {% endfor %}
 </ul>

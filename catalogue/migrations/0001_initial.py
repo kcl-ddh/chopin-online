@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import wagtail.contrib.wagtailroutablepage.models
 import wagtail.wagtailcore.fields
-import modelcluster.fields
-import django.utils.timezone
 import model_utils.fields
+import wagtail.contrib.wagtailroutablepage.models
+import django.utils.timezone
+import modelcluster.fields
 import django.db.models.deletion
 
 
@@ -54,6 +54,7 @@ class Migration(migrations.Migration):
                 ('publisher_name_slug', models.CharField(max_length=256, editable=False)),
                 ('rubric', models.CharField(max_length=256)),
                 ('rubric_slug', models.CharField(max_length=256, editable=False)),
+                ('pdf', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wagtaildocs.Document', null=True)),
             ],
             options={
                 'ordering': ['publisher_name', 'rubric'],
@@ -70,15 +71,6 @@ class Migration(migrations.Migration):
                 'verbose_name': "Publishers' Advertisements Index Page",
             },
             bases=(wagtail.contrib.wagtailroutablepage.models.RoutablePageMixin, 'wagtailcore.page', models.Model),
-        ),
-        migrations.CreateModel(
-            name='AdvertPDF',
-            fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtaildocs.Document')),
-            ],
-            options={
-            },
-            bases=('wagtaildocs.document',),
         ),
         migrations.CreateModel(
             name='Catalogue',
@@ -133,6 +125,32 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='GlossaryIndexPage',
+            fields=[
+                ('page_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
+                ('introduction', wagtail.wagtailcore.fields.RichTextField(blank=True)),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(wagtail.contrib.wagtailroutablepage.models.RoutablePageMixin, 'wagtailcore.page', models.Model),
+        ),
+        migrations.CreateModel(
+            name='GlossaryItem',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, verbose_name='created', editable=False)),
+                ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, verbose_name='modified', editable=False)),
+                ('title', models.CharField(unique=True, max_length=32)),
+                ('description', wagtail.wagtailcore.fields.RichTextField()),
+                ('slug', models.CharField(max_length=256, editable=False)),
+            ],
+            options={
+                'ordering': ['title'],
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='HomePage',
             fields=[
                 ('page_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
@@ -152,6 +170,7 @@ class Migration(migrations.Migration):
                 ('comments', models.TextField()),
                 ('content', models.TextField()),
                 ('sort_order', models.PositiveIntegerField()),
+                ('pdf', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wagtaildocs.Document', null=True)),
             ],
             options={
                 'verbose_name': 'Impression',
@@ -174,15 +193,6 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='ImpressionPDF',
-            fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtaildocs.Document')),
-            ],
-            options={
-            },
-            bases=('wagtaildocs.document',),
-        ),
-        migrations.CreateModel(
             name='IndexPage',
             fields=[
                 ('page_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
@@ -200,6 +210,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=256)),
                 ('library_url', models.URLField(null=True, blank=True)),
                 ('city', models.ForeignKey(related_name='libraries', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.City', null=True)),
+                ('pdf', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wagtaildocs.Document', null=True)),
             ],
             options={
                 'ordering': ['title', 'city', 'name'],
@@ -219,19 +230,10 @@ class Migration(migrations.Migration):
             bases=(wagtail.contrib.wagtailroutablepage.models.RoutablePageMixin, 'wagtailcore.page', models.Model),
         ),
         migrations.CreateModel(
-            name='LibraryPDF',
-            fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtaildocs.Document')),
-            ],
-            options={
-            },
-            bases=('wagtaildocs.document',),
-        ),
-        migrations.CreateModel(
             name='Publisher',
             fields=[
                 ('page_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('name', models.CharField(max_length=256, null=True, blank=True)),
+                ('name', wagtail.wagtailcore.fields.RichTextField(null=True, blank=True)),
                 ('abbreviation', models.CharField(max_length=256, null=True, blank=True)),
                 ('city', models.ForeignKey(related_name='publishers', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.City', null=True)),
             ],
@@ -272,6 +274,8 @@ class Migration(migrations.Migration):
                 ('publisher_name_slug', models.CharField(max_length=256, editable=False)),
                 ('rubric', models.CharField(max_length=256)),
                 ('rubric_slug', models.CharField(max_length=256, editable=False)),
+                ('pdf', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wagtaildocs.Document', null=True)),
+                ('publisher', models.ForeignKey(related_name='stps', blank=True, to='catalogue.Publisher', null=True)),
             ],
             options={
                 'ordering': ['publisher_name', 'rubric'],
@@ -291,15 +295,6 @@ class Migration(migrations.Migration):
             bases=(wagtail.contrib.wagtailroutablepage.models.RoutablePageMixin, 'wagtailcore.page'),
         ),
         migrations.CreateModel(
-            name='STPPDF',
-            fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtaildocs.Document')),
-            ],
-            options={
-            },
-            bases=('wagtaildocs.document',),
-        ),
-        migrations.CreateModel(
             name='Work',
             fields=[
                 ('page_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
@@ -308,6 +303,7 @@ class Migration(migrations.Migration):
                 ('has_opus', models.BooleanField(default=False)),
                 ('is_posthumous', models.BooleanField(default=False)),
                 ('sort_order', models.PositiveIntegerField()),
+                ('pdf', models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='wagtaildocs.Document', null=True)),
             ],
             options={
                 'ordering': ['sort_order'],
@@ -315,48 +311,9 @@ class Migration(migrations.Migration):
             },
             bases=('wagtailcore.page',),
         ),
-        migrations.CreateModel(
-            name='WorkPDF',
-            fields=[
-                ('document_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='wagtaildocs.Document')),
-            ],
-            options={
-            },
-            bases=('wagtaildocs.document',),
-        ),
-        migrations.AddField(
-            model_name='work',
-            name='pdf',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.WorkPDF', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='stp',
-            name='pdf',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.STPPDF', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='stp',
-            name='publisher',
-            field=models.ForeignKey(related_name='stps', blank=True, to='catalogue.Publisher', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='library',
-            name='pdf',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.LibraryPDF', null=True),
-            preserve_default=True,
-        ),
         migrations.AlterUniqueTogether(
             name='impressioncopy',
             unique_together=set([('impression', 'copy')]),
-        ),
-        migrations.AddField(
-            model_name='impression',
-            name='pdf',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.ImpressionPDF', null=True),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='impression',
@@ -379,12 +336,6 @@ class Migration(migrations.Migration):
         migrations.AlterUniqueTogether(
             name='city',
             unique_together=set([('country', 'name')]),
-        ),
-        migrations.AddField(
-            model_name='advert',
-            name='pdf',
-            field=models.ForeignKey(related_name='+', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='catalogue.AdvertPDF', null=True),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='advert',

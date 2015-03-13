@@ -61,13 +61,10 @@ li.flag p {
 	li.hidden {
 	display: none;
 	}
-	/* li:first-child {
-		border-left: 1px solid $primary-color-ocve;
-		border-top: 1px solid $primary-color-ocve;
-	} */
 	.page-label {
 		display: block;
-		font-size: 12px;
+		font-size: 11px;
+		line-height: 1.25;
 	}
 	a.pageView {
 		display: block;

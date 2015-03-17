@@ -19,16 +19,12 @@ class Command(NoArgsCommand):
             if page.introduction:
                 self.logger.debug(u'Cleaning {0}'.format(page.title))
                 page.introduction = self._add_footnote_ids(page.introduction)
-                page.introduction = self._annotate_characters(
-                    page.introduction)
                 page.save()
 
         for page in RichTextPage.objects.all():
             if page.content:
                 self.logger.debug(u'Cleaning {0}'.format(page.title))
                 page.content = self._add_footnote_ids(page.content)
-                page.content = self._annotate_characters(
-                    page.content)
                 page.save()
 
     def _add_footnote_ids(self, html):

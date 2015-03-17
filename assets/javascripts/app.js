@@ -925,12 +925,12 @@ $(document).ready( function() {
 
 	$(function() {
 	  $('#annotations').find('div.collapseme').hide();
-	  $('h4').bind("click", function() {
+	  $('h4.comm').bind("click", function() {
 	    $(this).next('div').slideToggle(400);
 	    $("i",this).toggleClass("fa-plus-circle fa-minus-circle");
 	    return false;
 	  });
-	  $('#notes h4').bind("click", function() { toggleExistingNotes(); });
+	  $('#notes h4.comm').bind("click", function() { toggleExistingNotes(); });
 	});
 		
 });

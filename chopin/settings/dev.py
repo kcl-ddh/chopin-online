@@ -28,6 +28,7 @@ LOGGING_LEVEL = logging.DEBUG
 
 LOGGING['loggers']['django_auth_ldap']['level'] = LOGGING_LEVEL
 LOGGING['loggers']['catalogue']['level'] = LOGGING_LEVEL
+LOGGING['loggers']['chopin']['level'] = LOGGING_LEVEL
 
 HAYSTACK_CONNECTIONS['default']['INDEX_NAME'] = PROJECT_NAME + '_dev'
 

@@ -147,7 +147,7 @@ def _format_code(match):
     try:
         code = unichr(int(match.group('code')))
     except ValueError:
-        code = match.group('code')
+        code = match.group('code') or ''
 
     parts = {
         'start_tag': match.group('start_tag') or '',

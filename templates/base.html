@@ -40,46 +40,38 @@
     </header>
 
     {% include 'includes/navigation.html' %}
-
-    <!-- <div class="row">
+    
+    {% block breadcrumbs %}
+    {% if BASE_URL == 'aco' %}
+    <div class="row">
         <div class="large-12 columns">
             <section class="main content-section">
-                <div class="row"> -->
-                    {% block breadcrumbs %}
-                    {% if BASE_URL == 'aco' %}
-                    <div class="row">
-                        <div class="large-12 columns">
-                            <section class="main content-section">
-                                <div class="row">
-                    {% include 'includes/breadcrumbs.html' %}
-                    {% endif %}
-                    {% endblock %}
+                <div class="row">
+    {% include 'includes/breadcrumbs.html' %}
+    {% endif %}
+    {% endblock %}
 
-                    {% block content %}
-                    <div class="large-2 columns navigation">
-                        {% block local_menu %}
-                        {% include 'includes/local_menu.html' %}
-                        {% endblock %}
-                    </div>
+    {% block content %}
+    <div class="large-2 columns navigation">
+        {% block local_menu %}
+        {% include 'includes/local_menu.html' %}
+        {% endblock %}
+    </div>
 
-                    <div class="large-10 columns">
-                        {% block overtitle %}
-                        <h1>{% block title %}{% endblock %}</h1>
-                        {% endblock %}
-                        {% block main %}{% endblock %}
-                    </div>
-                    {% endblock %}
+    <div class="large-10 columns">
+        {% block overtitle %}
+        <h1>{% block title %}{% endblock %}</h1>
+        {% endblock %}
+        {% block main %}{% endblock %}
+    </div>
+    {% endblock %}
 
-                    {% if BASE_URL == 'aco' %}
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                    {% endif %}
-                <!-- </div>
+    {% if BASE_URL == 'aco' %}
+                </div>
             </section>
         </div>
-    </div> --><!-- .row -->
+    </div>
+    {% endif %}
 
     <footer class="footer">
         {% block footer %}

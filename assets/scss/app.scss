@@ -7,15 +7,16 @@ body {
 
 body {
     position: relative;
+    font-family: "Museo Sans", "museo-sans", sans-serif;
 }
 
 h1, h2 {
-    font-family: 'Hero', sans-serif;
+    font-family: "Hero", sans-serif;
 }
 
-h3, h4, h5, h6 {
+/* h3, h4, h5, h6 {
     font-family: 'Museo Sans', sans-serif;
-}
+} */
 
 section h1 {
     font-size: 2rem;
@@ -77,7 +78,7 @@ a:focus {
 /* General styles and AC-specific styles */
 .main.content-section {
     margin-top: rem-calc(20px);
-    overflow: hidden;
+    /* overflow: hidden; */
     a.exit-off-canvas {
         box-shadow: none !important;
     }
@@ -171,6 +172,7 @@ p.annotation-posted {
     margin-bottom: 0;
     margin-top: -5px;
     vertical-align: middle;
+    padding: .5rem .5rem .25rem;
 }
 
 #annotationTools {
@@ -995,6 +997,23 @@ b.top-spacing {
     margin-bottom: 1em;
 }
 
+.tab-bar .f-dropdown {
+    z-index: 1000;
+}
+
+.tab-bar .f-dropdown li {
+    margin: 0 !important;
+    border-bottom: 1px solid #d8d8d8;
+}
+
+.tab-bar .f-dropdown li:first-child {
+    padding: 0 !important;
+}
+
+.tab-bar .f-dropdown li a {
+    padding: 10px !important;
+}
+
 .contextual-menu {
     margin: 0;
     height: inherit;
@@ -1283,18 +1302,18 @@ b.top-spacing {
 
 .symbol-os,
 .symbol-ie,
-.symbol-MEul,
+.symbol-meul,
 .symbol-12,
 .symbol-wesseldec,
 .symbol-iequotesitalics,
 .symbol-iundotteditalics,
 .symbol-ieitalics,
 .symbol-lithographersinitials,
-.symbol-HL,
-.symbol-Creversecedilla,
-.symbol-L,
+.symbol-hl,
+.symbol-creversecedilla,
+.symbol-l,
 .symbol-eitalics,
-.symbol-ER {
+.symbol-er {
     height: 15px;
     display: inline-block;
     background-size: auto 15px !important;
@@ -1310,7 +1329,7 @@ b.top-spacing {
     width: 7px;
 }
 
-.symbol-MEul {
+.symbol-meul {
     background: url("/static/assets/images/special-characters/03-symbol-MEul.png") top center no-repeat;
     width: 18px;
 }
@@ -1345,17 +1364,17 @@ b.top-spacing {
     width: 21px;
 }
 
-.symbol-HL {
+.symbol-hl {
     background: url("/static/assets/images/special-characters/10-symbol-HL-code-128.png") top center no-repeat;
     width: 21px;
 }
 
-.symbol-Creversecedilla {
+.symbol-creversecedilla {
     background: url("/static/assets/images/special-characters/11-symbol-Creversecedilla-code-244.png") top center no-repeat;
     width: 10px;
 }
 
-.symbol-L {
+.symbol-l {
     background: url("/static/assets/images/special-characters/12-symbol-L-code-238.png") top center no-repeat;
     width: 13px;
 }
@@ -1365,7 +1384,7 @@ b.top-spacing {
     width: 9px;
 }
 
-.symbol-ER {
+.symbol-er {
     background: url("/static/assets/images/special-characters/14-symbol-ER-code-246.png") top center no-repeat;
     width: 12px;
 }

@@ -142,6 +142,11 @@ LOGGING = {
             'level': LOGGING_LEVEL,
             'propagate': True
         },
+        'chopin': {
+            'handlers': ['file'],
+            'level': LOGGING_LEVEL,
+            'propagate': True
+        },
         'elasticsearch': {
             'handlers': ['file'],
             'level': LOGGING_LEVEL,

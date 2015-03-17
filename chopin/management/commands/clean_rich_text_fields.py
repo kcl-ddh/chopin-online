@@ -34,14 +34,20 @@ class Command(NoArgsCommand):
         for link in links:
             if link.has_attr('href'):
                 if re.findall(r'_ftn\d+', link['href']):
+                    link_url = link['href']
+                    link_url = link_url[link_url.index('#'):]
+                    self.logger.debug('Link ' + link_url)
                     if not link.has_attr('id'):
                         link['id'] = '_ftnref{0}'.format(
-                            re.findall(r'\d+', link['href'])[0])
+                            re.findall(r'\d+', link_url)[0])
 
             if link.has_attr('href'):
                 if re.findall(r'_ftnref\d+', link['href']):
+                    link_url = link['href']
+                    link_url = link_url[link_url.index('#'):]
+                    self.logger.debug('Link ' + link_url)
                     if not link.has_attr('id'):
                         link['id'] = '_ftn{0}'.format(
-                            re.findall(r'\d+', link['href'])[0])
+                            re.findall(r'\d+', link_url)[0])
 
         return str(soup)

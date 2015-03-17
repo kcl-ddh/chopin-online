@@ -31,16 +31,16 @@
         data-expandable-group-member="facets"
         class="expandable-list fixed-open" id="catalogue-filter">
         {% for facet in facets.fields %}
-            <div class="list-item">
-                <div class="list-header">
+            <div class="list-item no">
+                <div class="list-header no-link">
                     <h4><span class="header">Filter by {{ facet }}</span></h4>
                 </div>
-                <div>
+                <div class="list-content">
                     <ul>
                         {% for term in facets.fields|get_item:facet %}
                         <li>
                             <a href="{{ request.get_full_path }}&amp;selected_facets=document:{{ term.0|urlencode }}">
-                            {{ term.0 }}
+                                {{ term.0 }}
                             <span class="label radius right">{{ term.1 }}</span>
                             </a>
                         </li>

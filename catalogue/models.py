@@ -487,7 +487,9 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
         works = self.works.filter(work__has_opus=True)
 
         return render(request, self.get_template(request),
-                      {'self': self, 'works': works})
+                      {'self': self, 'works': works,
+                       'subtitle': 'Works with opus numbers',
+                       'suburl': 'works-with-opus'})
 
     def serve_posthumous_works_with_opus(self, request):
         """Renders all the posthumous works with opus number."""
@@ -495,14 +497,18 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
                                   work__is_posthumous=True)
 
         return render(request, self.get_template(request),
-                      {'self': self, 'works': works})
+                      {'self': self, 'works': works,
+                       'subtitle': 'Posthumous works with opus numbers',
+                       'suburl': 'posthumous-works-with-opus'})
 
     def serve_works_without_opus(self, request):
         """Renders all the works that don't have opus number."""
         works = self.works.filter(work__has_opus=False)
 
         return render(request, self.get_template(request),
-                      {'self': self, 'works': works})
+                      {'self': self, 'works': works,
+                       'subtitle': 'Works without opus',
+                       'suburl': 'works-without-opus'})
 
     def serve_posthumous_works_without_opus(self, request):
         """Renders all the posthumous works without opus number."""
@@ -510,7 +516,9 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
                                   work__is_posthumous=True)
 
         return render(request, self.get_template(request),
-                      {'self': self, 'works': works})
+                      {'self': self, 'works': works,
+                       'subtitle': 'Posthumous works without opus numbers',
+                       'suburl': 'posthumous-works-without-opus'})
 
 Catalogue.content_panels = [
     FieldPanel('title', classname='full title'),

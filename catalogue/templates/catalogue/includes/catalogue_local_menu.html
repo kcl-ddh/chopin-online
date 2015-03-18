@@ -3,19 +3,19 @@
 <nav class="local">
     <ul class="side-nav">
         <li>Catalogue</li>
-        <li>
+        <li {% if not suburl %}class="active"{% endif %}>
         <a href="{% pageurl page %}">All works</a>
         </li>
-        <li>
+        <li {% if suburl == 'works-with-opus' %}class="active"{% endif %}>
         <a href="{% catalogueurl  page 'works-with-opus' %}">Works with opus numbers</a>
         </li>
-        <li>
+        <li {% if suburl == 'posthumous-works-with-opus' %}class="active"{% endif %}>
         <a href="{% catalogueurl page 'posthumous-works-with-opus' %}">Posthumous works with opus numbers</a>
         </li>
-        <li>
+        <li {% if suburl == 'works-without-opus' %}class="active"{% endif %}>
         <a href="{% catalogueurl page 'works-without-opus' %}">Works without opus numbers</a>
         </li>
-        <li>
+        <li {% if suburl == 'posthumous-works-without-opus' %}class="active"{% endif %}>
         <a href="{% catalogueurl page 'posthumous-works-without-opus' %}">Posthumous works without opus numbers</a>
         </li>
     </ul>

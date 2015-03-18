@@ -1,11 +1,22 @@
 {% extends "catalogue/base.html" %}
 {% load catalogue_tags wagtailcore_tags %}
 
+{% block breadcrumbs %}
+{% get_site_root as site_root %}
+{% if suburl %}
+{% breadcrumbs root=site_root current_page=self extra=subtitle %}
+{% else %}
+{% breadcrumbs root=site_root current_page=self %}
+{% endif %}
+{% endblock %}
+
 {% block local_menu %}
 {% include "catalogue/includes/catalogue_local_menu.html" with page=self %}
 {% endblock %}
 
-{% block title %}{{ self.title }}{% endblock %}
+{% block title %}
+{{ self.title }}{% if subtitle %}: {{ subtitle }}{% endif %}
+{% endblock %}
 
 {% block main %}
 

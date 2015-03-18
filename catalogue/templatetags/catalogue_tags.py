@@ -135,7 +135,7 @@ def add_special_characters(html):
         'start_tag': r'(?P<start_tag><[^>]*>)',
         'end_tag': r'(?P<end_tag></[^>]*>)',
         'code': r'(?P<code>.*?)',
-        'class': r'(?P<class>\w+)',
+        'class': r'(?P<class>[\w-]+)',
     }
 
     code_pattern = r'\[\[{class}\]{start_tag}?{code}{end_tag}?\]'.format(

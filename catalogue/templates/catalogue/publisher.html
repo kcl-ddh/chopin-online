@@ -18,12 +18,12 @@
 
 {% block title %}
 {{ self.name|richtext }}
-<small>
-{{ self.title }}{% if self.city %}; {{ self.city }}{% endif %}
-</small>
 {% endblock %}
 
 {% block main %}
+<p>
+{{ self.title }}{% if self.city %}; {{ self.city }}{% endif %}
+</p>
 
 {% if impressions %}
 <h2>{{ work.title }} impressions</h2>

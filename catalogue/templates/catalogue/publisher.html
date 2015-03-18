@@ -17,8 +17,10 @@
 {% endblock %}
 
 {% block title %}
-{{ self.title }}
-{% if publisher.city %}, {{ publisher.city }}{% endif %}
+{{ self.name|richtext }}
+<small>
+{{ self.title }}{% if self.city %}; {{ self.city }}{% endif %}
+</small>
 {% endblock %}
 
 {% block main %}

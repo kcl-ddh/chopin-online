@@ -20,7 +20,7 @@
 <ul class="works search-results">
     {% for city in cities %}
     {% if city.publishers.all %}
-    <li><h4>{{ city.name }}, {{ city.country.name }}</h4></li>
+    <li><h4>{{ city.name }}</h4></li>
 
     {% include "catalogue/includes/publishers_as_list.html" with publishers=city.publishers.all %}
     {% endif %}

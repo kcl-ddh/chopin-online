@@ -164,7 +164,7 @@ class City(TimeStampedModel):
         verbose_name_plural = 'Cities'
 
     def __unicode__(self):
-        return u'{0}, {1}'.format(self.name, self.country)
+        return u'{0}'.format(self.name)
 
 register_snippet(City)
 

@@ -3,7 +3,7 @@
 {% for publisher in publishers|order_by:'title' %}
 <li>
     <a href="{% pageurl publisher %}">{{ publisher.title }}</a>
-    {% if publisher.name %} {{ publisher.name }}{% endif %}
+    {% if publisher.name %} {{ publisher.name|richtext }}{% endif %}
     {% if show_city %}
     {% if publisher.city %} {{ publisher.city }}{% endif %}
     {% endif %}

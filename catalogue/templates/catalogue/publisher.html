@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block local_menu %}
-{% include "catalogue/includes/publisher_index_page_local_menu.html" with page=self.get_parent %}
+{% include "catalogue/includes/publisher_index_page_local_menu.html" with page=self.get_parent publisher=self %}
 {% endblock %}
 
 {% block title %}

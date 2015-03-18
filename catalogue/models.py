@@ -305,7 +305,8 @@ class PublisherIndexPage(RoutablePageMixin, Page, Introducable):
     def serve_publishers_by_city(self, request):
         """Renders publishers, grouped by city."""
         return render(request, self.get_template(request),
-                      {'self': self, 'cities': City.objects.all()})
+                      {'self': self, 'cities': City.objects.all(),
+                       'suburl': 'publishers-by-city'})
 
     def serve_publishers_by_country(self, request):
         """Renders publishers, grouped by country."""

@@ -51,3 +51,12 @@ ul.search-results {
 		width: 30%;
 	}
 }
+
+/*** Footnotes ***/
+/* Formatting the footnotes to match the inline style */
+
+.rich-text:last-of-type hr ~ * {
+	font-size: 9pt;
+	line-height: 115%;
+	text-align: justify;
+}

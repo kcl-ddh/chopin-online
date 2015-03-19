@@ -13,15 +13,17 @@
 {% endblock %}
 
 {% block local_menu %}
-{% include "catalogue/includes/publisher_index_page_local_menu.html" with page=self.get_parent %}
+{% include "catalogue/includes/publisher_index_page_local_menu.html" with page=self.get_parent publisher=self %}
 {% endblock %}
 
 {% block title %}
-{{ self.title }}
-{% if publisher.city %}, {{ publisher.city }}{% endif %}
+{{ self.name|richtext }}
 {% endblock %}
 
 {% block main %}
+<p>
+{{ self.title }}{% if self.city %}; {{ self.city }}{% endif %}
+</p>
 
 {% if impressions %}
 <h2>{{ work.title }} impressions</h2>

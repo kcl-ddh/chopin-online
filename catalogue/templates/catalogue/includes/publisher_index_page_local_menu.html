@@ -3,19 +3,16 @@
 <nav class="local">
     <ul class="side-nav">
         <li>Sigla of publishers</li>
+        <li {% if not suburl and not publisher %}class="active"{% endif %}>
+        <a href="{% pageurl page %}">All publishers</a>
+        </li>
+        <li {% if suburl == 'publishers-by-city' %}class="active"{% endif %}>
+        <a href="{% catalogueurl  page 'publishers-by-city' %}">Publishers by city</a>
+        </li>
         {% if publisher %}
-        <li>
+        <li class="active">
         <a href="{% pageurl publisher %}">{{ publisher.title }}</a>
         </li>
         {% endif %}
-        <li>
-        <a href="{% pageurl page %}">All publishers</a>
-        </li>
-        <li>
-        <a href="{% catalogueurl  page 'publishers-by-city' %}">Publishers by city</a>
-        </li>
-        <li>
-        <a href="{% catalogueurl  page 'publishers-by-country' %}">Publishers by country</a>
-        </li>
     </ul>
 </nav>

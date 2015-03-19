@@ -1,6 +1,19 @@
 nav.local {
-	margin-top: rem-calc(60px);
+	/* margin-top: rem-calc(60px); */
 	h4 {
 		font-size: rem-calc(16px);
+	}
+
+	.side-nav li {
+		border-bottom: 1px solid #e7e7e7;
+	}
+
+	.side-nav li:first-child,
+	.side-nav li:last-child {
+		border-bottom: 0;
+	}
+
+	.side-nav li a {
+		padding-left: 0;
 	}
 }

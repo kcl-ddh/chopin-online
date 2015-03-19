@@ -28,8 +28,26 @@ ul.search-results {
 	margin-left:0;
 	li {
 		list-style-type:none;
-		margin-bottom:rem-calc(20px);
+		/* margin-bottom:rem-calc(20px); */
 		margin-left:0;
 	}
 }
 
+/*** Tables ***/
+
+.aco-page table {
+	th:nth-child(1),
+	td:nth-child(1) {
+		width: 10%;
+	}
+	th:nth-child(2),
+	td:nth-child(2),
+	th:nth-child(3),
+	td:nth-child(3) {
+		width: 35%;
+	}
+	th:nth-child(4),
+	td:nth-child(4) {
+		width: 30%;
+	}
+}

@@ -1,25 +1,24 @@
 {% load staticfiles wagtailcore_tags %}
 <div class="row">
-    <div class="large-3 columns">
-        <ul class="footer-logos no-bullet inline-list">
-            <li><a class="logo" href="//cam.ac.uk"><img alt="University of Cambridge" src="/static/assets/images/logos/cambridge-logo.png"></a></li>
-            <li><a class="logo" href="//kcl.ac.uk"><img alt="King's College London" src="/static/assets/images/logos/kcl-logo.png"></a></li>
-            <li><a class="svg" href="//mellon.org/"><img alt="The Andrew W. Mellon's Foundation" src="/static/assets/images/logos/mellon-logo.svg"></a></li>
-        </ul>
-    </div>
     <div class="large-9 columns">
         <div class="footer-menus">
             <ul class="footer-menu">
-                <li><a href="{% slugurl 'home' %}">Chopin Online</a></li>
-                <li><a href="{% slugurl 'ocve' %}" class="ocve-link">OCVE</a></li>
-                <li><a href="{% slugurl 'cfeo' %}" class="cfeo-link">CFEO</a></li>
+                <li><a href="{% slugurl 'home' %}" class="chopin-link">Chopin Online</a></li>
                 <li><a href="{% slugurl 'aco' %}" class="annot-link">AC Online</a></li>
+                <li><a href="{% slugurl 'cfeo' %}" class="cfeo-link">CFEO</a></li>
+                <li><a href="{% slugurl 'ocve' %}" class="ocve-link">OCVE</a></li>
             </ul>
             <ul class="footer-menu">
-                <li><a href="{% slugurl 'about' %}">About {{ PROJECT_TITLE }}</a></li>
                 <li><a href="{% slugurl 'contact' %}">Contact</a></li>
                 <li><a href="{% slugurl 'privacy' %}">Privacy</a></li>
             </ul>
         </div>
+    </div>
+    <div class="large-3 columns">
+        <ul class="footer-logos no-bullet right">
+            <li><a class="logo" href="//cam.ac.uk"><img alt="University of Cambridge" src="{% static 'images/logo-cambridge.png' %}"></a></li>
+            <li><a class="kcl-logo" href="//www.kcl.ac.uk/artshums/depts/ddh/"><img alt="King's College London Digital Humanities" src="{% static 'images/KCL-logo-BW.svg' %}"></a></li>
+            <li><a class="svg" href="//mellon.org/"><img alt="The Andrew W. Mellon's Foundation" src="{% static 'images/mellon-logo.svg' %}"></a></li>
+        </ul>
     </div>
 </div>

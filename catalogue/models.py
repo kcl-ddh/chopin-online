@@ -462,7 +462,7 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
         url(r'^posthumous-works-with-opus/$',
             'serve_posthumous_works_with_opus',
             name='posthumous_works_with_opus'),
-        url(r'^works-without-opus/$', 'serve_works_without_opus',
+        url(r'^works-without-opus-numbers/$', 'serve_works_without_opus',
             name='works_without_opus'),
         url(r'^posthumous-works-without-opus/$',
             'serve_posthumous_works_without_opus',
@@ -508,7 +508,7 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
 
         return render(request, self.get_template(request),
                       {'self': self, 'works': works,
-                       'subtitle': 'Works without opus',
+                       'subtitle': 'Works without opus numbers',
                        'suburl': 'works-without-opus'})
 
     def serve_posthumous_works_without_opus(self, request):

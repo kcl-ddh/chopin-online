@@ -41,7 +41,7 @@
 {% block footer_scripts %}
 {{ block.super }}
 {% include "catalogue/includes/pdf_script.html" with pdf_url=self.pdf.file.url %}
-<script src="{{ OCVE_BASE_URL }}../../../static/assets/js/accodeJSON.js" type="text/javascript"></script>
+<script src="{% static 'javascripts/accodeJSON.js' %}" type="text/javascript"></script>
 <script>
 var source = sources.filter(function(element) {
         return (element['achash'] === '{{ self.code_hash }}') ? element : false

@@ -253,7 +253,9 @@ function initBarView()
 	    	$(img).attr("src", $(this).attr("data-img"));
             $(this).attr("data-img")
             var regionid=$(this).attr("data-region_id");
-            $.post('/ocve/ui/getAnnotations/'+regionid+'/',function(data){
+            var regionlabel=$(this).attr("data-region-label");
+            $("#large-image div.row div span").html(regionlabel);
+            $.post('/ocve/browse/getAnnotations/'+regionid+'/',function(data){
                if (data.length > 0){
                    $("#large-image div.row div.large-12.columns").attr('class','large-8 columns');
                    $("#large-image div.row div.large-4.columns").show();

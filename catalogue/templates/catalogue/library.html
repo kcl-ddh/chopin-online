@@ -1,7 +1,7 @@
 {% extends "catalogue/base.html" %}
 {% load catalogue_tags wagtailcore_tags %}
 
-{% block meta_title %}{{ self.title }}{% endblock %}
+{% block meta_title %}{{ self.title|add_special_characters }}{% endblock %}
 
 {% block local_menu %}
 {% include "catalogue/includes/library_index_page_local_menu.html" with page=self.get_parent %}

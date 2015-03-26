@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags catalogue_tags static %}
 
-{% block meta_title %}{{ self.title }}{% endblock %}
+{% block meta_title %}{{ self.title|add_special_characters }}{% endblock %}
 
 {% block title %}{{ self.title }}{% endblock %}
 

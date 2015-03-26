@@ -4,7 +4,7 @@
 {% block meta_title %}{{ self.title|add_special_characters }}{% endblock %}
 
 {% block overtitle %}
-<h1>{{ self.title }}</h1>
+<h1>{{ self.title|add_special_characters }}</h1>
 {% endblock %}
 
 {% block main_menu %}

@@ -10,6 +10,13 @@
 <script src="{% static 'vendor/pdfjs-dist/build/pdf.js' %}"></script>
 <script src="{% static 'vendor/pdfjs-dist/web/compatibility.js' %}"></script>
 <script src="{% static 'javascripts/display_pdf.js' %}"></script>
+<script>
+window.onerror = function(message, url, lineNumber) {
+    if (!display || !display.pdfObj.pdf){
+        display_pdf_error_handler();
+    }
+};
+</script>
 {% endblock header_scripts %}
 
 {% block main_menu %}

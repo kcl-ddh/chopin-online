@@ -132,6 +132,5 @@ PDFDisplay.prototype.renderPage = function(pdf, pageNum, canvasId) {
 
 function display_pdf_error_handler() {
     $('#pdf-canvas-pagination').parent().parent().remove();
-    $('#pdf-canvas').attr('height', '60px');
-    $('#pdf-canvas').attr('width', '300px');
+    $('#pdf-canvas').addClass('pdf-canvas-error');
 }

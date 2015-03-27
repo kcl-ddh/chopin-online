@@ -7,8 +7,8 @@
 
 {% block header_scripts %}
 {{ block.super }}
-<script src="{% static 'vendor/pdfjs-dist/build/pdf.js' %}"></script>
 <script src="{% static 'vendor/pdfjs-dist/web/compatibility.js' %}"></script>
+<script src="{% static 'vendor/pdfjs-dist/build/pdf.js' %}"></script>
 <script src="{% static 'javascripts/display_pdf.js' %}"></script>
 <script>
 window.onerror = function(message, url, lineNumber) {

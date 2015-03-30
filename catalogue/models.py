@@ -485,7 +485,8 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
 
     def serve_works_with_opus(self, request):
         """Renders all the works that have opus number."""
-        works = self.works.filter(work__has_opus=True)
+        works = self.works.filter(work__has_opus=True,
+                                  work__is_posthumous=False)
 
         return render(request, self.get_template(request),
                       {'self': self, 'works': works,
@@ -504,7 +505,8 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
 
     def serve_works_without_opus(self, request):
         """Renders all the works that don't have opus number."""
-        works = self.works.filter(work__has_opus=False)
+        works = self.works.filter(work__has_opus=False,
+                                  work__is_posthumous=False)
 
         return render(request, self.get_template(request),
                       {'self': self, 'works': works,

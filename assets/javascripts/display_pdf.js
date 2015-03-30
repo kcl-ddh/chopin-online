@@ -1,3 +1,5 @@
+var display = null;
+
 function PDFDisplay() {
     this.pdfObj = {
         'canvasId': null,
@@ -11,67 +13,71 @@ function PDFDisplay() {
 };
 
 PDFDisplay.prototype.display_pdf = function(pdf_url, canvasId) {
-    var display = this;
+    display = this;
     this.pdfObj.canvasId = canvasId;
 
-    PDFJS.getDocument(pdf_url).then(function getPdf(pdfDoc) {
-        display.pdfObj.pdf = pdfDoc;
-        display.pdfObj.numPages = display.pdfObj.pdf.numPages;
+    try {
+        PDFJS.getDocument(pdf_url).then(function getPdf(pdfDoc) {
+            display.pdfObj.pdf = pdfDoc;
+            display.pdfObj.numPages = display.pdfObj.pdf.numPages;
 
-        if (display.pdfObj.numPages > 1) {
-            var pdf_id = display.pdfObj.canvasId;
+            if (display.pdfObj.numPages > 1) {
+                var pdf_id = display.pdfObj.canvasId;
 
-            var list = $('ul#' + pdf_id + '-pagination');
+                var list = $('ul#' + pdf_id + '-pagination');
 
-            var li = $('<li/>').addClass('arrow').appendTo(list);
-            var link = $('<a/>').attr('id', 'previous').text('«').appendTo(li);
-            link.on('click', function() {
-                if (display.pdfObj.pageNum <= 1) {
-                    return;
-                }
-
-                $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().removeClass('current');
-                display.pdfObj.pageNum--;
-                display.queueRenderPage(display.pdfObj.pageNum);
-                $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().addClass('current');
-            });
-
-            for (var n = 1; n <= display. pdfObj.numPages; n++) {
-                var cssClass = 'page';
-
-                if (n == 1) {
-                    cssClass += ' current';
-                }
-
-                li = $('<li/>').addClass(cssClass).appendTo(list);
-                link = $('<a/>').attr('id', pdf_id + '-page-' + n).text(n).appendTo(li);
+                var li = $('<li/>').addClass('arrow').appendTo(list);
+                var link = $('<a/>').attr('id', 'previous').text('«').appendTo(li);
                 link.on('click', function() {
-                    $('li.current').removeClass('current');
-                    display.pdfObj.pageNum = parseInt($(this).text(), 10);
+                    if (display.pdfObj.pageNum <= 1) {
+                        return;
+                    }
+
+                    $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().removeClass('current');
+                    display.pdfObj.pageNum--;
                     display.queueRenderPage(display.pdfObj.pageNum);
-                    $('#' + display.pdfObj.canvasId + '-page-' + display.pdfObj.pageNum).parent().addClass('current');
+                    $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().addClass('current');
                 });
+
+                for (var n = 1; n <= display. pdfObj.numPages; n++) {
+                    var cssClass = 'page';
+
+                    if (n == 1) {
+                        cssClass += ' current';
+                    }
+
+                    li = $('<li/>').addClass(cssClass).appendTo(list);
+                    link = $('<a/>').attr('id', pdf_id + '-page-' + n).text(n).appendTo(li);
+                    link.on('click', function() {
+                        $('li.current').removeClass('current');
+                        display.pdfObj.pageNum = parseInt($(this).text(), 10);
+                        display.queueRenderPage(display.pdfObj.pageNum);
+                        $('#' + display.pdfObj.canvasId + '-page-' + display.pdfObj.pageNum).parent().addClass('current');
+                    });
+                }
+
+                li = $('<li/>').addClass('arrow').appendTo(list);
+                link = $('<a/>').attr('id', pdf_id + '-next').text('»').appendTo(li);
+                link.on('click', function() {
+                    if (display.pdfObj.pageNum >= display.pdfObj.numPages) {
+                        return;
+                    }
+
+                    $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().removeClass('current');
+                    display.pdfObj.pageNum++;
+                    display.queueRenderPage(display.pdfObj.pageNum);
+                    $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().addClass('current');
+                });
+            } else {
+                $('#' + display.pdfObj.canvasId + '-pagination').parent().parent().remove();
             }
 
-            li = $('<li/>').addClass('arrow').appendTo(list);
-            link = $('<a/>').attr('id', pdf_id + '-next').text('»').appendTo(li);
-            link.on('click', function() {
-                if (display.pdfObj.pageNum >= display.pdfObj.numPages) {
-                    return;
-                }
-
-                $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().removeClass('current');
-                display.pdfObj.pageNum++;
-                display.queueRenderPage(display.pdfObj.pageNum);
-                $('#' + pdf_id + '-page-' + display.pdfObj.pageNum).parent().addClass('current');
-            });
-        } else {
-            $('#' + display.pdfObj.canvasId + '-pagination').parent().parent().remove();
-        }
-
-        // Initial/first page rendering
-        display.renderPage(display.pdfObj.pdf, display.pdfObj.pageNum, display.pdfObj.canvasId);
-    });
+            // Initial/first page rendering
+            display.renderPage(display.pdfObj.pdf, display.pdfObj.pageNum, display.pdfObj.canvasId);
+        });
+    } catch(e) {
+        display_pdf_error_handler();
+    }
 };
 
 /**
@@ -123,3 +129,8 @@ PDFDisplay.prototype.renderPage = function(pdf, pageNum, canvasId) {
         });
     });
 };
+
+function display_pdf_error_handler() {
+    $('#pdf-canvas-pagination').parent().parent().remove();
+    $('#pdf-canvas').addClass('pdf-canvas-error');
+}

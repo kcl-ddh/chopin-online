@@ -42,10 +42,9 @@
     {% include 'includes/navigation.html' %}
 
     {% if BASE_URL == 'aco' %}
-    <div class="row">
-        <div class="large-12 columns">
-            <section class="main content-section">
-                <div class="row">
+    <section class="main content-section">
+        <div class="row">
+            <div class="large-12 columns">
     {% endif %}
     
     {% block breadcrumbs %}
@@ -55,25 +54,26 @@
     {% endblock %}
 
     {% block content %}
-    <div class="large-2 columns navigation">
-        {% block local_menu %}
-        {% include 'includes/local_menu.html' %}
-        {% endblock %}
-    </div>
+    <div class="row">
+        <div class="large-2 columns navigation">
+            {% block local_menu %}
+            {% include 'includes/local_menu.html' %}
+            {% endblock %}
+        </div>
 
-    <div class="large-10 columns">
-        {% block overtitle %}
-        <h1>{% block title %}{% endblock %}</h1>
-        {% endblock %}
-        {% block main %}{% endblock %}
+        <div class="large-10 columns">
+            {% block overtitle %}
+            <h1>{% block title %}{% endblock %}</h1>
+            {% endblock %}
+            {% block main %}{% endblock %}
+        </div>
     </div>
     {% endblock %}
 
     {% if BASE_URL == 'aco' %}
-                </div>
-            </section>
+            </div>
         </div>
-    </div>
+    </section>
     {% endif %}
 
     <footer class="footer">

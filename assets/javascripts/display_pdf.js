@@ -1,4 +1,4 @@
-var display = null;
+//var display = null;
 
 function PDFDisplay() {
     this.pdfObj = {
@@ -13,7 +13,7 @@ function PDFDisplay() {
 };
 
 PDFDisplay.prototype.display_pdf = function(pdf_url, canvasId) {
-    display = this;
+    var display = this;
     this.pdfObj.canvasId = canvasId;
 
     try {
@@ -130,7 +130,7 @@ PDFDisplay.prototype.renderPage = function(pdf, pageNum, canvasId) {
     });
 };
 
-function display_pdf_error_handler() {
-    $('#pdf-canvas-pagination').parent().parent().remove();
-    $('#pdf-canvas').addClass('pdf-canvas-error');
-}
+//function display_pdf_error_handler() {
+    //$('#pdf-canvas-pagination').parent().parent().remove();
+    //$('#pdf-canvas').addClass('pdf-canvas-error');
+//}

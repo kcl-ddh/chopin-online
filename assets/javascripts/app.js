@@ -309,6 +309,28 @@ function initBarView()
  	});
  }
 
+
+/**
+ *
+ * OCVE page view
+ *
+ */
+function initOCVEPageView()
+{
+$(document).foundation();
+
+
+}
+/**
+ *
+ * CFEO page view
+ *
+ */
+function initCFEOPageView()
+{
+
+}
+
 /**
  * Inline collections support 
  */
@@ -787,6 +809,8 @@ $(document).ready( function() {
 	// Note: initBarView handles the check to see if the hooks
 	// within it should be called (BM)
 	initBarView();
+
+	initOCVEPageView();
 
 	// Inits the "add to comparison" functionality in CFEO (BM)
 	initCFEOComparison();

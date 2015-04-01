@@ -5,7 +5,7 @@ DEBUG = True
 CACHE_REDIS_DATABASE = '2'
 CACHES['default']['LOCATION'] = '127.0.0.1:6379:' + CACHE_REDIS_DATABASE
 
-INTERNAL_IPS = ('ocve3-aco-dev.cch.kcl.ac.uk', )
+INTERNAL_IPS = ('ocve3-dev.dighum.kcl.ac.uk', )
 
 DATABASES = {
     'default': {

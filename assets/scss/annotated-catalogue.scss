@@ -1,62 +1,78 @@
 .expandable-list.fixed-open {
-	margin-top:rem-calc(60px);
-	.list-content {
-		display: block;
-	}
-	li {
-		@include grid-row();
-	}
-	.input-box {
-		@include grid-column(1);
-		padding-left:0;
-		input {
-			margin-bottom:0;
-			padding-left: 0;
-		}
-	}
-	.input-label {
-		@include grid-column(10);
-	}
+        margin-top:rem-calc(60px);
+        .list-content {
+                display: block;
+        }
+        li {
+                @include grid-row();
+        }
+        .input-box {
+                @include grid-column(1);
+                padding-left:0;
+                input {
+                        margin-bottom:0;
+                        padding-left: 0;
+                }
+        }
+        .input-label {
+                @include grid-column(10);
+        }
 
-	li.separator {
-		border-top:1px solid $borderColor;
-	}
-	
+        li.separator {
+                border-top:1px solid $borderColor;
+        }
+        
 }
 
 ul.search-results {
-	margin-left:0;
-	li {
-		list-style-type:none;
-		/* margin-bottom:rem-calc(20px); */
-		margin-left:0;
-	}
+        margin-left:0;
+        li {
+                list-style-type:none;
+                /* margin-bottom:rem-calc(20px); */
+                margin-left:0;
+        }
 }
 
 /*** Tables ***/
 
 .aco-page table {
-	th:nth-child(1),
-	td:nth-child(1) {
-		width: 10%;
-	}
-	th:nth-child(2),
-	td:nth-child(2),
-	th:nth-child(3),
-	td:nth-child(3) {
-		width: 35%;
-	}
-	th:nth-child(4),
-	td:nth-child(4) {
-		width: 30%;
-	}
+        th:nth-child(1),
+        td:nth-child(1) {
+                width: 10%;
+        }
+        th:nth-child(2),
+        td:nth-child(2),
+        th:nth-child(3),
+        td:nth-child(3) {
+                width: 35%;
+        }
+        th:nth-child(4),
+        td:nth-child(4) {
+                width: 30%;
+        }
+}
+
+/*** Results ***/
+.works h4 {
+    background: rgb(232, 232, 232);
+    margin-top: 1rem;
+    padding: 5px;
 }
 
 /*** Footnotes ***/
 /* Formatting the footnotes to match the inline style */
 
 .rich-text:last-of-type hr ~ * {
-	font-size: 9pt;
-	line-height: 115%;
-	text-align: justify;
+        font-size: 9pt;
+        line-height: 115%;
+        text-align: justify;
+}
+
+/*** PDF display fallback ***/
+
+.pdf-canvas-error {
+        background: url("/static/images/PDF-link.png") center no-repeat;
+        background-size: 100%;
+        height: 60px;
+        width: 300px;
 }

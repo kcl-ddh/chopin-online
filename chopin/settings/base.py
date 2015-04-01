@@ -249,8 +249,8 @@ if not os.path.exists(MEDIA_ROOT):
 
 AC_ENCODING = 'UTF-8'
 
-CFEO_BASE_URL = '/cfeo/ui/acview/'
-OCVE_BASE_URL = '/ocve/ui/acview/'
+CFEO_BASE_URL = '/cfeo/browse/acview/'
+OCVE_BASE_URL = '/ocve/browse/acview/'
 
 WORKS_WITHOUT_OPUS = ['GDC', 'HEX', 'MEG', 'MFM', 'MazG&Bflat', 'PolGm', 'MM',
                       'VGNA']

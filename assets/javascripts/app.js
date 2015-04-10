@@ -956,7 +956,8 @@ $(document).ready( function() {
 	    $("i",this).toggleClass("fa-plus-circle fa-minus-circle");
 	    return false;
 	  });
-	  $('#notes h4.comm').bind("click", function() { toggleExistingNotes(); });
+	  $('#commentary h4.comm').bind("click", function() { toggleExistingNotes('commentary'); });
+        $('#notes h4.comm').bind("click", function() { toggleExistingNotes('notes'); });
 	});
 		
 });

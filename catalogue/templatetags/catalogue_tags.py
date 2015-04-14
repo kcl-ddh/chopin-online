@@ -117,7 +117,7 @@ def pdfdisplay(html):
             except:
                 continue
 
-            canvas_id = 'pdf-{}'.format(key)
+            canvas_id = 'pdf_{}'.format(key)
             pdf_url = document.file.url
             canvas = '{{% include "catalogue/includes/pdf_display.html" with canvas_id="{}" pdf_url="{}" %}}'.format(canvas_id, pdf_url)
             link.parent.replace_with(canvas)

@@ -74,7 +74,7 @@ class IndexPage(Page, Introducable):
 
     search_name = 'Index Page'
     search_fields = Page.search_fields + (index.SearchField('introduction'),)
-    subpage_type = ['IndexPage', 'RichTextPage']
+    subpage_types = ['IndexPage', 'RichTextPage']
 
 IndexPage.content_panels = [
     FieldPanel('title', classname='full title'),

@@ -24,7 +24,7 @@
         {% for abbr in abbreviations %}
         <tr>
             <td>{{ abbr.abbreviation }}</td>
-            <td>{{ abbr.description|safe }}</td>
+            <td>{{ abbr.description|richtext }}</td>
         </tr>
         {% endfor %}
     </tbody>

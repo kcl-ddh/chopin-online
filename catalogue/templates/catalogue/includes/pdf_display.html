@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="large=12 columns">
-        <a id='view-full-pdf' alt="PDF" title="Click to view full PDF">
+        <a id="view-full-pdf{% if canvas_id %}{{ canvas_id }}{% endif %}" alt="PDF" title="Click to view full PDF">
             <canvas id="{% if canvas_id %}{{ canvas_id }}{% else %}pdf-canvas{% endif %}"></canvas>
         </a>
     </div>

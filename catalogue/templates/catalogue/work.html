@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block main %}
-{% include "catalogue/includes/pdf_display.html" %}
+{% include "catalogue/includes/pdf_display.html" with canvas_id="pdf_work" %}
 
 <h2>Impressions</h2>
 <ul class="impressions search-results">
@@ -26,5 +26,5 @@
 
 {% block footer_scripts %}
 {{ block.super }}
-{% include "catalogue/includes/pdf_script.html" with pdf_url=self.pdf.file.url %}
+{% include "catalogue/includes/pdf_script.html" with canvas_id="pdf_work" pdf_url=self.pdf.file.url %}
 {% endblock %}

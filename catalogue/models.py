@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.conf.urls import url
 from django.db import models
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template import RequestContext
 from django.utils.text import slugify
 
 from model_utils.models import TimeStampedModel
@@ -13,6 +14,7 @@ from wagtail.wagtailadmin.edit_handlers import (FieldPanel, InlinePanel,
                                                 PageChooserPanel)
 from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailcore.models import Orderable, Page
+from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl
 from wagtail.wagtaildocs.models import Document
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
@@ -74,7 +76,7 @@ class IndexPage(Page, Introducable):
 
     search_name = 'Index Page'
     search_fields = Page.search_fields + (index.SearchField('introduction'),)
-    subpage_type = ['IndexPage', 'RichTextPage']
+    subpage_types = ['IndexPage', 'RichTextPage']
 
 IndexPage.content_panels = [
     FieldPanel('title', classname='full title'),
@@ -467,6 +469,9 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
         url(r'^posthumous-works-without-opus/$',
             'serve_posthumous_works_without_opus',
             name='posthumous_works_without_opus'),
+        url(r'^impression/(?P<code_hash>.*?)/$',
+            'serve_impression_from_code_hash',
+            name='serve_impression_from_code_hash'),
     )
 
     class Meta:
@@ -522,6 +527,13 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
                       {'self': self, 'works': works,
                        'subtitle': 'Posthumous works without opus numbers',
                        'suburl': 'posthumous-works-without-opus'})
+
+    def serve_impression_from_code_hash(self, request, code_hash):
+        """Displays an impression from the hash of an ac code. This is used to
+        connect from CFEO/OCVE."""
+        impression = get_object_or_404(Impression, code_hash=code_hash)
+
+        return redirect(pageurl(RequestContext(request), impression))
 
 Catalogue.content_panels = [
     FieldPanel('title', classname='full title'),

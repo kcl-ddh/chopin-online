@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 
+from catalogue.models import Impression
+
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -169,3 +171,11 @@ def truncate_to_char(value, char):
     except ValueError:
         truncated = value
     return truncated
+
+@register.assignment_tag()
+def get_impression_exists(code_hash):
+    """Returns true if the impression with the give ac code hash exists in the
+    ACO Online."""
+    impressions = Impression.objects.filter(code_hash=code_hash)
+
+    return len(impressions) > 0

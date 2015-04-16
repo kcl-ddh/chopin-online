@@ -71,7 +71,7 @@
                     class="label secondary" href="{{ request.get_full_path }}&amp;selected_facets=document:{{ result.document|urlencode }}">
                    {{ result.document }}
                    </a>
-                   <a href="{{ result.url }}">{{ result.title }}</a>
+                   <a href="{{ result.url }}">{{ result.title|add_special_characters }}</a>
                </h4>
                {% if not result.document = 'Impression' and not result.document = 'General information' %}
                 <p>

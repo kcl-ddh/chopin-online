@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.conf import settings
 from django.conf.urls import url
 from django.db import models
@@ -30,7 +32,6 @@ import logging
 
 
 logger = logging.getLogger(__name__)
-
 
 def _d(str):
     return str.decode(settings.AC_ENCODING)
@@ -189,9 +190,22 @@ class Library(Page):
 
     @property
     def impressions(self):
-        return sorted(Impression.objects.filter(copies__copy__library=self),
-                      key=lambda x: x.impression.work.work.sort_order +
-                      float(x.impression.sort_order/1000))
+        impressions =  sorted(Impression.objects.filter(
+            copies__copy__library=self),
+            key=lambda x: x.impression.work.work.sort_order +
+            float(x.impression.sort_order/1000))
+
+        works = OrderedDict()
+
+        for impression in impressions:
+            work = impression.work.work
+
+            if not work in works:
+                works[work] = []
+
+            works[work].append(impression)
+
+        return works
 
 Library.content_panels = [
     FieldPanel('title', classname='full title'),

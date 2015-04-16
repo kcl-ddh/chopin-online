@@ -73,9 +73,11 @@
                    </a>
                    <a href="{{ result.url }}">{{ result.title }}</a>
                </h4>
+               {% if not result.document = 'Impression' and not result.document = 'General information' %}
                 <p>
                 {% highlight result.text with query html_tag 'strong' max_length 120 %}
                 </p>
+                {% endif %}
             </li>
             {% empty %}
             <li>No results found</li>

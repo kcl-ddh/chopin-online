@@ -22,11 +22,16 @@
 {% if self.impressions %}
 <h2>Impressions</h2>
 <ul class="impressions search-results">
-    {% for work in self.impressions %}
+    {% for work, impressions in self.impressions.iteritems %}
     <li>
-        {% for impression in self.impressions|get_item:work %}
-        <a href="{% pageurl impression %}">{{ impression.title|add_special_characters}}</a>{% if not forloop.last %},{% endif %}
-        {% endfor %}
+        <h4>
+            <a href="{% pageurl work %}">{{ work }}</a>
+        </h4>
+        <p>
+            {% for impression in impressions %}
+            <a href="{% pageurl impression %}">{{ impression.title|add_special_characters}}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        </p>
     </li>
     {% endfor %}
 </ul>

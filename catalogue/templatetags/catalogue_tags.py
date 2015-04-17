@@ -6,7 +6,7 @@ from django import template
 from django.utils.safestring import mark_safe
 
 from wagtail.wagtailcore.models import Page
-from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl, richtext
+from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl
 from wagtail.wagtaildocs.models import Document
 
 from ..models import HomePage

@@ -133,6 +133,8 @@ def pdfdisplay(html):
 
 @register.filter
 def add_special_characters(html):
+    html = html.encode('utf-8')
+
     patterns = {
         'start_tag': r'(?P<start_tag><[^>]*>)',
         'end_tag': r'(?P<end_tag></[^>]*>)',
@@ -143,7 +145,10 @@ def add_special_characters(html):
     code_pattern = r'\[\[{class}\]{start_tag}?{code}{end_tag}?\]'.format(
         **patterns)
 
-    return mark_safe(re.sub(code_pattern, _format_code, html.encode('utf-8')))
+    if not re.match(r'.*?' + code_pattern + '.*?', html):
+        return html
+
+    return mark_safe(re.sub(code_pattern, _format_code, html))
 
 def _format_code(match):
     try:

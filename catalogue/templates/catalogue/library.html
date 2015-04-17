@@ -25,7 +25,7 @@
     {% for work, impressions in self.impressions.iteritems %}
     <li>
         <h4>
-            <a href="{% pageurl work %}">{{ work }}</a>
+            <a href="{% pageurl work %}">{{ work.title|add_special_characters }}</a>
         </h4>
         <p>
             {% for impression in impressions %}

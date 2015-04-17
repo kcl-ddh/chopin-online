@@ -31,63 +31,61 @@
         data-expandable-group-member="facets"
         class="expandable-list fixed-open" id="catalogue-filter">
         {% for facet in facets.fields %}
-            <div class="list-item no">
-                <div class="list-header no-link">
-                    <h4><span class="header">Filter by {{ facet }}</span></h4>
-                </div>
-                <div class="list-content">
-                    <ul>
-                        {% for term in facets.fields|get_item:facet %}
-                        <li>
-                            <a href="{{ request.get_full_path }}&amp;selected_facets=document:{{ term.0|urlencode }}">
-                                {{ term.0 }}
-                            <span class="label radius right">{{ term.1 }}</span>
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+        <div class="list-item no">
+            <div class="list-header no-link">
+                <h4><span class="header">Filter by {{ facet }}</span></h4>
             </div>
+            <div class="list-content">
+                <ul>
+                    {% for term in facets.fields|get_item:facet %}
+                    <li>
+                        <a href="{{ request.get_full_path }}&amp;selected_facets=document:{{ term.0|urlencode }}">
+                            {{ term.0 }}
+                            <span class="label radius right">{{ term.1 }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         {% endfor %}
-        </section>
-    </div>
+    </section>
+</div>
 
-    <div class="large-9 columns">
-        {% block overtitle %}
-        <h1>Search Results <small>(in order of relevance)</small></h1>
-        {% endblock %}
+<div class="large-9 columns">
+    {% block overtitle %}
+    <h1>Search Results <small>(in order of relevance)</small></h1>
+    {% endblock %}
 
-        {% block main %}
-        {% include 'includes/search_box.html' %}
+    {% block main %}
+    {% include 'includes/search_box.html' %}
 
-        {% if query %}
-        <h3>Found {{ page.paginator.count }} results</h3>
+    {% if query %}
+    <h3>Found {{ page.paginator.count }} results</h3>
 
-        <ul class="impressions search-results">
-            {% for result in page.object_list %}
-            <li>
-                <h4>
-                    <a title="Filter by {{ result.document }}"
-                    class="label secondary" href="{{ request.get_full_path }}&amp;selected_facets=document:{{ result.document|urlencode }}">
-                   {{ result.document }}
-                   </a>
-                   <a href="{{ result.url }}">{{ result.title|add_special_characters }}</a>
-               </h4>
-               {% if not result.document = 'Impression' and not result.document = 'General information' %}
-                <p>
-                {% highlight result.text with query html_tag 'strong' max_length 120 %}
-                </p>
-                {% endif %}
-            </li>
-            {% empty %}
-            <li>No results found</li>
-            {% endfor %}
-        </ul>
-
-        {% include 'includes/search_pagination.html' %}
+    <ul class="impressions search-results">
+        {% for result in page.object_list %}
+        <li>
+            <a title="Filter by {{ result.document }}"
+            class="label secondary" href="{{ request.get_full_path }}&amp;selected_facets=document:{{ result.document|urlencode }}">
+            {{ result.document }}
+        </a>
+        <a href="{{ result.url }}">{{ result.title|safe|add_special_characters }}</a>
+        {% if not result.document = 'Impression' and not result.document = 'General information' %}
+        <p>
+            {% highlight result.text with query html_tag 'strong' max_length 120 %}
+        </p>
         {% endif %}
+    </li>
+    {% empty %}
+    <li>No results found</li>
+    {% endfor %}
+</ul>
 
-        {% endblock %}
-    </div>
+{% include 'includes/search_pagination.html' %}
+{% endif %}
+
+{% endblock %}
+</div>
 </div>
 {% endblock %}

@@ -6,7 +6,7 @@ from django import template
 from django.utils.safestring import mark_safe
 
 from wagtail.wagtailcore.models import Page
-from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl
+from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl, richtext
 from wagtail.wagtaildocs.models import Document
 
 from ..models import HomePage
@@ -129,7 +129,10 @@ def pdfdisplay(html):
         script_include = '{{% include "catalogue/includes/pdf_script.html" with canvas_id="{}" pdf_url="{}" %}}'.format(canvas_id, pdf_url)
         soup.div.append(script_include)
 
-    return template.Template(unicode(soup.div)).render(template.Context())
+    html = unicode(soup.div)
+    html = re.sub(r'><\/embed>', ' />', html)
+
+    return template.Template(html).render(template.Context())
 
 @register.filter
 def add_special_characters(html):
@@ -145,7 +148,7 @@ def add_special_characters(html):
     code_pattern = r'\[\[{class}\]{start_tag}?{code}{end_tag}?\]'.format(
         **patterns)
 
-    if not re.match(r'.*?' + code_pattern + '.*?', html):
+    if not re.search(code_pattern, html):
         return html
 
     return mark_safe(re.sub(code_pattern, _format_code, html))

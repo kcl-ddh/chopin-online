@@ -40,7 +40,7 @@
 <ul class="works search-results">
     {% for work in self.works %}
     <li>
-        <a href="{{ work.slug }}">{{ work.title }}</a>
+        <a href="{{ work.slug }}">{{ work.title|add_special_characters }}</a>
     </li>
     {% endfor %}
 </ul>

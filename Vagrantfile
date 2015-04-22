@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 9200, host: 9200
 
   config.vm.provider "virtualbox" do |provider|
-    provider.customize ["modifyvm", :id, "--memory", "512"]
+    provider.customize ["modifyvm", :id, "--memory", "1024"]
   end
 
   config.vm.provider "vmware" do |provider|

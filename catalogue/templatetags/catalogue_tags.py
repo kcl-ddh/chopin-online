@@ -155,18 +155,21 @@ def add_special_characters(html):
 
 def _format_code(match):
     try:
-        code = unichr(int(match.group('code')))
+        code_as_class = match.group('code')
+        code = unichr(int(code_as_class))
     except ValueError:
-        code = match.group('code') or ''
+        code_as_class = match.group('code') or ''
+        code = code_as_class
 
     parts = {
         'start_tag': match.group('start_tag') or '',
         'end_tag': match.group('end_tag') or '',
+        'code_as_class': code_as_class,
         'code': code,
         'class': match.group('class').lower(),
     }
 
-    repl = u'<span class="{class}">{start_tag}{code}{end_tag}</span>'.format(
+    repl = u'<span class="{class} c{code_as_class}">{start_tag}{code}{end_tag}</span>'.format(
         **parts)
 
     return repl.encode('utf-8')

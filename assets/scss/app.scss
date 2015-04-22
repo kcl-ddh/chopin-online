@@ -104,11 +104,10 @@ a:focus {
 
 .impressions.search-results {
     li {
-        border-bottom:1px dotted $borderColor;
+        border-bottom: 1px solid $borderColor;
     }
     h4 {
-        margin-bottom:0;
-
+        margin-bottom: 0;
     }
     p {
         font-size: rem-calc(14px); 

@@ -1,7 +1,10 @@
+from collections import OrderedDict
+
 from django.conf import settings
 from django.conf.urls import url
 from django.db import models
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template import RequestContext
 from django.utils.text import slugify
 
 from model_utils.models import TimeStampedModel
@@ -13,9 +16,11 @@ from wagtail.wagtailadmin.edit_handlers import (FieldPanel, InlinePanel,
                                                 PageChooserPanel)
 from wagtail.wagtailcore.fields import RichTextField
 from wagtail.wagtailcore.models import Orderable, Page
+from wagtail.wagtailcore.templatetags.wagtailcore_tags import pageurl
 from wagtail.wagtaildocs.models import Document
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
+from wagtail.wagtailimages.formats import Format, register_image_format
 from wagtail.wagtailimages.models import Image
 from wagtail.wagtailsearch import index
 from wagtail.wagtailsnippets.edit_handlers import SnippetChooserPanel
@@ -29,6 +34,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+register_image_format(Format('left-100', 'Left-aligned 100px',
+                             'richtext-image left', 'width-100'))
+register_image_format(Format('left-200', 'Left-aligned 200px',
+                             'richtext-image left', 'width-200'))
+register_image_format(Format('left-300', 'Left-aligned 300px',
+                             'richtext-image left', 'width-300'))
+register_image_format(Format('left-400', 'Left-aligned 400px',
+                             'richtext-image left', 'width-400'))
 
 def _d(str):
     return str.decode(settings.AC_ENCODING)
@@ -74,7 +87,7 @@ class IndexPage(Page, Introducable):
 
     search_name = 'Index Page'
     search_fields = Page.search_fields + (index.SearchField('introduction'),)
-    subpage_type = ['IndexPage', 'RichTextPage']
+    subpage_types = ['IndexPage', 'RichTextPage']
 
 IndexPage.content_panels = [
     FieldPanel('title', classname='full title'),
@@ -187,9 +200,22 @@ class Library(Page):
 
     @property
     def impressions(self):
-        return sorted(Impression.objects.filter(copies__copy__library=self),
-                      key=lambda x: x.impression.work.work.sort_order +
-                      float(x.impression.sort_order/1000))
+        impressions =  sorted(Impression.objects.filter(
+            copies__copy__library=self),
+            key=lambda x: x.impression.work.work.sort_order +
+            float(x.impression.sort_order/1000))
+
+        works = OrderedDict()
+
+        for impression in impressions:
+            work = impression.work.work
+
+            if not work in works:
+                works[work] = []
+
+            works[work].append(impression)
+
+        return works
 
 Library.content_panels = [
     FieldPanel('title', classname='full title'),
@@ -467,6 +493,9 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
         url(r'^posthumous-works-without-opus/$',
             'serve_posthumous_works_without_opus',
             name='posthumous_works_without_opus'),
+        url(r'^impression/(?P<code_hash>.*?)/$',
+            'serve_impression_from_code_hash',
+            name='serve_impression_from_code_hash'),
     )
 
     class Meta:
@@ -522,6 +551,13 @@ class Catalogue(RoutablePageMixin, Page, Introducable):
                       {'self': self, 'works': works,
                        'subtitle': 'Posthumous works without opus numbers',
                        'suburl': 'posthumous-works-without-opus'})
+
+    def serve_impression_from_code_hash(self, request, code_hash):
+        """Displays an impression from the hash of an ac code. This is used to
+        connect from CFEO/OCVE."""
+        impression = get_object_or_404(Impression, code_hash=code_hash)
+
+        return redirect(pageurl(RequestContext(request), impression))
 
 Catalogue.content_panels = [
     FieldPanel('title', classname='full title'),

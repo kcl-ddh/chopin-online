@@ -1,10 +1,11 @@
+{% load catalogue_tags %}
 <script type="text/javascript">
-$(document).ready(function() {
-    display = new PDFDisplay();
-    display.display_pdf("{{ pdf_url }}", '{% if canvas_id %}{{ canvas_id }}{% else %}pdf-canvas{% endif %}');
+    $(document).ready(function() {
+        var display{{ canvas_id }} = new PDFDisplay();
+        display{{ canvas_id }}.display_pdf("{{ pdf_url }}", '{% if canvas_id %}{{ canvas_id }}{% else %}pdf-canvas{% endif %}');
 
-    $('a#view-full-pdf').click(function() {
-        location.href = '{{ pdf_url }}#' + display.pdfObj.pageNum;
+        $('a#view-full-pdf{% if canvas_id %}{{ canvas_id }}{% endif %}').click(function() {
+            location.href = '{{ pdf_url }}#' + display{{ canvas_id }}.pdfObj.pageNum;
+        });
     });
-});
 </script>

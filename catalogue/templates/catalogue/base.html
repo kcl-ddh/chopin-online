@@ -24,7 +24,9 @@
 {% main_menu root=site_root current_page=self %}
 {% endblock %}
 
-{% block main %}{{ self.content|pdfdisplay|richtext|add_special_characters }}{% endblock %}
+{% block main %}
+{{ self.content|pdfdisplay|richtext|add_special_characters }}
+{% endblock %}
 
 {% block local_menu %}
 {% local_menu current_page=self %}

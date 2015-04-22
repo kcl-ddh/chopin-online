@@ -45,7 +45,7 @@
 
 <h2>{{ stp.rubric }}</h2>
 
-{% include "catalogue/includes/pdf_display.html" with pdf_url=stp.pdf.file.url %}
+{% include "catalogue/includes/pdf_display.html" with canvas_id="pdf_stp" %}
 
 {% else %}
 
@@ -71,5 +71,5 @@
 
 {% block footer_scripts %}
 {{ block.super }}
-{% include "catalogue/includes/pdf_script.html" with pdf_url=stp.pdf.file.url %}
+{% include "catalogue/includes/pdf_script.html" with canvas_id="pdf_stp" pdf_url=stp.pdf.file.url %}
 {% endblock %}

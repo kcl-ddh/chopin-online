@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 
+from catalogue.models import Impression
+
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -117,7 +119,7 @@ def pdfdisplay(html):
             except:
                 continue
 
-            canvas_id = 'pdf-{}'.format(key)
+            canvas_id = 'pdf_{}'.format(key)
             pdf_url = document.file.url
             canvas = '{{% include "catalogue/includes/pdf_display.html" with canvas_id="{}" pdf_url="{}" %}}'.format(canvas_id, pdf_url)
             link.parent.replace_with(canvas)
@@ -127,10 +129,15 @@ def pdfdisplay(html):
         script_include = '{{% include "catalogue/includes/pdf_script.html" with canvas_id="{}" pdf_url="{}" %}}'.format(canvas_id, pdf_url)
         soup.div.append(script_include)
 
-    return template.Template(unicode(soup.div)).render(template.Context())
+    html = unicode(soup.div)
+    html = re.sub(r'><\/embed>', ' />', html)
+
+    return template.Template(html).render(template.Context())
 
 @register.filter
 def add_special_characters(html):
+    html = html.encode('utf-8')
+
     patterns = {
         'start_tag': r'(?P<start_tag><[^>]*>)',
         'end_tag': r'(?P<end_tag></[^>]*>)',
@@ -141,7 +148,10 @@ def add_special_characters(html):
     code_pattern = r'\[\[{class}\]{start_tag}?{code}{end_tag}?\]'.format(
         **patterns)
 
-    return mark_safe(re.sub(code_pattern, _format_code, html.encode('utf-8')))
+    if not re.search(code_pattern, html):
+        return html
+
+    return mark_safe(re.sub(code_pattern, _format_code, html))
 
 def _format_code(match):
     try:
@@ -169,3 +179,11 @@ def truncate_to_char(value, char):
     except ValueError:
         truncated = value
     return truncated
+
+@register.assignment_tag()
+def get_impression_exists(code_hash):
+    """Returns true if the impression with the give ac code hash exists in the
+    ACO Online."""
+    impressions = Impression.objects.filter(code_hash=code_hash)
+
+    return len(impressions) > 0

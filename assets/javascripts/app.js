@@ -253,7 +253,9 @@ function initBarView()
 	    	$(img).attr("src", $(this).attr("data-img"));
             $(this).attr("data-img")
             var regionid=$(this).attr("data-region_id");
-            $.post('/ocve/ui/getAnnotations/'+regionid+'/',function(data){
+            var regionlabel=$(this).attr("data-region-label");
+            $("#large-image div.row div span").html(regionlabel);
+            $.post('/ocve/browse/getAnnotations/'+regionid+'/',function(data){
                if (data.length > 0){
                    $("#large-image div.row div.large-12.columns").attr('class','large-8 columns');
                    $("#large-image div.row div.large-4.columns").show();
@@ -306,6 +308,28 @@ function initBarView()
 
  	});
  }
+
+
+/**
+ *
+ * OCVE page view
+ *
+ */
+function initOCVEPageView()
+{
+$(document).foundation();
+
+
+}
+/**
+ *
+ * CFEO page view
+ *
+ */
+function initCFEOPageView()
+{
+
+}
 
 /**
  * Inline collections support 
@@ -786,6 +810,8 @@ $(document).ready( function() {
 	// within it should be called (BM)
 	initBarView();
 
+	initOCVEPageView();
+
 	// Inits the "add to comparison" functionality in CFEO (BM)
 	initCFEOComparison();
 	
@@ -930,7 +956,8 @@ $(document).ready( function() {
 	    $("i",this).toggleClass("fa-plus-circle fa-minus-circle");
 	    return false;
 	  });
-	  $('#notes h4.comm').bind("click", function() { toggleExistingNotes(); });
+	  $('#commentary h4.comm').bind("click", function() { toggleExistingNotes('commentary'); });
+        $('#notes h4.comm').bind("click", function() { toggleExistingNotes('notes'); });
 	});
 		
 });

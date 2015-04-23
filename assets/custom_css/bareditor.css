@@ -1,3 +1,11 @@
+
+/*Highlight a note div when you hover on the annotated region */
+    div.highlight{
+        border-style: solid;
+        border-width: thin;
+        border-color: red;
+    }
+
 div.olControlSaveFeaturesItemActive {
     background-image: url("/static/assets/s/OpenLayers/theme/default/img/save_features_on.png");
     background-repeat: no-repeat;

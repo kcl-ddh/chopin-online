@@ -1,0 +1,90 @@
+{% if geoRegions %}
+    {% if grouped == 0 %}
+        {
+        "type": "FeatureCollection",
+        "features": [
+        {% for g in geoRegions %}
+            { "type": "Feature",
+            "geometry": {
+            "type": "Polygon",
+            "coordinates":[
+            [
+            [{{ g.x1 }},{{ g.y1 }}],
+            [{{ g.x1 }},{{ g.y2 }}],
+            [{{ g.x2 }},{{ g.y2 }}],
+            [{{ g.x2 }},{{ g.y1 }}]
+            ]
+            ]
+            },
+            "properties": {"barid":{{ g.barid }},"id": {{ g.id }},"anomaly":{{ g.anomaly }}, "fillColor":"{% cycle '#00BFFF' '#A52A2A' %}","label": "{{ g.label }}"}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+
+        ]
+        }
+    {% endif %}
+    {% if grouped == 1 %}
+        {
+        "type": "GeometryCollection",
+        "geometries": [
+        {% for g in geoRegions %}
+            {   "type": "Polygon",
+            "coordinates":[
+            [
+            [{{ g.x1 }},{{ g.y2 }}],
+            [{{ g.x1 }},{{ g.y1 }}],
+            [{{ g.x2 }},{{ g.y1 }}],
+            [{{ g.x2 }},{{ g.y2 }}]
+            ]
+            ]
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+        ]
+        }
+    {% endif %}
+{% elif annotations %}
+    {
+    "type": "FeatureCollection",
+    "features": [
+    {% for a in annotations %}
+        {% if a.barregions.count > 0 %}
+            {% for g in a.geos %}
+                { "type": "Feature",
+                "geometry": {
+                "type": "Polygon",
+                "coordinates":[
+                [
+                [{{ g.x1 }},{{ g.y1 }}],
+                [{{ g.x1 }},{{ g.y2 }}],
+                [{{ g.x2 }},{{ g.y2 }}],
+                [{{ g.x2 }},{{ g.y1 }}]
+                ]
+                ]
+                },
+                "properties": {"noteid":{{ a.annotation.id }},"barid":{{ g.barid }},"noteType":{{ a.annotation.type.id}} }
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            { "type": "Feature",
+            "geometry": {
+            "type": "Polygon",
+            "coordinates":[
+            [
+            {{ a.annotation.noteregions }}
+            ]
+            ]}
+            ,
+            "properties": {"noteid":{{ a.annotation.id }},"noteType":{{ a.annotation.type.id}}}
+            }
+        {% endif %}
+        {% if not forloop.last %},{% endif %}
+    {% endfor %}
+    ]
+    }
+{% else %}
+    {
+    "type": "FeatureCollection",
+    "features": [
+    ]
+    }
+{% endif %}

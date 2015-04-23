@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>{% block title %}Title{% endblock %} </title>
+    {% block default_includes %}
+        <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery-1.6.1.min.js"></script>
+    {% endblock %}
+    {% block other_includes %}
+
+    {% endblock %}
+
+</head>
+<body>
+{% block header %}
+    <h1>{% block header_title %} {% endblock %}</h1>
+{% endblock %}
+
+{% block navbar %}
+
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock %}
+
+{% block main_content %}
+
+{% endblock %}
+
+
+{% block footer %}
+
+{% endblock %}
+</body>
+</html>

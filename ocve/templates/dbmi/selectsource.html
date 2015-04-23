@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Select source or create new one</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/dashboard.css"/>
+</head>
+<body class="dashboard">
+<div id="header">
+    <div id="branding">
+
+        <h1 id="site-name">Upload new source images to OCVE</h1>
+
+    </div>
+</div>
+<div id="content" class="colMS">
+    <div>
+        <h1>Create new Source</h1>
+        {% if errormsg %}
+           <h2><strong> {{errormsg  }}</strong></h2>
+        {% endif %}
+        <p>Enter information for a brand new source. After the source is saved, you will have the option to upload page
+            images</p>
+
+        <form method="post" action="/ocve/upload/addsource/">
+            <table>
+                {{ newSourceForm }}
+            </table>
+            <input type="submit" value="Save"/>
+        </form>
+    </div>
+
+
+    <div>
+        <h1>Select one of the new sources you have created</h1>
+
+        <p>Add more images to a source you have previously created. </p>
+        <ul>
+            {% for s in newSources %}
+                <li><a href="/ocve/upload/addtosource/{{ s.id }}/">{{ s }}</a> <a href="/admin/ocve/newsource/{{ s.id }}/">Edit</a> </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Populate information for new sources</title>
+
+<link rel="stylesheet" href="{{ STATIC_URL }}assets/c/jquery-ui.css"/>
+
+<script type="text/javascript" src="{{ STATIC_URL }}assets/bower_components/jquery/jquery.min.js"></script>
+<script type="text/javascript"
+        src="{{ STATIC_URL }}assets/bower_components/jquery-ui/jquery-sourceeditor-ui.min.js"></script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.jeditable.mini.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}assets/s/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="/tinymce/js/textareas/advanced/"></script>
+
+<script type="text/javascript">
+    tinyMCE.init({
+        //mode : "textareas",
+        mode: "exact",
+        elements: "altDedicatee,altPublisher,id_cfeolabel,id_label, id_locationsimilarcopies, id_reprints, id_seriestitle, id_shelfmark, id_copyright, id_contents, id_contentssummary, id_notes, id_imagesource, id_platenumber, id_additionalInformation, id_displayedcopy, id_title, id_publicationtitle,id_keyFeatures",
+        theme: "advanced",
+        plugins: "paste,searchreplace",
+        theme_advanced_buttons1: "bold,italic,sup,sub,|,undo,redo",
+        theme_advanced_buttons2: "",
+        theme_advanced_buttons3: "",
+        theme_advanced_toolbar_location: "top",
+        theme_advanced_statusbar_location: "bottom",
+        theme_advanced_resizing: "True",
+        paste_auto_cleanup_on_paste: "True",
+        file_browser_callback: "CustomFileBrowser",
+        width: "400",
+        height: "150",
+        forced_root_block: false,
+        force_p_newlines: false
+    });
+</script>
+<!-- fancyBox from http://fancyapps.com -->
+<link rel="stylesheet" href="{{ STATIC_URL }}assets/s/fancybox/source/jquery.fancybox.css?v=2.1.4" type="text/css"
+      media="screen"/>
+<script type="text/javascript" src="{{ STATIC_URL }}assets/s/fancybox/source/jquery.fancybox.pack.js?v=2.1.4"></script>
+
+
+<style type="text/css">
+    .componentPages {
+        list-style-type: none;
+        margin: 0px 10px 0px 0px;
+        background: none repeat scroll 0% 0% rgb(238, 238, 238);
+        padding: 5px;
+    }
+
+    .page {
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .ui-tabs .ui-tabs-hide {
+        display: none;
+    }
+
+    #sourceList {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 60%;
+    }
+
+    #sourceInformation {
+        width: 80%;
+    }
+
+    #CP li {
+        display: inline-block;
+        font-size: .7em;
+        padding: 30px;
+        margin: 1px;
+        background-color: rgb(230, 230, 230);
+        width: 15%;
+    }
+
+    .ui-state-default .ui-icon {
+        background-image: url({{ STATIC_URL }}assets/i/ui-icons_888888_256x240.png) /*{iconsDefault}*/;
+        <! background-image : url({{ STATIC_URL }} ui-icons_888888_256x240.png) /*{iconsDefault}*/;
+    }
+
+    .ui-icon-arrowthick-2-n-s {
+        background-position: -128px -48px;
+    }
+
+    .editable input[type=submit] {
+        color: #F00;
+        font-weight: bold;
+        width:100%;
+    }
+
+    .editable input[type=button] {
+        color: #0F0;
+        font-weight: bold;
+    }
+</style>
+
+<script type="text/javascript">
+
+createComponent = function () {
+
+}
+
+newEndMatter = function () {
+    $('#sc3').slideDown();
+}
+
+newFrontMatter = function () {
+    $('#sc3').slideDown();
+}
+
+createSource = function () {
+    $('#source').slideUp();
+    $('#sourceInformation').slideDown();
+
+    return false;
+}
+createInfo = function () {
+    $('#sourceInformation').slideUp();
+    $('#sourceStructure').slideDown();
+    return false;
+}
+pageindex = function (selector) {
+    var num = $(selector).parent().index();
+    var prev = $(selector).parent().parent().parent().prevAll();
+    prev.each(function () {
+        num = num + $(this).children().children('li').length;
+    })
+
+    return num + 1;
+}
+updateindeces = function () {
+    var sources = $('#sourceList').children().not("#Heap")
+    var x=1;
+    sources.each(function () {
+        pages = $(this).children('ul').children('li')
+        pages.each(function () {
+            var pid=$(this).data('pageimage_id');
+
+            var pagedata = {id: $(this).data('pageimage_id'), idnum: x, numsc: $(this).parent().parent().index(), idsc: $(this).parent().parent().attr('id'), is_newpage: $(this).hasClass("new_page")  };
+            $.ajax({
+                type: 'POST',
+                url: '/ocve/updatePageIndex/',
+                data: pagedata,
+                error: function (msg) {
+                    MSG=msg
+                    console.log("Error: "+msg);
+                },
+                success: function () {
+                }
+            })
+            x+=1;
+        })
+
+
+    })
+}
+
+$(document).ready(function () {
+
+    $('#hidePages').click(function(){
+        $('ul.componentPages').fadeToggle();
+        return false;
+    });
+
+    $('a.reorderPages').click(function(){
+        go=confirm('All pages will be reordered, first by source component, and then page order number.  This cannot be undone.  Are you sure?');
+        if (!go){
+            return false;
+        }
+    });
+
+    $('a.confirmdelete').click(function(){
+        del=confirm('Are you sure?');
+        if (!del){
+            return false;
+        }
+    });
+    $("#tabs").tabs();
+    //Additions to create new authority list values when source is saved
+    $('#id_accode').after("<label for=\"newaccode\">New accode</label><input type=\"text\" value=\"\" name=\"newaccode\" id=\"newaccode\"/>");
+    $('#id_printingmethod').after("<label for=\"newmethod\">New method</label><input type=\"text\" value=\"\" name=\"newmethod\" id=\"newmethod\"/>");
+    $('#id_archive').after("<label for=\"newarchive\">New Archive</label><input type=\"text\" value=\"\" name=\"newarchive\" id=\"newarchive\"/>");
+
+    $('.deletePage').click(function () {
+        var delurl = $(this).attr('href')+"/";
+        var c = confirm('Delete this Page?')
+        if (c == true) {
+            $.post(delurl);
+            var pid=$(this).attr("data-pageimage_id")
+            $("li[data-pageimage_id='"+pid+"']").remove();
+        }
+        return false;
+    });
+
+    $('#id_dedicatee').after("<td><select name=\"altDedicateeType\" id=\"altDedicateeType\"><option value=\"0\">None</option><option value=\"1\">New</option><option value=\"2\">Alternate</option><option value=\"3\">Overwrite</option></select> <input type=\"text\" name=\"altDedicatee\" id=\"altDedicatee\"/></td>");
+    $('#id_publisher').after("<td><select name=\"altPublisherType\" id=\"altPublisherType\"><option value=\"0\">None</option><option value=\"1\">New</option><option value=\"3\">Overwrite</option></select> <input type=\"text\" name=\"altPublisher\" id=\"altPublisher\"/></td>");
+
+    $("#sourceList").sortable({handle: '.scHandle',
+        stop: function (event, ui) {
+            var sources = $('#sourceList').children().not("#Heap")
+            var scOrder = '';
+            for (var i = 0; i < sources.length; i++) {
+                if (i > 0) {
+                    scOrder += ",";
+                }
+                scOrder += $(sources[i]).attr('id');
+            }
+            if (scOrder.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ocve/updatecomponentorder/',
+                    data: {sckeys: scOrder}
+                });
+            }
+        }
+    });
+    $(".componentPages").sortable({
+        connectWith: ".componentPages",
+        stop: function (event, ui) {
+            updateindeces();
+        },
+        update:function(event,ui){
+
+        }
+    });
+    $('#sc3').hide();
+
+
+    //$('#sourceInformation,#sourceStructure').hide();
+
+    $('#createSource').click(function () {
+        createSource();
+    });
+    $('#createInfo').click(function () {
+        createInfo();
+    });
+
+    $(".editable_textarea").editable("/ocve/savePage/", {
+        submitdata: function () {
+            return {idnum: pageindex(this), idsc: $(this).parent().parent().parent().attr('id'), numsc: $(this).parent().parent().parent().index(), is_textlabel: $(this).hasClass("textlabel"), is_newpage: $(this).hasClass("new_page")}
+        },
+        select: true,
+        tooltip: "Doubleclick to edit...",
+        event: "dblclick",
+        submit: 'OK',
+        cancel: 'cancel',
+        cssclass: "editable"
+    });
+    $(".editable_barNumber").editable("/ocve/savePage/", {
+        submitdata: { _method: "put" },
+        select: true,
+        tooltip: "Doubleclick to edit...",
+        event: "dblclick",
+        submit: 'OK',
+        cancel: 'cancel',
+        cssclass: "editable"
+    });
+
+
+    /* $("#dialog-form").dialog({
+        autoOpen: false,
+        height: 500,
+        width: 550,
+        modal: true,
+        buttons: {
+            "Create NEW": function () {
+                var bValid = true;
+
+                if (bValid) {
+                    $("#sourceList").append("<li id=\"sc1000\" class=\"ui-state-default\">" +
+                            "<span class=\"scHandle ui-icon ui-icon-arrowthick-2-n-s\"></span>" +
+                            $("#name").val() +
+                            "<ul class=\"componentPages\"></ul></li>");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/ocve/createSourceComponent/{{sourceForm.instance.id}}/',
+                        //data: $('#sourcecomponentform').serialize(),
+                        data: {componentlabel: $("#componentlabel").val(), instrumentnumber: $("#instrumentnumber").val(), instrument: $("#instrument").val(), id_sourcecomponenttype: $("#id_sourcecomponenttype").val(), id_workcomponent: $("#id_workcomponent").val() },
+                        error: function () {
+                            alert("Error");
+                        },
+                        success: function () {
+                            //alert('Component has been saved');
+                            window.location.hash = '#sourceStructure';
+                            window.location.reload(true);
+                        }
+                    })
+                    $(this).dialog("close");
+                }
+            },
+            Cancel: function () {
+                $(this).dialog("close");
+            }
+        },
+        close: function () {
+            //allFields.val( "" ).removeClass( "ui-state-error" );
+        }
+    });
+
+    $("#create-component")
+            .button()
+            .click(function () {
+                $("#dialog-form").dialog("open");
+            });*/
+
+    $("#addFront")
+            .button()
+            .click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ocve/createfrontmatter/{{sourceForm.instance.id}}/',
+                    //data: $('#sourcecomponentform').serialize(),
+                    //data: {componentlabel: "Front matter", instrumentnumber: "1", instrument: "None", id_sourcecomponenttype: 1473, id_workcomponent: "0" },
+                    error: function () {
+                        alert("Error");
+                    },
+                    success: function () {
+                        //alert('Component has been saved');
+                        window.location.hash = '#sourceStructure';
+                        window.location.reload(true);
+                    }
+                })
+
+                newFrontMatter();
+            });
+    $('#addEnd')
+            .button()
+            .click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ocve/createendmatter/{{sourceForm.instance.id}}/',
+                    //data: $('#sourcecomponentform').serialize(),
+                    //data: {componentlabel: "End matter", instrumentnumber: "1", instrument: "None", id_sourcecomponenttype: "1473", id_workcomponent: "0" },
+                    error: function () {
+                        alert("Error");
+                    },
+                    success: function () {
+                        //alert('Component has been saved');
+                        window.location.hash = '#sourceStructure';
+                        window.location.reload(true);
+                    }
+                })
+                newEndMatter();
+            });
+});
+
+$(".fancybox")
+        .fancybox({type: 'ajax',
+            beforeLoad: function () {
+                //this.title = $(this.element).attr('title');
+            }
+        });
+</script>
+</head>
+<body>
+<h1>Create new source from uploaded images</h1>
+
+<div id="tabs">
+<ul>
+    <li><a href="#sourceMetadata">Source</a></li>
+    <li><a href="#sourceInformationMetadata">Metadata</a></li>
+    <li><a href="#sourceStructure">Structure</a></li>
+</ul>
+
+<div id="sourceMetadata">
+    <h2>Source</h2>
+
+    <div id="source">
+        <form method="POST" action="/ocve/saveSource/{{ sourceForm.instance.id }}/">
+            <table>
+                {{ sourceForm }}
+            </table>
+            <button id="createSource" value="Create Source">Create Source</button>
+            <label for="work_id">Work (Changing this will reset all source components)</label>
+            <select name="work_id" id="work_id">
+                {% for w in works %}
+                    <option {% if w == sourceForm.instance.getWork %}selected="selected" {% endif %}
+                            value="{{ w.id }}">{{ w.label }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <a class="confirmdelete" href="/ocve/deletesource/{{ sourceForm.instance.id }}/">Delete source</a>
+    </div>
+</div>
+<div id="sourceInformationMetadata">
+    <h2>Source Information</h2>
+    <br/>
+    <br/>
+
+    <div id=sourceInformation>
+        <form method="POST" action="/ocve/saveSourceInformation/{{ sourceInformationForm.instance.id }}/">
+           <input type="hidden" value="{{ sourceInformationForm.instance.source_id }}" name="source" id="id_source"/>
+
+            <h3>Common Fields</h3>
+            <table>
+                <tr>
+                    <td>Publisher</td>
+                    <td>{{ sourceInformationForm.publisher }}</td>
+                </tr>
+                <tr>
+                    <td>Dedicatee</td>
+                    <td>{{ sourceInformationForm.dedicatee }}</td>
+                </tr>
+                <tr>
+                    <td>Plate number</td>
+                    <td>{{ sourceInformationForm.platenumber }}</td>
+                </tr>
+                <tr>
+                    <td>Publication Date</td>
+                    <td>{{ sourceInformationForm.datepublication }}</td>
+                </tr>
+                <tr>
+                    <td>Ac code</td>
+                    <td>{{ sourceInformationForm.accode }}</td>
+                </tr>
+                <tr>
+                    <td>Displayed copy</td>
+                    <td>{{ sourceInformationForm.displayedcopy }}</td>
+                </tr>
+                <tr>
+                    <td>Copyright</td>
+                    <td>{{ sourceInformationForm.copyright }}</td>
+                </tr>
+                <tr>
+                    <td>Shelfmark</td>
+                    <td>{{ sourceInformationForm.shelfmark }}</td>
+                </tr>
+                <tr>
+                    <td>Place of Publication</td>
+                    <td>{{ sourceInformationForm.placepublication }}</td>
+                </tr>
+                <tr>
+                    <td>Archive</td>
+                    <td>{{ sourceInformationForm.archive }}</td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+
+            <h3>CFEO Fields</h3>
+            <table>
+                <tr>
+                    <td>Publication Title (CFEO)</td>
+                    <td>{{ sourceInformationForm.publicationtitle }}</td>
+                </tr>
+                <tr>
+                    <td>Contents summary (in leaves)</td>
+                    <td>{{ sourceInformationForm.leaves }}</td>
+                </tr>
+                <tr>
+                    <td>Reprints</td>
+                    <td>{{ sourceInformationForm.reprints }}</td>
+                </tr>
+                <tr>
+                    <td>Location of similar copies</td>
+                    <td>{{ sourceInformationForm.locationsimilarcopies }}</td>
+                </tr>
+                <tr>
+                    <td>Printing Method</td>
+                    <td>{{ sourceInformationForm.printingmethod }}</td>
+                </tr>
+
+                <tr>
+                    <td>Series Title</td>
+                    <td>{{ sourceInformationForm.seriestitle }}</td>
+                </tr>
+
+            </table>
+            <br/>
+            <br/>
+
+            <h3>OCVE Fields</h3>
+            <table>
+                <tr>
+                    <td>Title (OCVE)</td>
+                    <td>{{ sourceInformationForm.title }}</td>
+                </tr>
+                <tr>
+                    <td>Source of images</td>
+                    <td>{{ sourceInformationForm.imagesource }}</td>
+                </tr>
+                <tr>
+                    <td>Source code</td>
+                    <td>{{ sourceInformationForm.sourcecode }}</td>
+                </tr>
+                <tr>
+                    <td>Contents summary (in pages)</td>
+                    <td>{{ sourceInformationForm.contentssummary }}</td>
+                </tr>
+                <tr>
+                    <td>Additional Information</td>
+                    <td>{{ sourceInformationForm.additionalInformation }}</td>
+                </tr>
+                <tr>
+                    <td>Key Features</td>
+                    <td>{{ sourceInformationForm.keyFeatures }}</td>
+                </tr>
+            </table>
+            <button id="createInfo"  value="Create Source">Save information</button>
+        </form>
+    </div>
+</div>
+
+<div id="sourceStructure">
+    <h3>Add new Components</h3>
+
+    <p>A component is any division within a source e.g. front matter, movements, instrumental parts.</p>
+    <ul>
+        <li><a id="addFront" href="#">+ Add front matter</a></li>
+        <li><a id="addEnd" href="#">+ Add end matter</a></li>
+        <li><a href="/ocve/createsourcecomponent/{{ sourceForm.instance.id }}/"  class="fancybox" >+ Add new source component</a></li>
+    </ul>
+    <h2>Source structure</h2>
+    <a href="#" id="hidePages">Toggle pages</a>
+    <a id="reorderPages" href="/ocve/defaultpageorder/{{ sourceForm.instance.id }}/">Set pages to default order (cannot be undone!)</a>
+<br/>
+    <ul id="sourceList">
+        {% for sc in sourcecomponents %}
+            <li id="sc {{ sc.id }}" class="ui-state-default"><span
+                    class="scHandle ui-icon ui-icon-arrowthick-2-n-s"></span>{{ sc.label }} {{ sc.getWorkComponentLabel }}
+                <a class="fancybox" href="/ocve/editsourcecomponent/{{ sc.id }}/"> Edit </a>
+            <a class="confirmdelete" href="/ocve/deletesourcecomponent/{{ sc.id }}/"> X </a>
+                <ul class="componentPages" id="CP">
+
+                    {% if pageimages != None %}
+                        {% for p in pageimages %}
+                            {% if p.page.sourcecomponent.id == sc.id %}
+
+                                <li data-pageimage_id="{{ p.id }}">
+                                    <a href="/ocve/editbars/{{ p.id }}/">
+                                        <img height="100" border align="0"
+                                             src="/iip/iipsrv.fcgi?FIF={{ p.getJP2Path }}&cnt=1&QLT=70&HEI=100&CVT=JPG"/></a>
+                                    <p class="editable_textarea existing_page" id="{{ p.id }}">p. {{ p.page.label }} {{ sc.label }}, bs {{ p.startbar }}-{{ p.endbar }} ({{ p.page.orderno }})</p>
+                                    <p>Text Label</p>
+                                    <p class="editable_textarea textlabel" id="{{ p.id }}">{{ p.textlabel }}</p>
+                                    <p><a class="deletePage" data-pageimage_id="{{ p.id }}" href="/ocve/deletepage/{{ p.id }}">X</a></p>
+                                </li>
+                            {% endif %}
+
+
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+
+            </li>
+        {% endfor %}
+        <li id="Heap" class="ui-state-default"><span
+                class="scHandle ui-icon ui-icon-arrowthick-2-n-s"></span>Heap
+            <ul class="componentPages" id="CP">
+                {% for np in newpageimages %}
+                    {% if np.linked == 0 %}
+                        <li data-pageimage_id="{{ np.id }}">
+                            <a class="fancybox" href="/ocve/upload/page/{{ np.id }}/">
+                                <img height="100" border
+                                     align="0"
+                                     src="/iip/iipsrv.fcgi?FIF=jp2/newjp2/{{ np.id }}.jp2&cnt=1&QLT=70&HEI=100&CVT=JPG"/></a><br>
+
+                            <p class="editable_textarea new_page" id="{{ np.id }}">p. {{ np.id }} source_component,
+                                bs 0-0</p>
+
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        </li>
+    </ul>
+</div>
+</div>
+<div>
+    <p><a href="/ocve/sourceview/{{ sourceForm.instance.id }}/">View Source</a></li> </p>
+
+    <p><a href="/ocve/upload/selectsource/">Back to list</a></li>    </p>
+
+    <p><a href="/ocve/dbmi">Back to DBMI</a></li>    </p>
+
+</div>
+<div id="create-accode">
+
+</div>
+
+<div id="create-method">
+    <form id="methodform">
+        <input type="hidden" value="{{ sourceForm.instance.id }}" name="source_id"/>
+    </form>
+</div>
+
+<div style="display:none">
+<div id="create-component" title="Create new component">
+    <p class="validateTips">All form fields are required.</p>
+
+    <form id="sourcecomponentform">
+        <table>
+            <fieldset>
+                <p><label for="componentlabel">Label</label>
+                    <input type="text" name="name" id="componentlabel" class="text ui-widget-content ui-corner-all"/>
+                </p>
+                <p><label for="instrumentnumber">Instrument Number</label>
+                    <input type="text" name="email" id="instrumentnumber" value="1"
+                           class="text ui-widget-content ui-corner-all"/></p>
+                <p><label for="instrument">Instrument</label>
+                    <select id="instrument">
+                        {% for i in instruments %}
+                            <option value="{{ i.id }}"
+                                    {% if i.instrument == 'Piano' %}selected="selected"{% endif %}>{{ i.instrument }}</option>
+                        {% endfor %}
+                    </select></p>
+                <p><label for="id_sourcecomponenttype">Source Component Type</label>
+                    {{ scForm.sourcecomponenttype }}</p>
+
+                <p><label for="id_workcomponent">Work Component</label>
+                    <select id="id_workcomponent">
+                        <option value="0" selected="selected">None</option>
+                        {% for wc in workcomponents %}
+                            <option value="{{ wc.id }}">{{ wc.label }}</option>
+                        {% endfor %}
+                    </select></p>
+            </fieldset>
+        </table>
+    </form>
+</div>
+</div>
+
+</body>
+</html>

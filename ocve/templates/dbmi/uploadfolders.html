@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>New Images uploaded by Folder</title>
+</head>
+<body>
+<h1>New images in /vol/ocve3/images/temp/</h1>
+<h2>{{ free }} (gigabytes) free</h2>
+<a href="/ocve/dbmi/">Back to DBMI</a>
+
+<form method="post" action="/ocve/convertimage/">
+    <ul>
+        {% for folder,files in uploadFolder.items %}
+            <li>{{ folder }}
+                {% if files != None %}
+                    <input type="checkbox" name="folderName" value="{{ folder}}"/>
+                    <a href="/ocve/convertfolder/{{ folder|escape }}/">Convert folder to new source</a>
+                    <ul>
+                        {% for s in files %}
+                            <li>{{ s }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <input type="checkbox" name="imageName" value="{{ folder|escape }}"/>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <label for="source_id">Add selected pages to source</label>
+    <select name="source_id" id="source_id">
+        {% for source in sources %}
+            <option value="{{ source.id }}">{{ source.getAcCode }}</option>
+        {% endfor %}
+    </select>
+    <br/>
+    <label for="source_key">Quick add source key</label>
+    <input type="text" name="source_key" id="source_key" value="0"/>
+    <br/>
+    <input type="submit" value="Add to source"/>
+</form>
+<h4>Logs</h4>
+<div id="log">
+    <p>
+        {% autoescape off %}
+    {{ log }}
+        {% endautoescape %}
+    </p>
+</div>
+</body>
+</html>

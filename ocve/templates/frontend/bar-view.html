@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% block title %}Opus {{ opus }}, Bar {{ bar }} (prototype){% endblock %}
+{% block metatitle %}Opus {{ opus }}, Bar {{ bar }} (prototype){% endblock %}
+
+{% block header_scripts %}
+<script src="{{ STATIC_URL }}assets/bower_components/jquery-ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Note RE Jquery. I have added another version of jquery UI since
+         I did not want to interfere with versions currently in use. We can
+         tidy this later - BM -->
+    {% comment %}
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.position.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.draggable.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.droppable.js"></script>
+    {% endcomment %}
+
+{% endblock header_scripts %}
+
+{% block content %}
+
+    <section class="main content-section">
+        <div class="row">
+            <div class="large-12 columns">
+                <!-- off-canvas navigation for left hand tree / faceted browse -->
+                <div class="off-canvas-wrap" data-offcanvas="">
+                    <div class="inner-wrap">
+                        <!-- contextual menu bar -->
+                        <nav class="tab-bar">
+                            <section class=" tab-bar-section">
+                                <ul class="left inline-list contextual-menu">
+                                    <li>
+                                        <div class="menu-item opus-title">{{ work }}, Bar {{ bar }}</div>
+                                    </li>
+                                    <!-- TODO: Bar Ids? -->
+                                    {% if prev %}
+                                    <li>
+                                        <div class="menu-item"><a
+                                                href="?workid={{ work.id }}&orderNo={{ prev.orderNo }}&range={{ range }}"
+                                                class="ctrl prev"><span class="fa fa-caret-left"></span></a></div>
+                                    </li>
+                                    {% endif %}
+                                    {% if next %}
+                                    <li>
+                                        <div class="menu-item"><a
+                                                href="?workid={{ work.id }}&orderNo={{ next.orderNo }}&range={{ range }}"
+                                                class="ctrl next"><span class="fa fa-caret-right"></span></a></div>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <div class="menu-item">
+                                            <a href="#" data-dropdown="available-sources">Select Sources</a>
+                                            <ul id="available-sources" class="f-dropdown" data-dropdown-content="">
+                                                <li>
+                                                    <div class="dropdown-select toggle-all"><input type="checkbox"
+                                                                                                   checked="checked"
+                                                                                                   value="all"> Select
+                                                        all
+                                                    </div>
+                                                </li>
+
+                                                {% for s in sources %}
+                                                <li>
+                                                    <div class="dropdown-select toggle "><input type="checkbox"
+                                                                                                class="sourceFilter"
+                                                                                                checked="checked"
+                                                                                                value="{{ s.id }}"> {{ s.getAcCode }}</input>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </li>
+
+
+                                    <li>
+                                        <div class="menu-item"><a href="#" class="bar-view-reset-btn"><span>Reset Bars</span></a></div>
+                                    </li>
+                                <li>
+                                    <div class="menu-item">
+                                    <a href="#" data-dropdown="available-ranges">Bar Range</a>
+                                            <ul id="available-ranges" class="f-dropdown" data-dropdown-content="">
+                                                <li><a href="/ocve/barview?workid={{ work.id }}&orderNo={{ orderNo }}">1</a></li>
+                                                <li>
+                                                    <a href="/ocve/barview?workid={{ work.id }}&orderNo={{ orderNo }}&range=2">2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/ocve/barview?workid={{ work.id }}&orderNo={{ orderNo }}&range=3">3</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/ocve/barview?workid={{ work.id }}&orderNo={{ orderNo }}&range=4">4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                </li>
+                                </ul>
+                            </section>
+                        </nav><!-- end tab-bar -->
+                        <!-- main content -->
+                        <div class="bar-images">
+                            <ul class="images barList inline-list">
+                                {% for r in barregions %}
+                                    <li id="region{{ r.br.id }}" class="source{{ r.getSource.id }}">
+                                        <div class="caption">
+                                            <span>{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.regionlabel }}</span></div>
+                                        <div class="image">
+                                            {% for url in r.getLargeURL %}
+                                            <img src="{{ IIP_URL }}?FIF={{ url }}"
+                                                 alt="{{ r.getSource.getAcCode }} page {{ r.pi.page.label }}">
+                                                {% endfor %}
+
+                                            <div class="close"><a href="#" class="ctrl close closeSource"
+                                                                  data-source-id="{{ r.getSource.id }}"><span
+                                                    class="fa fa-times-circle"></span></a></div>
+                                        </div>
+                                        <div class="controls">
+                                            <ul class="inline-list">
+                                                <li><a href="#" data-reveal-id="large-image"
+                                                       data-img="{{ IIP_URL }}?FIF={{ r.getLargeURL.0 }}"
+                                                       data-region_id="{{ r.br.id }}"
+                                                       data-annotation="{{ r.annotation }}"
+                                                       data-region-label="{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.regionlabel }}"
+                                                       class="ctrl enlarge large-image-button"><span
+                                                        class="fa fa-search-plus"></span></a></li>
+                                                <li><a href="/ocve/browse/pageview/{{ r.pi.id }}?brid={{ r.br.id }}"
+                                                       class="ctrl view-in-context"><span
+                                                        class="fa fa-file-text"></span></a></li>
+                                            {% if r.annotation > 0 %}
+                                            <li><a href="#" data-reveal-id="large-image"
+                                                       data-img="{{ IIP_URL }}?FIF={{ r.getLargeURL.0 }}"
+                                                       data-region_id="{{ r.br.id }}"
+                                                       data-annotation="{{ r.annotation }}"
+                                                       class="ctrl enlarge large-image-button">
+                                                <span class="annotations" title="This bar has annotations">{{ r.annotation }} <i class="fa fa-comment fa-lg"></i></span></a></li>
+                                            {% endif %}
+
+                                                {% if request.user.is_authenticated %}
+                                                    <li><a href="#"
+                                                           data-thumbnail="{{ IIP_URL }}?FIF={{ r.getLargeURL }}"
+                                                           data-region-id="{{ r.br.id }}" class="ctrl add add-btn"><span
+                                                            class="fa fa-plus-circle"></span></a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div><!-- end bar-images -->
+                        <!-- end main content  -->
+                        <!-- close off-canvas menu -->
+                        <a class="exit-off-canvas"></a>
+                    </div><!-- end inner-wrap -->
+                </div><!-- end off-canvas-wrap -->
+            </div><!-- end cols -->
+        </div><!-- end row -->
+    </section>
+
+    <!-- enlarge image -->
+    <div id="large-image" class="reveal-modal large-image-modal" data-reveal="">
+        <!-- TODO: IF the bar has annotations use this layout -->
+            <div class="row">
+                <div class="large-8 columns">
+                    <span class="regionLabel"></span>
+                    <img src="" id="large-image-img">
+                </div>
+                <div class="large-4 columns">
+                    <div id="modal-annotations"></div>
+                </div>
+            </div>
+        <!-- TODO: ELSE use this -->
+        <!-- 
+            <img src="" id="large-image-img">
+            <div id="modal-annotations"></div>
+        -->
+        <a class="close-reveal-modal"><span class="fa fa-times"></span></a>
+    </div>
+
+      <!-- enlarge image -->
+    <div id="add-image-to-collection-modal" class="reveal-modal add-image-to-collection-modal small" data-reveal="">
+
+    </div>
+
+    <!-- TODO: Use or delete? -->
+    <!-- view in page -->
+    <div id="view-in-page-1" class="reveal-modal large-image" data-reveal="">
+        <img src="{{ STATIC_URL }}images/ocve-full-page.png" id="v">
+        <a class="close-reveal-modal"><span class="fa fa-times"></span></a>
+    </div>
+
+    <!-- collection area -->
+    <!-- feedback message -->
+    <div class="feedback-message image-added">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="feedback-success">
+                    <p>[Image details] added to your collection <span class="icon-ok"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

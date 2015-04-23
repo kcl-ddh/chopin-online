@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Spine Editor</title>
+    <style type="text/css">
+        td.green {
+            color: green;
+        }
+
+        td.red {
+            color: red;
+        }
+
+        td.blue {
+            color: blue;
+        }
+
+        td.gold {
+            color: gold;
+        }
+
+        td.brown {
+            color: brown;
+        }
+    </style>
+</head>
+<body>
+<h1>{% if work != None %}{{ work.label }}{% else %}Posthumous spines{% endif %}</h1>
+
+<div>
+    <a href="/ocve/spines/">Back to list of works</a>
+</div>
+<div>
+    <h3>Export Spine</h3>
+    {% if work != None %}
+        <a href="/ocve/exportspine/{{ work.id }}/">Export Spine</a>
+    {% else %}
+        <a href="/ocve/exportspine/0/">Export Spine</a>
+    {% endif %}
+    <h3>Import Spine</h3>
+    <h4>Notes on importing from Excel</h4>
+
+    <p>To note that a bar is implied (part of a repeat sign, not written out) use (I) after the bar number with no
+        space, as in 44(I)</p>
+
+    <p>The second line of the file, below the accodes, is the source keys. They should not be moved or altered in any
+        way.</p>
+
+    <p>Importing overwrites all spine information for the current work.</p>
+
+    <form method="POST" action="/ocve/importspine/" enctype="multipart/form-data">
+        {% if work != None %}
+            <input type="HIDDEN" name="workid" value="{{ work.id }}">
+        {% else %}
+            <input type="HIDDEN" name="workid" value="0">
+        {% endif %}
+        <input type="file" name="uploadFile">
+        <input type="SUBMIT" value="Import">
+    </form>
+</div>
+<table>
+    <tr>
+        <td>Order</td>
+        {% for s in sources %}
+            <td><a href="/ocve/sourceeditor/{{ s.id }}/"> {{ s.getAcCode }}</a></td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td></td>
+        {% for s in sources %}
+            <td><a href="/ocve/deletesourcespines/{{ s.id }}/"> Rebuild</a></td>
+        {% endfor %}
+    </tr>
+    {% autoescape off %}
+        {{ tbody }}
+    {% endautoescape %}
+</table>
+</body>
+</html>

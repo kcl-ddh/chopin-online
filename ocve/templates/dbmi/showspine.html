@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Spine Editor (Test mode)</title>
+    <style type="text/css">
+        .barList{
+            list-style:none;
+
+        }
+        .barList li{
+            display: inline-block;
+            padding-right: 20px;
+            /*float:left;*/
+        }
+        .barList li > * {display:block}
+        .barList li a img {
+            height: 200px !important;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>{% if work != None %}{{ work.label }}{% else %}Posthumous{% endif %}</h1>
+<ul class="barList">
+    {% if prev > 0 %}
+    <li><a href="spine?work_id={% if work != None %}{{ work.id }}{% else %}posthumous{% endif %}&orderNo={{ prev }}">{{ prev }} </a></li>
+    {% endif %}
+    <li>Spine {{ orderNo}}</li>
+    {% if next > 0 %}
+        <li><a href="spine?work_id={% if work != None %}{{ work.id }}{% else %}posthumous{% endif %}&orderNo={{ next }}">{{ next }} </a></li>
+    {% endif %}
+</ul>
+<a href="/ocve/editspine/{% if work != None %}{{ work.id }}{% else %}posthumousspine{% endif %}/">Return to Spine overview </a>
+<ul class="barList">
+{% for r in regions %}
+    <li>
+        <span>
+        {{ r.getSource.getAcCode }} bar {{ r.br.getHighestBar.barlabel }}</span>
+            <a href="editbars/{{ r.pi.id}}/">
+            <img title="{{ r.getSource.label }} page {{ r.pi.page.label}}"  border align="0" src="{{ IMAGE_SERVER_URL }}?FIF={{ r.getURL }}"/>
+            </a>
+    </li>
+{% endfor %}
+</ul>
+</body>
+</html>

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block custom_stylesheets %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css"
+          type="text/css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
+{% endblock custom_stylesheets %} 
+
+{% block header_scripts %}
+    <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                //Set div width/height as proprortion of available screen
+                var zoomify_width = {{pageimage.width}};
+                var zoomify_height = {{pageimage.height}};
+                var sf=zoomify_height/zoomify_width;
+                var docWidth = parseInt($('body').width());
+                var docHeight = parseInt($(window).height());
+                var fullWidth = parseInt($('#pageimage').width());
+                var fullHeight = fullWidth*sf;
+                $("#image_one").attr('width', fullWidth).attr("height", fullHeight);
+                imgToOSD();
+            });
+        </script>
+
+        <script src="{{ STATIC_URL }}vendor/openseadragon/openseadragon.js"></script>
+        <script src="{{ STATIC_URL }}javascripts/osd-iip-connector.js"></script>
+{% endblock header_scripts %}
+
+{% block content %}
+    <section class="main content-section page-view">
+        <div class="row">
+            <div class="large-12 columns">
+                <nav class="tab-bar">
+                    <section class=" tab-bar-section">
+                        <ul class="left inline-list contextual-menu">
+                            <li>
+                                <div class="menu-item opus-title"><a href="#" class="ctrl more"
+                                                                     data-reveal-ajax="/{{ mode|lower }}/browse/workinformation/{{ work.id }}/"
+                                                                     title="Work overview"
+                                                                     data-reveal-id="opus-info" class="ctrl more"
+                                                                     data-tooltip=""
+                                                                     title="Work overview">{{ work }}</a>, <a
+                                        href="#" class="ctrl more" data-tooltip data-reveal-id="witness-info" data-reveal-ajax="/{{ mode|lower }}/browse/sourceinformation/{{ source.id }}/"
+                                        title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
+                                  </div>
+                            </li>
+                        {% load catalogue_tags %}
+{% get_impression_exists achash as impression_exists %}
+{% if  impression_exists %}<li><a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a> </li>{% endif %}
+                            <!-- TODO: Bar Ids? -->
+                            {% if prev %}
+                                <li>
+                                    <div class="menu-item"><a href="/{{ mode|lower }}/browse/pageview/{{ prev.id }}/"
+                                                              class="ctrl prev"><span
+                                            class="fa fa-caret-left"></span></a></div>
+                                </li>
+                            {% endif %}
+                            {% if next %}
+                                <li>
+                                    <div class="menu-item"><a
+                                            href="/{{ mode|lower }}/browse/pageview/{{ next.id }}/"
+                                            class="ctrl next"><span class="fa fa-caret-right"></span></a></div>
+                                </li>
+                            {% endif %}
+                           <li>
+                                <div class="menu-item">
+                                    <a href="#" data-dropdown="available-pages">Jump to page</a>
+                                    <ul id="available-pages" class="f-dropdown" data-dropdown-content="">
+                                        {% for pi in pageimages %}
+                                            <li><a href="/{{ mode|lower }}/browse/pageview/{{ pi.id }}/">{{ pi.textlabel }}</a> </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="menu-item">
+                                    <a href="/{{ mode|lower }}/ui">Back to results</a>
+                                </div>
+                            </li>
+                           {% if mode == 'CFEO' %}
+
+                            <li>
+                                <div class="menu-item">
+                                    <a href="#" class="cfeo-add-to-compare">Add To Compare</a>
+                                </div>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </section>
+                </nav>
+
+                <div class="row add-to-compare-bar" data-page-id="{{pageimage.id}}">
+                    <div class="large-6 columns ">
+                     <a href="#" data-cookie="left" data-page-id="{{pageimage.id}}">Compare on Left</a>
+                    </div>
+                   <div class="large-6 columns ">
+                     <a href="#" data-cookie="right" data-page-id="{{pageimage.id}}">Compare on Right</a>
+                    </div>
+
+                </div>
+
+                <div class="row add-to-compare-notification">
+                   <div class="large-12 columns ">
+                        <span class="alert-box success">Added to comparison.</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div id="pageimage" class="large-10 columns">
+                            <img src="{{ IIP_URL }}?FIF={{ pageimage.getJP2Path }}&CVT=JPG" height="800" width="600" id="image_one" class="osd-iip">
+                    </div>
+                    <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 columns">
+
+                    <div class="thumbnail-carousel">
+                        <b class="divider"></b>
+                        {% for p in pageimages %}
+                            <div>
+                                <div class="carousel-image">
+                                    <a class="pageView thumb"
+                                       href="/{{ mode|lower }}/browse/pageview/{{ p.id }}">
+                                        <img border align="0"
+                                             src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg"
+                                             class="lazy thumbnail"/></a>
+                    <span class="page-label">{{ p.page.label }} {% if p.startbar != '0' or p.endbar != '0' %}bs
+                        {{ p.startbar }}-{{ p.endbar }}{% endif %}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock %}
+{% block footer %}
+    {{ block.super }}
+    <div id="witness-info" class="reveal-modal xlarge contextual-modal" data-reveal>
+
+    </div>
+
+    <div id="opus-info" class="reveal-modal contextual-modal" data-reveal>
+
+    </div>
+{% endblock %}

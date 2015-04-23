@@ -1,0 +1,22 @@
+<div>
+    <h1>{{ work.label }}</h1>
+    {% autoescape off %}
+        {% if mode == "OCVE" %}
+            {{ workinformation.OCVE }}
+        {% else %}
+            <div class="row">
+                <div class="contextual-label"><p>General information </p></div>
+                <div class="contextual-value"><p>{{ workinformation.generalinfo }}</p></div>
+            </div>
+            <div class="row">
+                <div class="contextual-label"><p>Relevant manuscripts </p></div>
+                <div class="contextual-value"><p>{{ workinformation.relevantmanuscripts }}</p></div>
+            </div>
+            <div class="row">
+                <div class="contextual-label"><p>Analysis</p></div>
+                <div class="contextual-value"><p>{{ workinformation.analysis }}</p></div>
+            </div>
+        {% endif %}
+    {% endautoescape %}
+</div>
+

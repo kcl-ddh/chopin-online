@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link href="/static/grappelli/jquery/ui/css/custom-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet"
+          type="text/css" media="screen"/>
+    <link href="/static/grappelli/stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen"/>
+
+    <style>
+        textarea {
+            width: 100%;
+        }
+
+        table {
+            width: 80%
+        }
+
+        td {
+            max-width: 100%;
+        }
+
+        th {
+            width: 20%;
+        }
+
+    </style>
+    <title>{{ work }}</title>
+</head>
+<body>
+
+<article id="grp-content" class="content-grid">
+
+    <!-- MESSAGES -->
+
+
+    <!-- CONTENT TITLE -->
+    <header id="grp-content-title">
+
+
+        <header><h1>{{ work }}</h1></header>
+
+
+    </header>
+
+    <!-- CONTENT-CONTAINER -->
+    <h2><a href="/ocve/works/">Return to Works</a></h2>
+
+    <div id="grp-content-container">
+    <h1>Attached sources</h1>
+        <ul>
+            {% for s in sources %}
+                <li><a href="/ocve/sourceeditor/{{ s.id }}">{{ s.getAcCode }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <h1>Work object</h1>
+
+        <div>
+            <form method="POST" action="/ocve/savework/{{ work.id }}/">
+                <table>
+                    {{ workform }}
+                </table>
+                <input type="submit" value="Save"/>
+                {% csrf_token %}
+            </form>
+        </div>
+        <h1>Work information</h1>
+
+        <div>
+            <form method="POST" action="/ocve/saveworkinformation/{{ workinformationform.instance.id }}/"/>
+                <table>
+                    {{ workinformationform }}
+                </table>
+                <input type="submit" value="Save"/>
+                {% csrf_token %}
+            </form>
+        </div>
+        <h1>Work Components</h1>
+        <p><em>Note:  Last form is form is blank, for adding a new component</em></p>
+        <form method="POST" action="/ocve/saveworkcomponents/{{ work.id }}/"/>
+            {{ compFormset.management_form }}
+            {% for form in compFormset %}
+                <table>
+                {{ form }}
+                </table>
+                <br/>
+            {% endfor %}
+        <input type="submit" value="Save All"/>
+
+        </form>
+
+
+    </div>
+
+</article>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+{% for p in posths %}
+<h1>{{ p.label }}</h1>
+<h2>work components</h2>
+<ul>
+    {% for wc in p.workcomponent_set.all %}
+        <li>{{ wc.label }}</li>
+    {% endfor %}
+</ul>
+
+{% endfor %}
+</body>
+</html>

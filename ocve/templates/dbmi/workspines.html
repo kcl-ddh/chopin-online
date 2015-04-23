@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Spine Editor</title>
+</head>
+<body>
+<h1>Spine Editor</h1>
+<h2>Click on an opus to view spines for its sources</h2>
+<ul>
+<li><a href="/ocve/posthumousspine/">Posthumous works</a></li>
+    {% for w in works %}
+        {%  if w.id != 6402 %}
+        <li><a href="../editspine/{{ w.id }}/">{{ w }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
+</body>
+</html>

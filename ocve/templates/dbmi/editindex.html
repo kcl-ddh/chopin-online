@@ -1,0 +1,31 @@
+{% extends "dbmi/dbmi_base.html" %}
+
+
+{% block title %}OCVE DBMI version 0.7 {% endblock %}
+{% block other_includes %}
+    <link href="/static/assets/css/base.css" rel="stylesheet" type="text/css"/>
+
+    <link href="/static/assets/css/jquery-ui-1.8.custom.css" rel="stylesheet" type="text/css"
+          media="screen" title="no title" charset="utf-8"/>
+    <link href="/static/assets/css/jquery-ui-grappelli-extensions.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block header_title %}OCVE DBMI version 0.6 {% endblock %}
+{% block main_content %}
+    <ul>
+        <li><a href="/ocve/newsourcefiles/"> New image upload</a></li>
+        <li><a href="/ocve/sourceeditor/new/0/"> Create new empty source</a></li>
+        <li><a href="/ocve/works/"> View works by Opus</a></li>
+        <li><a href="/ocve/sourceviews/1/">sources ordered by accode</a></li>
+        <li><a href="/ocve/spines/">Spine Editor</a></li>
+        <li><a href="/ocve/sourcesbywork/">Sources by Work</a></li>
+        <li><a href="/ocve/works/">Edit works</a></li>
+        <li><a href="/admin/ocve/accode/">Edit accode list</a></li>
+    </ul>
+
+    <h2>UI Tools</h2>
+    <dl>
+    <dt><a href="/ocve/browse/sourcejs/">Rebuild data for website</a></dt>
+    <dd>Push changes made to the data to all OCVE & CFEO.  The site uses objects built on top of the database, and changes will not be immediately reflected in the site until this is done.  Only do this once after you have made all the changes you wish to.  It will take a few minutes.  Please leave your browser window open so the request can complete.</dd>
+    </dl>
+{% endblock %}

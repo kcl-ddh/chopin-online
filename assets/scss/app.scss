@@ -116,7 +116,8 @@ a:focus {
         margin-bottom: 0;
     }
     li a.label {
-        top: 0;
+        top: -3px;
+        margin-bottom: 0 !important;
     }
 }
 

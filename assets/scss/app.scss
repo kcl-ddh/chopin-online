@@ -1334,7 +1334,8 @@ b.top-spacing {
 .symbol-creversecedilla,
 .symbol-l,
 .symbol-eitalics,
-.symbol-er {
+.symbol-er,
+.symbol-iundotted-eitalics {
     height: 15px;
     display: inline-block;
     /* background-size: auto 15px !important; */
@@ -1431,6 +1432,13 @@ b.top-spacing {
 .symbol-er {
     background: url("/static/assets/images/special-characters/14-symbol-ER-code-246.png") top center no-repeat;
     width: 12px;
+    background-size: auto 15px;
+    vertical-align: text-top;
+}
+
+.symbol-iundotted-eitalics {
+    background: url("/static/assets/images/special-characters/15-symbol-iundotted-eitalics.png") top center no-repeat;
+    width: 10px;
     background-size: auto 15px;
     vertical-align: text-top;
 }

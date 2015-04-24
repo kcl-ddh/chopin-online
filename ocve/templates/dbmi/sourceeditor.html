@@ -164,6 +164,18 @@ updateindeces = function () {
 
 $(document).ready(function () {
 
+    //PageType updater
+    $('.pagetypewidget').change(function(){
+        var url=$(this).attr('action');
+        var data=$(this).serialize();
+        $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data
+                });
+
+    });
+
     $('#hidePages').click(function(){
         $('ul.componentPages').fadeToggle();
         return false;
@@ -263,66 +275,17 @@ $(document).ready(function () {
         cssclass: "editable"
     });
 
-
-    /* $("#dialog-form").dialog({
-        autoOpen: false,
-        height: 500,
-        width: 550,
-        modal: true,
-        buttons: {
-            "Create NEW": function () {
-                var bValid = true;
-
-                if (bValid) {
-                    $("#sourceList").append("<li id=\"sc1000\" class=\"ui-state-default\">" +
-                            "<span class=\"scHandle ui-icon ui-icon-arrowthick-2-n-s\"></span>" +
-                            $("#name").val() +
-                            "<ul class=\"componentPages\"></ul></li>");
-                    $.ajax({
-                        type: 'POST',
-                        url: '/ocve/createSourceComponent/{{sourceForm.instance.id}}/',
-                        //data: $('#sourcecomponentform').serialize(),
-                        data: {componentlabel: $("#componentlabel").val(), instrumentnumber: $("#instrumentnumber").val(), instrument: $("#instrument").val(), id_sourcecomponenttype: $("#id_sourcecomponenttype").val(), id_workcomponent: $("#id_workcomponent").val() },
-                        error: function () {
-                            alert("Error");
-                        },
-                        success: function () {
-                            //alert('Component has been saved');
-                            window.location.hash = '#sourceStructure';
-                            window.location.reload(true);
-                        }
-                    })
-                    $(this).dialog("close");
-                }
-            },
-            Cancel: function () {
-                $(this).dialog("close");
-            }
-        },
-        close: function () {
-            //allFields.val( "" ).removeClass( "ui-state-error" );
-        }
-    });
-
-    $("#create-component")
-            .button()
-            .click(function () {
-                $("#dialog-form").dialog("open");
-            });*/
-
     $("#addFront")
             .button()
             .click(function () {
                 $.ajax({
                     type: 'POST',
                     url: '/ocve/createfrontmatter/{{sourceForm.instance.id}}/',
-                    //data: $('#sourcecomponentform').serialize(),
-                    //data: {componentlabel: "Front matter", instrumentnumber: "1", instrument: "None", id_sourcecomponenttype: 1473, id_workcomponent: "0" },
+
                     error: function () {
                         alert("Error");
                     },
                     success: function () {
-                        //alert('Component has been saved');
                         window.location.hash = '#sourceStructure';
                         window.location.reload(true);
                     }
@@ -336,13 +299,10 @@ $(document).ready(function () {
                 $.ajax({
                     type: 'POST',
                     url: '/ocve/createendmatter/{{sourceForm.instance.id}}/',
-                    //data: $('#sourcecomponentform').serialize(),
-                    //data: {componentlabel: "End matter", instrumentnumber: "1", instrument: "None", id_sourcecomponenttype: "1473", id_workcomponent: "0" },
                     error: function () {
                         alert("Error");
                     },
                     success: function () {
-                        //alert('Component has been saved');
                         window.location.hash = '#sourceStructure';
                         window.location.reload(true);
                     }
@@ -540,6 +500,17 @@ $(".fancybox")
                                     <p class="editable_textarea existing_page" id="{{ p.id }}">p. {{ p.page.label }} {{ sc.label }}, bs {{ p.startbar }}-{{ p.endbar }} ({{ p.page.orderno }})</p>
                                     <p>Text Label</p>
                                     <p class="editable_textarea textlabel" id="{{ p.id }}">{{ p.textlabel }}</p>
+                                    <p>Page Type </p>
+                                    <p>
+                                        <form action="/ocve/updatepagetype/{{ p.page.id }}/" class="pagetypewidget">
+                                        <select name="id_pagetype" >
+                                            {% for pt in pagetypes %}
+                                            <option {% if p.page.pagetype == pt %}selected="selected"{% endif %} value="{{ pt.id }}" >{{ pt.type }} </option>
+                                            {% endfor %}
+                                        </select>
+
+                                        </form>
+                                    </p>
                                     <p><a class="deletePage" data-pageimage_id="{{ p.id }}" href="/ocve/deletepage/{{ p.id }}">X</a></p>
                                 </li>
                             {% endif %}

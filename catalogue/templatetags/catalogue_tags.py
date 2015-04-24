@@ -175,12 +175,18 @@ def _format_code(match):
     return repl.encode('utf-8')
 
 @register.filter
-def truncate_to_char(value, char):
-    try:
-        index = value.index(char)
-        truncated = value[:index+1]
-    except ValueError:
-        truncated = value
+def truncate_comments(value):
+    truncated = value
+
+    index = value.find('.')
+    index_char2 = value.find('%')
+
+    if index_char2 > index:
+        index = index_char2
+
+    if index > 0:
+        truncated = value[:index + 1]
+
     return truncated
 
 @register.assignment_tag()

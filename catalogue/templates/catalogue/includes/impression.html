@@ -3,5 +3,5 @@
     <a href="{% pageurl impression %}">{{ impression.title|add_special_characters}}</a>
 </h4>
 <p>
-{{ impression.impression.comments|truncate_to_char:"."|add_special_characters }}
+{{ impression.impression.comments|truncate_comments|add_special_characters }}
 </p>

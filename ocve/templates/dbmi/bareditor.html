@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+
+    <title></title>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery-1.6.1.min.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}assets/c/colorbox.css"/>
+    <script src="{{ STATIC_URL }}assets/s/jquery.colorbox-min.js"></script>
+    {#    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers.js"></script>#}
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/BaseTypes/Class.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Util.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Events.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Tween.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Console.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Lang.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Layer/Grid.js"></script>
+    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Layer/Zoomify.js"></script>
+
+    <!-- Irregular transform from Miguel Vieria's image annnotator https://github.com/kcl-ddh/openlayers-image-annotation/ -->
+    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/annotator-helper.js"></script>
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}assets/s/OpenLayers/theme/default/style.css" type="text/css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}assets/c/bareditor.css" type="text/css">
+    {% if mode == 1 %}
+        <!-- crop correct mode-->
+        <script src="{{ STATIC_URL }}assets/s/cropcorrect.js"></script>
+    {% else %}
+        <script src="{{ STATIC_URL }}assets/s/bareditor.js"></script>
+    {% endif %}
+
+    <script type="text/javascript">
+
+        var zoomify_width = {{pageimage.width}};   // 3368;
+        var zoomify_height = {{pageimage.height}};  //4210;
+        {% autoescape off %}
+            pageID ={{ pageimage.id }} //77557 ;
+            var zoomify_url = "{{ zoomifyURL }}"
+            //Ajax URL to get bar regions, switches between grouped and uoverngrouped geometries
+            var regionURL = "{{regionURL}}"
+        {% endautoescape %}
+        startX = 0;
+        startY = 0;
+        endX = 0;
+        endY = 0;
+        var map, zoomify;
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('p.box').click(function (e) {
+                selectFeature.unselectAll();
+                var barid=$(e.target).html();
+                $(e.target).data("regionid")
+                populateBarForm(barid,$(e.target).data("regionid"),$(e.target).data("anomaly"));
+                if (barid ==0){
+                    barid='zero';
+                }
+                var select=vlayer.getFeaturesByAttribute('label',barid);
+                if (select.length > 0){
+                    selectFeature.select(select[0]);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div>
+    <ul class="barnav">
+        {% if prev %}
+            <li class="prev"><a href="/ocve/editbars/{{ prev.id }}"><< {{ prev.page.label }}</a></li>
+        {% endif %}
+        <li><a href="/ocve/sourceview/{{ page.sourcecomponent.source.id }}/">Back
+            to {{ page.sourcecomponent.source.getOpusLabel }}</a></li>
+        {% if next %}
+            <li class="next"><a href="/ocve/editbars/{{ next.id }}">{{ next.page.label }} >></a></li>
+        {% endif %}
+    </ul>
+
+    {% autoescape off %}
+        <h1> {{ page.sourcecomponent.source.label }} ({{ page.sourcecomponent.source.getAcCode }}),
+            page {{ page.label }} bs. {{ pageimage.startbar }}-{{ pageimage.endbar }}</h1>
+    {% endautoescape %}
+    <p>{{ zoomifyURL }}::{{ pl.storageStructure }}</p>
+
+    {% if mode == 1 %}
+
+        <p>Click on the orange bars (one click will select them all.) You must click first to initialize the tool. Then
+            click the 'drag' control button (<img
+                    src="{{ STATIC_URL }}assets/s/OpenLayers/theme/default/img/pan_off.png"/>) Move the grouped bars so
+            that they line up with the uncropped image, then press save. The change
+            will be applied to all bar regions</p>
+        <p><a href="/ocve/editbars/{{ pageimage.id }}/">Edit individual bars</a></p>
+    {% else %}
+        {% if request.session.sourceViewMode %}
+            <a href="/ocve/sourceviews/{{ request.session.sourceViewMode }}/">Back to source list</a>
+        {% endif %}
+        <p><a rel="lightbox" href="/static/html/helpfiles/bareditorhelp.html">Help</a></p>
+        <p><a href="/ocve/cropCorrect/{{ pageimage.id }}/">Correct Cropping</a></p>
+
+    {% endif %}
+</div>
+<div class="rightFrame">
+    {% if mode != 1 %}
+        <form method="POST" action="/ocve/updateBarNumber/" id="numberForm">
+            {% csrf_token %}
+            <input id="regionID" type="hidden" name="id" value="0"/>
+            <input id="barNumber" type="text" name="barNumber" value="0"/>
+            <input title="Anomalous bar?" id="anomaly" name="anomaly" type="checkbox" value="1">
+            <input type="Submit" value="Change">
+            <button type="Submit"  name="Delete" value="1">Delete</button>
+        </form>
+        <form method="POST" action="/ocve/reorderBars/" id="reorderForm">
+            {% csrf_token %}
+            <input id="pageid" type="hidden" name="pageid" value="{{ pageimage.id }}"/>
+
+            <input type="Submit" value="Reassign all bar numbers">
+        </form>
+        <input type="button" value="Fix System" id="smoothTest">
+    {% endif %}
+    <p>Bars on this page: </p>
+    {% autoescape off %}
+        <p class="box">{{ regionString }}</p>
+    {% endautoescape %}
+    <p>Page Status</p>
+
+    <form action="/ocve/updateStatus/" method="POST">
+        <input id="page_id" type="hidden" name="page_id" value="{{ pageimage.id }}"/>
+        {% for legacy in pageimage.pagelegacy_set.all %}
+            <select name="status">
+                {% for stat in statuses %}
+                    <option {% if legacy.editstatus.id == stat.id %}selected="selected"{% endif %}
+                            value="{{ stat.id }}">{{ stat.status }}</option>
+                {% endfor %}
+            </select>
+        {% endfor %}
+        <input id="correctsubmit" type="submit" name="correct" value="Update status">
+    </form>
+
+    <p>Keys: </p>
+    <ul>
+        <li>Select Next Bar: <strong>n</strong></li>
+        <li>Unselect all: <strong>esc</strong></li>
+        <li>Fix System: <strong>CTRL+ALT+F</strong></li>
+        <!-- <li></li>-->
+    </ul>
+    <p> Jump to page</p>
+    <ul>
+        {% for p in pages %}
+            <li><a href="/ocve/editbars/{{ p.id }}/">{{ p.textlabel }}</a></li>
+        {% endfor %}
+    </ul>
+
+</div>
+<div id="map"></div>
+
+</body>
+</html>

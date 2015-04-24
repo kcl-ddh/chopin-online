@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<form action="/ocve/savesourcecomponent/{{ sc.id }}/" method="post">
+{%  csrf_token %}
+    <table>
+        {{ scf }}
+        <tr>
+            <th><label for="id_workcomponent">Work component (number, movement etc.)</label></th>
+            <td>
+                <select name="id_workcomponent" id="id_workcomponent">
+                    <option {% if currentwc == None %}selected="selected"{% endif %} value="1">None</option>
+                    {% for wc in workcomponents %}
+                        <option {% if currentwc == wc %}selected="selected"{% endif %} value="{{ wc.id }}">{{ wc }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="id_instrument">Instrument</label></th>
+            <td>
+                <select name="id_instrument" id="id_instrument">
+                    {% for i in instruments %}
+                        <option {% if curinstrument == i %}selected="selected"{% endif %} value="{{ i.id }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Save">
+</form>
+</body>
+</html>

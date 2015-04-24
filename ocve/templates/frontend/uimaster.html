@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %} {% endblock %}</title>
+    {% block default_stylesheet %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}assets/stylesheets/app.css">
+    {% endblock %}
+
+    {% block stylesheet %}
+    
+    {% endblock %}
+    
+    {% block default_javascript %}
+        <script type="text/javascript" src="{{ STATIC_URL }}assets/bower_components/jquery/jquery.min.js"></script>
+        <script src="{{ STATIC_URL }}assets/bower_components/jquery-ui/jquery-ui.min.js" type="text/javascript"
+                charset="utf-8"></script>
+        <script type="text/javascript" src="//use.typekit.net/caf1nkf.js"></script>
+        <script type="text/javascript">try {
+            	Typekit.load();
+            } catch (e) {
+        }</script>
+        <script src="{{ STATIC_URL }}assets/bower_components/modernizr/modernizr.js" type="text/javascript"
+            charset="utf-8"></script>
+    {% endblock %}
+
+    {% block javascript %}
+
+    {% endblock %}
+</head>
+<body class="{% if mode == 'OCVE' %}ocve-page{% else %}cfeo-page{% endif %}">
+{% block banner %}
+    {% include 'includes/header.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% block footer %}
+    {% include 'includes/footer.html' %}
+{% endblock %}
+
+{% block collections %}
+<div class="collections-inline">
+	<a href="#" class="close-collections-inline"><span class="fa fa-angle-double-down"></span></a>
+	<div class="inner"></div>
+</div>
+{% endblock %}
+</body>
+
+{% block endjs %}
+<script src="/static/assets/bower_components/foundation/js/foundation.min.js" type="text/javascript"
+            charset="utf-8"></script>
+<script type="text/javascript" src="/static/assets/js/app.js"></script>
+{%endblock %}
+</html>

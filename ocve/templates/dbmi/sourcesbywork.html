@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Source by opus</title>
+</head>
+<body>
+<h1>Sources by work</h1>
+<a href="/ocve/dbmi">return to DBMI</a>
+{%   for w in works %}
+<h1>{{ w.label }}</h1>
+    <a href="/admin/ocve/workinformation/{{ w.workinformation.id }}/">Edit information</a>
+    <h3>CFEO Information</h3>
+<dl>
+<dt>General Information</dt>
+<dd>{{ w.workinformation.generalinfo }}</dd>
+<dt>Relevant Manuscripts</dt>
+<dd>{{ w.workinformation.relevantmanuscripts }}</dd>
+<dt>Analysis</dt>
+<dd>{{ w.workinformation.analysis }}</dd>
+</dl>
+    <h3>OCVE Information</h3>
+
+    <p>{% autoescape off %}
+        {{ w.workinformation.OCVE }}
+    {% endautoescape %}
+    </p>
+    <ul>
+    {% for s in w.getSources %}
+        <li><a href="/ocve/sourceeditor/{{ s.id }}/" title="{{ s.label }}">{{ s.getAcCode }}</a> (shelfmark {{ s.getSourceInformation.shelfmark }})</li>
+       {% endfor %}
+    </ul>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+{% if works %}
+    <ul>
+        {% for work in works %}
+            <li><a href="/ocve/workadmin/{{ work.id }}/">{{ work.label }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if sources %}
+    <h2>{{ work.label }} <a href="/admin/ocve/work/{{ work.id }}">Edit</a></h2>
+    <ul>
+        {% for s in sources %}
+        <li><a href="/ocve/sourceeditor/{{ s.id }}/">{{ s.getAcCode }} || {{ s.getEditStatus }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="/ocve/works/">Back to Works</a>
+{% endif %}
+
+{% if sComps %}
+    <h2>{{ source.label }} <a href="/admin/ocve/source/{{ source.id }}">Edit</a></h2>
+     {% autoescape off %}
+    <dl>
+    <dt>title</dt>
+    <dd>{{ si.title }}</dd>
+    <dt>publicationtitle</dt>
+    <dd>{{ si.publicationtitle }}</dd>
+    <dt>Platenumber</dt>
+    <dd>{{ si.platenumber }}</dd>
+    <dt>locationsimilarcopies</dt>
+    <dd>{{ si.locationsimilarcopies }}</dd>
+    <dt>reprints</dt>
+    <dd>{{ si.reprints}}</dd>
+
+    <dt>seriestitle</dt>
+    <dd>{{ si.seriestitle }}</dd>
+    <dt>Copyright</dt>
+    <dd>{{ si.copyright }}</dd>
+    <dt>Contents Summary</dt>
+    <dd>{{ si.contentssummary }}</dd>
+    <dt>Contents</dt>
+    <dd>{{ si.contents }}</dd>
+    <dt>shelfmark</dt>
+    <dd>{{ si.shelfmark}}</dd>
+    <dt>notes</dt>
+    <dd>{{ si.notes }}</dd>
+    <dt>datepublication</dt>
+    <dd>{{ si.datepublication }}</dd>
+    <dt>leaves</dt>
+    <dd>{{ si.leaves }}</dd>
+    <dt>sourcecode</dt>
+    <dd>{{ si.sourcecode }}</dd>
+    <dt>imagesource</dt>
+    <dd>{{ si.imagesource }}</dd>
+    <dt>platenumber</dt>
+    <dd>{{ si.platenumber }}</dd>
+    <dt>additionalInformation</dt>
+    <dd>{{ si.additionalInformation }}</dd>
+    <dt>Key Features</dt>
+    <dd>{{ si.keyFeatures }}</dd>
+    <dt>Volume</dt>
+    <dd>{{ si.volume }}</dd>
+    <dt>publisher</dt>
+    <dd>{{ si.publisher }}</dd>
+    <dt>archive</dt>
+    <dd>{{ si.archive }}</dd>
+    <dt>dedicatee</dt>
+    <dd>{{ si.dedicatee }}</dd>
+    <dt>accode</dt>
+    <dd>{{ si.accode }}</dd>
+</dl>
+    {% endautoescape %}
+    <ul>
+        {% for c in sComps %}
+            <li><a href="/ocve/sourcecomp/{{ c.id }}/">{{ c.label }}
+            </a></li>
+        {% endfor %}
+    </ul>
+    <a href="/ocve/works/">Back to Works</a>
+{% endif %}
+
+{% if comp %}
+    <h2>{{ source.label }} || {{ comp.label }}</h2>
+
+
+    <ul>
+        {% for p in pages %}
+            <li><a href="/ocve/editbars/{{ p.id }}/">{{ p.page.label }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="/ocve/source/{{ source.id }}/"> Back to {{ source.label }}</a>
+{% else %}
+
+    {% if pages %}
+        <h2>{{ source.label }}</h2>
+           <a href="/admin/ocve/source/{{ source.id }}">Edit</a>
+{% autoescape off %}
+         <dl>
+    <dt>title</dt>
+    <dd>{{ si.title }}</dd>
+    <dt>publicationtitle</dt>
+    <dd>{{ si.publicationtitle }}</dd>
+    <dt>Platenumber</dt>
+    <dd>{{ si.platenumber }}</dd>
+    <dt>locationsimilarcopies</dt>
+    <dd>{{ si.locationsimilarcopies }}</dd>
+    <dt>reprints</dt>
+    <dd>{{ si.reprints}}</dd>
+
+    <dt>seriestitle</dt>
+    <dd>{{ si.seriestitle }}</dd>
+    <dt>Copyright</dt>
+    <dd>{{ si.copyright }} </dd>
+    <dt>Contents Summary</dt>
+    <dd>{{ si.contentssummary }}</dd>
+    <dt>Contents</dt>
+    <dd>{{ si.contents }}</dd>
+    <dt>shelfmark</dt>
+    <dd>{{ si.shelfmark}}</dd>
+    <dt>notes</dt>
+    <dd>{{ si.notes }}</dd>
+    <dt>datepublication</dt>
+    <dd>{{ si.datepublication }}</dd>
+    <dt>leaves</dt>
+    <dd>{{ si.leaves }}</dd>
+    <dt>sourcecode</dt>
+    <dd>{{ si.sourcecode }}</dd>
+    <dt>imagesource</dt>
+    <dd>{{ si.imagesource }}</dd>
+    <dt>platenumber</dt>
+    <dd>{{ si.platenumber }}</dd>
+    <dt>additionalInformation</dt>
+    <dd>{{ si.additionalInformation }}</dd>
+    <dt>Key Features</dt>
+    <dd>{{ si.keyFeatures }}</dd>
+    <dt>Volume</dt>
+    <dd>{{ si.volume }}</dd>
+    <dt>publisher</dt>
+    <dd>{{ si.publisher }}</dd>
+    <dt>archive</dt>
+    <dd>{{ si.archive }}</dd>
+    <dt>dedicatee</dt>
+    <dd>{{ si.dedicatee }}</dd>
+    <dt>accode</dt>
+    <dd>{{ si.accode }}</dd>
+</dl>
+        {% endautoescape %}
+        <ul>
+            {% for p in pages %}
+                <li><a href="/ocve/editbars/{{ p.getPrimaryPageImage.id }}/">{{ p.label }}</a></li>
+            {% endfor %}
+        </ul>
+        <a href="/ocve/work/{{ work.id }}/"> Back to {{ work.label }}</a>
+    {% endif %}
+{% endif %}
+
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Sources</title>
+    <style type="text/css">
+        .corrected {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<a href="/ocve/dbmi/"> Back to DBMI</a>
+{% if sources %}
+    <h2>{{ title }}</h2>
+    <h3>Source counts by edit status</h3>
+    <ul>
+        {% for s,count in sourcecounts.items %}
+            <li>{{ s }}: {{ count }}</li>
+        {% endfor %}
+    </ul>
+    <form action="#" method="POST">
+        <input type="hidden" name="ordermode" value="1"/>
+        <input type="hidden" name="filtercomplete" value="{{ filterComplete }}"/>
+        <input type="submit" value="Order by opus number (default)">
+    </form>
+    {% if filterComplete == 0 %}
+        <form action="#" method="POST">
+            <input type="hidden" name="ordermode" value="{{ ordermode }}"/>
+            <input type="hidden" name="filtercomplete" value="1"/>
+            <input type="submit" value="Filter out sources marked as complete">
+        </form>
+    {% else %}
+        <form action="#" method="POST">
+            <input type="hidden" name="ordermode" value="{{ ordermode }}"/>
+            <input type="hidden" name="filtercomplete" value="0"/>
+            <input type="submit" value="Show all">
+        </form>
+    {% endif %}
+    <form action="#" method="POST">
+        <input type="hidden" name="ordermode" value="2"/>
+        <input type="hidden" name="filtercomplete" value="{{ filterComplete }}"/>
+        <input type="submit" value="Order by edit status">
+    </form>
+    <ol>
+        {% autoescape off %}
+            {% for s in sources %}
+                <li><a href="/ocve/sourceview/{{ s.id }}/">{{ s.getAcCode }}: {{ s.getOpusLabel }}
+                    <strong>{{ s.getEditStatus.status }}</strong>
+                    {% comment %}{% for legacy in s.sourcelegacy_set.all %}
+                        <strong>{{ legacy.editstatus.status }}</strong>
+                    {% endfor %}{% endcomment %}
+                </a></li>
+            {% endfor %}
+        {% endautoescape %}
+    </ol>
+
+{% endif %}
+{% if source %}
+    <a href="/ocve/sourceviews/{{ request.session.sourceViewMode }}/">Back to list</a>
+    <h1>{{ source.getOpusLabel }}</h1>
+    <p><a href="/ocve/sourceeditor/{{ source.id }}/">Edit Source</a></p>
+    <p>When you have finished editing all pages, click the box below to record that this source has been corrected</p>
+    <form action="/ocve/updateStatus/" method="POST">
+        <input id="source_id" type="hidden" name="id" value="{{ source.id }}"/>
+        {% for legacy in source.sourcelegacy_set.all %}
+            {{ legacy.witnessKey }}
+            <select name="status">
+                {% for stat in statuses %}
+                    <option {% if legacy.editstatus.id == stat.id %}selected="selected"{% endif %}
+                            value="{{ stat.id }}">{{ stat.status }}</option>
+                {% endfor %}
+            </select>
+        {% endfor %}
+        <label for="andpages">Apply to source's pages</label>
+        <input type="checkbox" id="andpages" name="andpages" value="1"/>
+        <input id="correctsubmit" type="submit" name="correct" value="Update status">
+    </form>
+    <ol>
+        {% for p in pages %}
+            <li>
+            ({{ p.id }}) <a href="/ocve/editbars/{{ p.id }}/">{{ p.page.label }} {{ p.startbar }}-{{ p.endbar }}</a>
+            ({{ p.page.orderno }})
+                {% for legacy in p.pagelegacy_set.all %}
+                    {% comment %}<p>Filename: {{ legacy.filename }}</p>
+                    <p>Storage:  {{ legacy.storageStructure }}</p>{% endcomment %}
+                    <strong>{{ legacy.editstatus.status }}</strong>
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ol>
+
+{% endif %}
+</body>
+</html>

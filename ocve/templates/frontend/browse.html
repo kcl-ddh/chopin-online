@@ -343,10 +343,11 @@
     $(document).ready(function () {
         //Instrument Controls
 
-        $('#instrumentToggle').click(function () {
-            $('#instrumentFilters').slideToggle();
-            return false;
-        });
+        // No need for this, I'm using Foundation default - GF
+        // $('#instrumentToggle').click(function () {
+        //    $('#instrumentFilters').slideToggle();
+        //    return false;
+        // });
         $("body").on("click", ".instrumentFilter", function (event) {
             var iid = $(this).data("instrument_id");
             if (iid != 0) {
@@ -514,32 +515,40 @@
             <div class="large-9 columns">
                 <h1>Browse sources</h1>
 
-                <dl class="show-filters">
-                    <dt class="filters-header">Selected filters
-                        <a class="ctrl refresh" href="#" id="filters-refresh"><i class="fa fa-refresh" data-tooltip=""
-                                                                                 title="Clear all filters"></i>
-                        </a>
-                    </dt>
-                    <dd id="no-filters" class="no-filters-message">No filters are currently selected: showing all
-                        results
-                    </dd>
-                </dl>
+                <div class="row">
+                    <div class="large-9 columns">
 
-                <div class="clear"></div>
+                        <dl class="show-filters">
+                            <dt class="filters-header">Selected filters
+                                <a class="ctrl refresh" href="#" id="filters-refresh"><i class="fa fa-refresh" data-tooltip="" title="Clear all filters"></i>
+                                </a>
+                            </dt>
+                            <dd id="no-filters" class="no-filters-message">No filters are currently selected: showing all results
+                            </dd>
+                        </dl>
 
-                <div id="selectedFilters"></div>
-                <div id="instrumentFilterControl" class="hidden">
-                    {% if instruments.count > 1 %}
-                        <a href="#" id="instrumentToggle">Instruments</a>
-                        <ul id="instrumentFilters" class="hidden">
-                            <li class="instrumentFilter" data-instrument_id="0"><a href="#" data-instrument_id="0">All</a></li>
-                            {% for i in instruments %}
-                                <li class="instrumentFilter" data-instrument_id="{{ i.id }}" class="hidden">
-                                    <a href="#"   data-instrument_id="{{ i.id }}">{{ i }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                        <div class="clear"></div>
+
+                        <div id="selectedFilters"></div>
+                    </div>
+
+                    <div class="large-3 columns">
+                        <div id="instrumentFilterControl">
+                            {% if instruments.count > 1 %}
+                                <button href="#" id="instrumentToggle" data-dropdown="instrumentFilters" aria-controls="instrumentFilters" aria-expanded="false" class="small radius button dropdown right">Filter by instrument</button>
+                                <ul id="instrumentFilters" data-dropdown-content class="f-dropdown" aria-hidden="true">
+                                    <li class="instrumentFilter" data-instrument_id="0">
+                                        <a href="#" data-instrument_id="0">All</a>
+                                    </li>
+                                    {% for i in instruments %}
+                                    <li class="instrumentFilter" data-instrument_id="{{ i.id }}">
+                                        <a href="#" data-instrument_id="{{ i.id }}">{{ i }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
 
                 <div class="updating">

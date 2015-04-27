@@ -1382,6 +1382,7 @@ b.top-spacing {
 .symbol-iequotesitalics {
     background: url("/static/images/special-characters/06-symbol-ie-italics-code-63.png") top center no-repeat;
     width: 9px;
+    background-size: auto 15px;
     vertical-align: text-top;
 }
 
@@ -1389,6 +1390,7 @@ b.top-spacing {
     background: url("/static/images/special-characters/07-symbol-iundotteditalics.png") top center no-repeat;
     width: 6px;
     background-size: auto 15px;
+    vertical-align: text-top;
 }
 
 .symbol-ieitalics {

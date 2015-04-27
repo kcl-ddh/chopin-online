@@ -61,6 +61,10 @@ a:focus {
     padding: 1rem 0;
 }
 
+#copyright:before {
+    content: "\00a9 ";
+}
+
 /* comments */
 .comment.panel {
     max-width: 600px;

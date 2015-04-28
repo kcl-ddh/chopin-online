@@ -67,7 +67,8 @@ ul.search-results {
 /* Formatting the footnotes to match the inline style */
 
 .rich-text:last-of-type hr ~ * {
-        font-size: 9pt;
+        /* font-size: 9pt; */
+        font-size: 1rem !important;
         line-height: 115%;
         text-align: justify;
 }

@@ -211,7 +211,7 @@
                         opusOutput +="<a class=\"ctrl more\" data-tooltip=\"\"  title=\"View in annotated catalogue\" href=\"/aco/catalogue/impression/"+sources[x].achash+"/\"><i class=\"fa fa-link\"></i></a>&nbsp;";
                     }
             opusOutput += "<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/{{ mode|lower }}/browse/sourceinformation/" + sources[x].id + "/\"  title=\"Witness overview\" data-reveal-id=\"witness-info\"><i class=\"fa fa-info-circle fa-lg\"></i></a></span>";
-            opusOutput +="<h5><a href=\"#\" class=\"expandme\"><i class=\"expand fa fa-caret-right\"></i> " + sources[x].label + "</a></h5>";
+            opusOutput +="<h5><a href=\"#\" class=\"expandme\"><i class=\"expandd fa fa-caret-right\"></i> " + sources[x].label + "</a></h5>";
             opusOutput +="<ul id=\"sourcePages" + sources[x].id + "\" class=\"pageList movement\">";
             //Output pages
             opusOutput += outputPages(sources[x]);

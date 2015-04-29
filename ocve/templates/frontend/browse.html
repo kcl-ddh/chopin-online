@@ -412,8 +412,6 @@
                     filters.push({"type": '{{ f.type }}', "id":{{ f.id }}, "selection": '{{ f.selection }}'})
                     applyFilter('{{ f.type }}', {{ f.id }}, '{{ f.selection }}');
                     filterFacets(sourceview.getCurrentItems(), '{{ f.type }}');
-                {% else %}
-                    {{ f.type }}
                 {% endif %}
 
             {% endfor %}

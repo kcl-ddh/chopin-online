@@ -10,7 +10,8 @@ body {
     /* font-family: "Museo Sans", sans-serif; */
 }
 
-h1, h2 {
+header h1,
+header h2 {
     font-family: "Hero", sans-serif;
 }
 
@@ -19,7 +20,7 @@ h1, h2 {
 } */
 
 section h1 {
-    font-size: 2.125rem;
+    font-size: 1.5rem;
 }
 
 p {
@@ -27,7 +28,8 @@ p {
 }
 
 li {
-    margin-bottom: .5em;
+    /* margin-bottom: .5em; */
+    margin-bottom: .25em;
 }
 
 li p {
@@ -59,6 +61,10 @@ a:focus {
     color: #666;
     font-size: .875rem;
     padding: 1rem 0;
+}
+
+#copyright:before {
+    content: "\00a9 ";
 }
 
 /* comments */
@@ -1319,6 +1325,12 @@ b.top-spacing {
     width: 100%;
 }
 
+/** Rich Text **/
+
+.rich-text ul, .rich-text ol {
+    margin-bottom: .625rem !important;
+}
+
 /** Special characters **/
 
 .symbol-os,
@@ -1343,101 +1355,103 @@ b.top-spacing {
 }
 
 .symbol-os {
-    background: url("/static/assets/images/special-characters/01-symbol-os-code-127.png") top center no-repeat;
+    background: url("/static/images/special-characters/01-symbol-os-code-127.png") top center no-repeat;
     width: 12px;
     background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-ie {
-    background: url("/static/assets/images/special-characters/02-symbol-ie-code-65.png") top center no-repeat;
+    background: url("/static/images/special-characters/02-symbol-ie-code-65.png") top center no-repeat;
     width: 7px;
     background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-meul {
-    background: url("/static/assets/images/special-characters/03-symbol-MEul.png") top center no-repeat;
+    background: url("/static/images/special-characters/03-symbol-MEul.png") top center no-repeat;
     width: 18px;
     background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-12 {
-    background: url("/static/assets/images/special-characters/04-symbol-12-code-116.png") top center no-repeat;
+    background: url("/static/images/special-characters/04-symbol-12-code-116.png") top center no-repeat;
     width: 5px;
     background-size: auto 15px;
 }
 
 .symbol-wesseldec {
-    background: url("/static/assets/images/special-characters/05-symbol-wesseldec.png") top center no-repeat;
+    background: url("/static/images/special-characters/05-symbol-wesseldec.png") top center no-repeat;
     width: 44px;
     background-size: auto 15px;
 }
 
 .symbol-iequotesitalics {
-    background: url("/static/assets/images/special-characters/06-symbol-ie-italics-code-63.png") top center no-repeat;
+    background: url("/static/images/special-characters/06-symbol-ie-italics-code-63.png") top center no-repeat;
     width: 9px;
+    background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-iundotteditalics {
-    background: url("/static/assets/images/special-characters/07-symbol-iundotteditalics.png") top center no-repeat;
+    background: url("/static/images/special-characters/07-symbol-iundotteditalics.png") top center no-repeat;
     width: 6px;
     background-size: auto 15px;
+    vertical-align: text-top;
 }
 
 .symbol-ieitalics {
-    background: url("/static/assets/images/special-characters/08-symbol-ie-italics.png") top center no-repeat;
+    background: url("/static/images/special-characters/08-symbol-ie-italics.png") top center no-repeat;
     width: 8px;
     background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-lithographersinitials {
-    background: url("/static/assets/images/special-characters/09-symbol-lithographersinitials-code-193.png") top center no-repeat;
+    background: url("/static/images/special-characters/09-symbol-lithographersinitials-code-193.png") top center no-repeat;
     /* width: 21px; */
     width: 18px;
     background-size: auto 13px;
 }
 
 .symbol-hl {
-    background: url("/static/assets/images/special-characters/10-symbol-HL-code-128.png") top center no-repeat;
+    background: url("/static/images/special-characters/10-symbol-HL-code-128.png") top center no-repeat;
     /* width: 21px; */
     width: 18px;
     background-size: auto 13px;
 }
 
 .symbol-creversecedilla {
-    background: url("/static/assets/images/special-characters/11-symbol-Creversecedilla-code-244.png") top center no-repeat;
+    background: url("/static/images/special-characters/11-symbol-Creversecedilla-code-244.png") top center no-repeat;
     width: 10px;
     background-size: auto 15px;
     vertical-align: text-bottom;
 }
 
 .symbol-l {
-    background: url("/static/assets/images/special-characters/12-symbol-L-code-238.png") top center no-repeat;
+    background: url("/static/images/special-characters/12-symbol-L-code-238.png") top center no-repeat;
     /* width: 13px; */
     width: 12px;
     background-size: auto 14px;
 }
 
 .symbol-eitalics {
-    background: url("/static/assets/images/special-characters/13-symbol-e=italics-code-97.png") top center no-repeat;
+    background: url("/static/images/special-characters/13-symbol-e=italics-code-97.png") top center no-repeat;
     width: 9px;
     background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-er {
-    background: url("/static/assets/images/special-characters/14-symbol-ER-code-246.png") top center no-repeat;
+    background: url("/static/images/special-characters/14-symbol-ER-code-246.png") top center no-repeat;
     width: 12px;
     background-size: auto 15px;
     vertical-align: text-top;
 }
 
 .symbol-iundotted-eitalics {
-    background: url("/static/assets/images/special-characters/15-symbol-iundotted-eitalics.png") top center no-repeat;
+    background: url("/static/images/special-characters/15-symbol-iundotted-eitalics.png") top center no-repeat;
     width: 10px;
     background-size: auto 15px;
     vertical-align: text-top;

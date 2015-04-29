@@ -19,3 +19,4 @@ pdfs
 .idea/*
 testupload/*
 @material
+bower_components

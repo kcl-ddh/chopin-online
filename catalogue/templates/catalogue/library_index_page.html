@@ -19,15 +19,19 @@
 <ul class="works search-results">
     {% if cities %}
     {% for city in cities %}
-        <li><h4>{{ city.name }}, {{ city.country.name }}</h4></li>
+        {% if city.libraries.all %}
+            <li><h4>{{ city.name }}, {{ city.country.name }}</h4></li>
 
-        {% include "catalogue/includes/libraries.html" with libraries=city.libraries.all %}
+            {% include "catalogue/includes/libraries.html" with libraries=city.libraries.all %}
+        {% endif %}
     {% endfor %}
     {% elif countries %}
     {% for country in countries %}
-        <li><h4>{{ country.name }}</h4></li>
+        {% if country.libraries %}
+            <li><h4>{{ country.name }}</h4></li>
 
-        {% include "catalogue/includes/libraries.html" with libraries=country.libraries %}
+            {% include "catalogue/includes/libraries.html" with libraries=country.libraries %}
+        {% endif %}
         {% endfor %}
     {% else %}
         {% include "catalogue/includes/libraries.html" with libraries=self.libraries %}

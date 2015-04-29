@@ -27,7 +27,8 @@ p {
 }
 
 li {
-    margin-bottom: .5em;
+    /* margin-bottom: .5em; */
+    margin-bottom: .25em;
 }
 
 li p {
@@ -1321,6 +1322,12 @@ b.top-spacing {
     display: block;
     padding: 5px;
     width: 100%;
+}
+
+/** Rich Text **/
+
+.rich-text ul, .rich-text ol {
+    margin-bottom: .625rem !important;
 }
 
 /** Special characters **/

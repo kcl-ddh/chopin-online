@@ -398,6 +398,8 @@ class ImpressionCopy(Orderable, TimeStampedModel):
 class Impression(Page):
     code_hash = models.CharField(max_length=32, editable=False)
     impression_title = models.TextField()
+    ocve_ac_code = models.CharField(max_length=128, blank=True, null=True,
+                                    verbose_name='AC Code in CFEO/OCVE')
     publisher = models.ForeignKey(Publisher, blank=True, null=True,
                                   on_delete=models.SET_NULL,
                                   related_name='impressions')
@@ -421,7 +423,12 @@ class Impression(Page):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.code_hash = hashlib.md5(_e(self.title)).hexdigest()
+        ac_code = self.title
+
+        if self.ocve_ac_code:
+            ac_code = self.ocve_ac_code
+
+        self.code_hash = hashlib.md5(_e(ac_code)).hexdigest()
         super(Impression, self).save(*args, **kwargs)
 
     @property
@@ -431,6 +438,7 @@ class Impression(Page):
 Impression.content_panels = [
     FieldPanel('title', classname='full title'),
     FieldPanel('impression_title', classname='full title'),
+    FieldPanel('ocve_ac_code', classname='full title'),
     PageChooserPanel('publisher', Publisher),
     FieldPanel('content', classname='full'),
     FieldPanel('comments', classname='full'),

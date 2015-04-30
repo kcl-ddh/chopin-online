@@ -177,15 +177,17 @@ def _format_code(match):
 @register.filter
 def truncate_comments(value):
     truncated = value
+    suffix = '.'
 
     index = value.find('.')
     index_char2 = value.find('%')
 
     if index_char2 > index:
         index = index_char2
+        suffix = ''
 
     if index > 0:
-        truncated = value[:index + 1]
+        truncated = value[:index] + suffix
 
     return truncated
 

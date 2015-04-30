@@ -52,12 +52,13 @@ class SourceComponentItem:
         self.instruments = instruments
         self.source_id = sourcecomponent.source_id
         self.orderno = sourcecomponent.orderno
-        w=Work.objects.filter(workcomponent__workcomponent_sourcecomponent__sourcecomponent=sourcecomponent)
-        if w.count() > 0:
-            self.work=w.id
-        else:
+        #May not be needed
+        #w=Work.objects.filter(workcomponent__workcomponent_sourcecomponent__sourcecomponent=sourcecomponent)
+        #if w.count() > 0:
+         #   self.work=w.id
+        #else:
             #Non-music pages
-            self.work=0
+         #   self.work=0
 
     def toJson(self):
         scjson = "{'id': " + str(self.id) + ", 'label': " + json.dumps(self.label) + ", "

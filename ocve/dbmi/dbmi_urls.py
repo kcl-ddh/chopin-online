@@ -40,6 +40,7 @@ urlpatterns = patterns('', (r'^source/(?P<id>\d+)/$', source),
                        (r'^savePage/$', savePage),
                        (r'^updatePageIndex/$', updatepageindex),
                        (r'^defaultpageorder/(?P<id>\d+)/$', defaultpageorder),
+                       (r'^updatepagetype/(?P<id>\d+)/$', updatepagetype),
 
 
                        #Misc

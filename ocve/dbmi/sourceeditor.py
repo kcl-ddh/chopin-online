@@ -10,6 +10,7 @@ from django.template.defaultfilters import register
 from ocve.forms import *
 from ocve.bartools import *
 from datatools import *
+
 import os
 
 @register.filter()
@@ -138,6 +139,19 @@ def defaultpageorder(request,id):
     reorderPagesByDefault(pageimages)
     return HttpResponseRedirect("/ocve/sourceeditor/"+id+"/")
 
+@csrf_exempt
+def updatepagetype(request,id):
+    result=""
+    try:
+        p=Page.objects.get(id=id)
+        tid=request.POST["id_pagetype"]
+        Type=PageType.objects.get(id=int(tid))
+        p.pagetype=Type
+        p.save()
+        result ="Type updated to"+Type.type
+    except ObjectDoesNotExist:
+        result="ERROR in pagetype update"
+    return HttpResponse(result)
 
 #The DBMi editor view for altering source structure
 #This view is used for new and existing sources
@@ -151,8 +165,9 @@ def sourceeditor(request,source,sourceInformation,newpageimages,workcomponents):
     works = Work.objects.all()
     opus = source.getOpusLabel()
     sources=Source.objects.all()
+    pagetypes=PageType.objects.all()
     return render_to_response('dbmi/sourceeditor.html',
-        {'works':works,'instruments': instruments, 'scForm': scForm, 'pageimages': pageimages,'newpageimages': newpageimages,'workcomponents':workcomponents,'sourcecomponents': sourcecomponents ,'sourceForm': sourceForm,
+        {'works':works,'pagetypes':pagetypes,'instruments': instruments, 'scForm': scForm, 'pageimages': pageimages,'newpageimages': newpageimages,'workcomponents':workcomponents,'sourcecomponents': sourcecomponents ,'sourceForm': sourceForm,
             'sourceInformationForm': sourceInformationForm, 'opus': opus, 'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,},
         context_instance=RequestContext(request))
 

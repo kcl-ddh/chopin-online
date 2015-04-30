@@ -231,10 +231,11 @@
                 $(this).hide();
             }
         });
-        if (avail > 1) {
-            $('#instrumentFilterControl').show()
+        if (avail > 2) {
+            $('#instrumentFilterControl').show();
         } else {
-            $('#instrumentFilterControl').hide()
+            $('#instrumentFilterControl').hide();
+            $('#instrumentToggle').html('Filter by instrument');
         }
 
         return output;
@@ -350,12 +351,13 @@
         // });
         $("body").on("click", ".instrumentFilter", function (event) {
             var iid = $(this).data("instrument_id");
+            $('#instrumentToggle').html($(this).children('a').html());
             if (iid != 0) {
                 $("li.page[data-instruments*='" + iid + "']:hidden").fadeIn();
                 $("li.page").not("[data-instruments*='" + iid + "']").fadeOut();
-
             } else {
                 $("li.page").fadeIn();
+                $('#instrumentToggle').html('Filter by instrument');
             }
             return false;
         });
@@ -368,8 +370,8 @@
         var sourcetype_filter = PourOver.makeExactFilter("Type", sourceType);
         var KeyPitch_filter = PourOver.makeExactFilter("KeyPitch", keyPitches);
         var KeyMode_filter = PourOver.makeExactFilter("KeyMode", keyModes);
-        //Create collections based on pre-exported JSON
 
+        //Create collections based on pre-exported JSON
         sourceCollection = new PourOver.Collection(sources);
         sourceCollection.addFilters([work_filter, genre_filter, publisher_filter, dedicatee_filter, year_filter, sourcetype_filter, KeyPitch_filter, KeyMode_filter]);
         var order_sort = new sourceSort("orderno");
@@ -413,8 +415,6 @@
                     filters.push({"type": '{{ f.type }}', "id":{{ f.id }}, "selection": '{{ f.selection }}'})
                     applyFilter('{{ f.type }}', {{ f.id }}, '{{ f.selection }}');
                     filterFacets(sourceview.getCurrentItems(), '{{ f.type }}');
-                {% else %}
-                    {{ f.type }}
                 {% endif %}
 
             {% endfor %}

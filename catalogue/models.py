@@ -426,7 +426,7 @@ class Impression(Page):
         ac_code = self.title
 
         if self.ocve_ac_code:
-            ac_code = ocve_ac_code
+            ac_code = self.ocve_ac_code
 
         self.code_hash = hashlib.md5(_e(ac_code)).hexdigest()
         super(Impression, self).save(*args, **kwargs)

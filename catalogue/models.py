@@ -423,7 +423,7 @@ class Impression(Page):
         return self.title
 
     def save(self, *args, **kwargs):
-        ac_code = sef.title
+        ac_code = self.title
 
         if self.ocve_ac_code:
             ac_code = ocve_ac_code

@@ -52,7 +52,7 @@ class SourceComponentItem:
         self.instruments = instruments
         self.source_id = sourcecomponent.source_id
         self.orderno = sourcecomponent.orderno
-        w=Work.objects.filter(workcomponent_sourcecomponent__sourcecomponent=sourcecomponent)
+        w=Work.objects.filter(workcomponent__workcomponent_sourcecomponent__sourcecomponent=sourcecomponent)
         if w.count() > 0:
             self.work=w.id
         else:

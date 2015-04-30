@@ -24,7 +24,7 @@
         <div class="more-information" id="project-links">
             <h3>Digital images in Chopin online</h3>
 
-            <h4>{{ self.title }}</h4>
+            <h4>{{ self.title|add_special_characters }}</h4>
             <ul class="image-links inline-list">
                 <li id="cfeo-link">
                 <a class="cfeo" href="{{ CFEO_BASE_URL }}{{ self.code_hash }}/"><i class="fa fa-chain"></i> View in CFEO</a>

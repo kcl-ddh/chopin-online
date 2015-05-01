@@ -160,10 +160,7 @@ class Source(models.Model):
     def getAcCode(self):
         try:
             si=SourceInformation.objects.get(source=self)
-            if self.ocve ==1 and len(si.sourcecode) > 0:
-                return si.sourcecode
-            if si.accode.id > 2:
-                return si.accode.accode
+            return si.accode.accode
         except ObjectDoesNotExist:
             return ""
         except MultipleObjectsReturned:

@@ -272,12 +272,13 @@ def serializeAcCodeConnector():
     destination.write('var sources = [')
     first = 0
     for s in sources:
-        if s.getAcCode() is not None and len(s.getAcCode()) > 0:
+        if s.sourceinformation is not None and s.sourceinformation.accode is not None:
             if s.cfeo ==1 or s.ocve == 1:
                 if first > 0:
                     destination.write(',\n')
-                acHash=hashlib.md5(s.getAcCode().encode('UTF-8')).hexdigest()
-                acjson =  "{'accode':"+json.dumps(s.getAcCode())+",'achash':"+json.dumps(acHash)+",'id':"+json.dumps(s.id)
+                accode=s.sourceinformation.accode.accode
+                acHash=hashlib.md5(accode.encode('UTF-8')).hexdigest()
+                acjson =  "{'accode':"+json.dumps(accode)+",'achash':"+json.dumps(acHash)+",'id':"+json.dumps(s.id)
                 if s.cfeo == 1:
                     acjson  += ",'cfeo':1"
                 if s.ocve == 1:

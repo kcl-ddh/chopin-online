@@ -203,7 +203,7 @@ class Library(Page):
         impressions =  sorted(Impression.objects.filter(
             copies__copy__library=self),
             key=lambda x: x.impression.work.work.sort_order +
-            float(x.impression.sort_order/1000))
+            float(x.impression.sort_order)/1000)
 
         works = OrderedDict()
 
@@ -285,7 +285,7 @@ class Publisher(Page):
     def sorted_impressions(self):
         return sorted(self.impressions.all(),
                       key=lambda x: x.impression.work.work.sort_order +
-                      float(x.impression.sort_order/1000))
+                      float(x.impression.sort_order)/1000)
 
     @property
     def works(self):

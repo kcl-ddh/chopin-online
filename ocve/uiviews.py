@@ -187,8 +187,8 @@ def browse(request,mode="OCVE",defaultFilters=None):
 
 #Optimised for OCVE
 def sourcejs(request):
-    serializeOCVESourceJson()
-    serializeCFEOSourceJson()
+    #serializeOCVESourceJson()
+    #serializeCFEOSourceJson()
     serializeAcCodeConnector()
 
     # for pi in PageImage.objects.all():

@@ -276,7 +276,7 @@ def serializeAcCodeConnector():
             if s.cfeo ==1 or s.ocve == 1:
                 if first > 0:
                     destination.write(',\n')
-                accode=s.getSourceInformation().accode
+                accode=s.getSourceInformation().accode.accode
                 acHash=hashlib.md5(accode.encode('UTF-8')).hexdigest()
                 acjson =  "{'accode':"+json.dumps(accode)+",'achash':"+json.dumps(acHash)+",'id':"+json.dumps(s.id)
                 if s.cfeo == 1:

@@ -293,6 +293,12 @@ def saveSource(request,id):
     except MultiValueDictKeyError:
         pass
     source.save()
+    #Create source information if source is brand new
+    try:
+        SourceInformation.objects.get(source=source)
+    except ObjectDoesNotExist:
+        SourceInformation(source=source).save()
+
     try:
         workid=int(request.POST["work_id"])
         w=Work.objects.get(id=workid)

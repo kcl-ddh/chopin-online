@@ -50,7 +50,8 @@
     </div>
     {% endif %}
 
-    {% if si.printingmethod %}
+    {% has_printing_method si as printing_method %}
+    {% if printing_method %}
     <div class="row">
         <div class="contextual-label"><p>Printing method(s)</p></div>
         {% for pr in si.printingmethod.all %}

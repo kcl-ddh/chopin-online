@@ -482,11 +482,14 @@
             $('span[data-barid=' + feature.feature.attributes['barid'] + ']').parents('div.annotation-box').removeClass('highlight');
         }
 
+        var fontSize = '12px';
+        var labelAlign = 'cb';
+
         var barStyles = new OpenLayers.StyleMap({
             "default": new OpenLayers.Style({
                 strokeOpacity: 0,
                 fillOpacity: 0.0,
-                labelAlign: "lt"
+                labelAlign: labelAlign
             }),
             "barSelector": new OpenLayers.Style({
                 strokeOpacity: 0,
@@ -495,18 +498,18 @@
             "Initial": new OpenLayers.Style({
                 strokeOpacity: 0,
                 fillOpacity: 0.0,
-                labelAlign: "lt"
+                labelAlign: labelAlign
             }),
             "annotation": new OpenLayers.Style({
                 strokeOpacity: 1,
                 fillOpacity: 0.0,
                 strokeColor: 'green',
                 label: "${label}",
-                labelAlign: "lt",
+                labelAlign: labelAlign,
                 labelOutlineColor: "white",
                 labelOutlineWidth: 3,
                 fontColor: "black",
-                fontSize: "10px",
+                fontSize: fontSize,
                 fontFamily: "Courier New, monospace",
                 fontWeight: "bold"
             }),
@@ -520,10 +523,10 @@
                 // label with \n linebreaks
                 label: "${label}",
                 fontColor: "black",
-                fontSize: "10px",
+                fontSize: fontSize,
                 fontFamily: "Courier New, monospace",
                 fontWeight: "bold",
-                labelAlign: "lt",
+                labelAlign: labelAlign,
                 labelOutlineColor: "white",
                 labelOutlineWidth: 3
             }),
@@ -535,11 +538,11 @@
                 pointerEvents: "visiblePainted",
                 // label with \n linebreaks
                 label: "${label}",
-                labelAlign: "lt",
+                labelAlign: labelAlign,
                 labelOutlineColor: "white",
                 labelOutlineWidth: 3,
                 fontColor: "red",
-                fontSize: "10px",
+                fontSize: "12px",
                 fontFamily: "Courier New, monospace",
                 fontWeight: "bold"
             })

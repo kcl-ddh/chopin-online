@@ -416,7 +416,7 @@ def barview(request):
 @csrf_exempt
 def ajaxInlineCollections(request):
 	if request.user.is_authenticated():
-		collections = BarCollection.objects.select_related().filter(user=request.user)
+		collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
 		thumbs = {}
 		for c in collections:
 			for r in c.regions.all():
@@ -434,7 +434,7 @@ def ajaxChangeCollectionName(request):
 			new_name = request.POST["new_collection_name"]
 
 			collection = BarCollection.objects.get(pk=collection_id)
-			if collection.user == request.user:
+			if collection.user_id == request.user.id:
 				collection.name = new_name
 				collection.save()
 				status = 1
@@ -453,7 +453,7 @@ def ajaxAddCollection(request):
 		try:
 			new_name = request.POST["new_collection_name"]
 
-			collection = BarCollection(user=request.user, name=new_name, xystring="")
+			collection = BarCollection(user_id=request.user.id, name=new_name, xystring="")
 			collection.save()
 
 			status = collection.id
@@ -468,7 +468,7 @@ def ajaxAddCollection(request):
 @csrf_exempt
 def ajaxAddImageToCollectionModal(request):
 	if request.user.is_authenticated():
-		collections = BarCollection.objects.select_related().filter(user=request.user)
+		collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
 	else:
 		collections = None
 
@@ -486,7 +486,7 @@ def ajaxAddImageToCollection(request):
 			# fetch collection
 			collection = BarCollection.objects.get(pk=collection_id)
 
-			if collection.user == request.user:
+			if collection.user_id == request.user.id:
 
 				# fetch region
 				bar_region = BarRegion.objects.get(pk=region_id)
@@ -520,7 +520,7 @@ def ajaxDeleteImageFromCollection(request):
 			# fetch collection
 			collection = BarCollection.objects.get(pk=collection_id)
 
-			if collection.user == request.user:
+			if collection.user_id == request.user.id:
 
 				# fetch region
 				bar_region = BarRegion.objects.get(pk=region_id)
@@ -549,7 +549,7 @@ def ajaxDeleteCollection(request):
 		try:
 			collection_id = int(request.POST["collection_id"])
 			collection = BarCollection.objects.get(pk=collection_id)
-			if collection.user == request.user:
+			if collection.user_id == request.user.id:
 				collection.delete()
 				status = 1
 			else:

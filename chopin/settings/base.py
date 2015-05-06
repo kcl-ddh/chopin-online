@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'modelcluster',
     'taggit',
     'tinymce',
+    'registration',
 
     'wagtail.wagtailcore',
     'wagtail.wagtailadmin',

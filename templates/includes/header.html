@@ -22,7 +22,7 @@
         <div class="user-box">
             <ul>
                 <li>
-                    <a href="/accounts/profile"><i class="fa fa-user"></i>
+                    <a href="/ocve/accounts/profile"><i class="fa fa-user"></i>
                         {% if request.user.first_name %}
                         {{ request.user.first_name }}
                         {% else %}
@@ -30,7 +30,7 @@
                         {%endif%}
                     </a>
                     <span class="label radius secondary">
-                        <a href="/accounts/logout">Logout</a>
+                        <a href="/ocve/accounts/logout">&nbsp;(Logout)</a>
                     </span>
                 </li>
 
@@ -43,6 +43,17 @@
                 {% endif %}
             </ul>
         </div>
+        {% else %} 
+
+         <div class="user-box">
+            <ul>
+                <li>
+                    <a href="/ocve/accounts/login/"><i class="fa fa-user"></i>
+                       Login</a>
+                </li>
+            </ul>
+        </div>
+
         {% endif %}
     </div>
     {% endif %}

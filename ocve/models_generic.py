@@ -612,7 +612,7 @@ class Annotation(models.Model):
     table_group = ''
 
 class BarCollection(models.Model):
-    user = models.ForeignKey(User,blank=False, null=False, default=1)
+    user_id = models.IntegerField(User,blank=False, null=False, default=-1)
     name = models.TextField(null=False, default="", blank=True, )
     xystring = models.TextField(null=False, default="", blank=True, )
     regions = models.ManyToManyField(BarRegion)

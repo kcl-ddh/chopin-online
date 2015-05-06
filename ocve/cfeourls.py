@@ -1,11 +1,11 @@
 __author__ = 'Elliot'
+from django.conf.urls import patterns, url
 from views import *
-from django.conf.urls import *
 
 #URLS for the CFEO skin of the UI
 
 urlpatterns = patterns('',
-                       (r'^browse/$', cfeoBrowse),
+                       url(r'^browse/$', cfeoBrowse, name='cfeo_browse'),
                        (r'^browse/acview/(?P<acHash>[\d|\w]+)/$', cfeoacview),
                        (r'^browse/pageview/(?P<id>\d+)/$', cfeoPageImageview),
                        (r'^browse/comparepageview/(?P<compareleft>\d*)/(?P<compareright>\d*)/$', comparePageImageview),

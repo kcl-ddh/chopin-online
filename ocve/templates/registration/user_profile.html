@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+
+{% load i18n bartooltags %}
+
+{% block title %}Your Profile{% endblock %}
+
+
+
+{% block content %}
+
+<section class="main content-section">
+  <div class="row">
+  
+    <div class="large-12 columns">
+
+
+      <header><h1>Your Profile</h1></header>
+
+      <p>Hello, {% if request.user.first_name %}{{request.user.first_name}}{% else %}{{request.user}}{%endif%}. Here you can see the information we hold about you, change your password, and view your collections.</p>
+
+      </div>
+ </div>
+
+    <div class="row">
+      <div class="large-4 columns">
+
+
+       <dl>
+         <dt>Username</dt>
+         <dd>{{request.user}}</dd>
+
+         <dt>Name</dt>
+         <dd>{{request.user.first_name}} {{request.user.last_name}}</dd>
+
+         <dt>E-Mail Address</dt>
+         <dd>{{request.user.email}}</dd>
+
+         <dt>Password</dt>
+         <dd>******** (<a href="/ocve/accounts/password/change/">change</a>)</dd>
+
+
+          {% if request.user.is_staff %}
+          <dt>Staff Access</dt>
+          <dd>Yes</dd>
+          {% endif %}
+
+          {% if request.user.is_superuser %}
+          <dt>Superuser Access</dt>
+          <dd>Yes</dd>
+          {% endif %}
+        </dl>
+
+       </div>
+
+         <div class="large-8 columns">
+            <header><h3>Your Collections</h3></header>
+
+            <ul>
+              {% for collection in request.user|get_collections %}
+              <li><a href="#" class="auto-switch-collection" data-collection-id="{{collection.id}}">{{collection.name}} ({{collection.regions.count}} 
+              {% if collection.regions.count = 1 %}image{% else %} images{%endif%})</li>
+              {% empty %}
+              <li>You haven't created any collections yet.</li>
+              {% endfor %}
+            </ul>
+              
+
+
+          </div>
+
+  </div>
+
+</section>
+{% endblock %}

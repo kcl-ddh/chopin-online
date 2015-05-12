@@ -633,12 +633,12 @@ class TreeType(models.Model):
 #
 class AcCode(models.Model):
     accode = models.CharField(max_length=255, null=False, default="", blank=True, )
+    accode_hash = models.CharField(max_length=256, editable=False)
     #sourceinformation = models.ForeignKey('SourceInformation', blank=False, null=False, default=1, )
 
     class Meta:
         verbose_name = 'AcCode'
         verbose_name_plural = 'AcCodes'
-
 
     table_group = ''
 

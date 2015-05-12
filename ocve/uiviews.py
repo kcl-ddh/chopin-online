@@ -5,6 +5,7 @@ __author__ = 'Elliot'
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -32,16 +33,27 @@ def cfeoacview(request,acHash,mode="OCVE"):
 
 #Takes a passed hashed accode from annotated catalogue and displays the source in browse
 def acview(request,acHash,mode="OCVE"):
-    source=None
-    filters=[]
-    for ac in AcCode.objects.all():
-        if hashlib.md5(ac.accode.encode('UTF-8')).hexdigest() == str(acHash):
-            source=Source.objects.filter(sourceinformation__accode=ac)
-            if source.count() >0:
-                work=source[0].getWork()
-                filters.append({'type':'Work','id':work.id,'selection':work.label})
-                filters.append({'type':'Source','id':source[0].id,'selection':source[0]})
-    return browse(request,mode,filters)
+    filters = []
+
+    try:
+        ac = AcCode.objects.get(accode_hash=acHash)
+
+        if ac:
+            sources = Source.objects.filter(sourceinformation__accode=ac)
+
+            if sources and sources.count() > 0:
+                source = sources[0]
+                work = source.getWork()
+
+                if work:
+                    filters.append({'type': 'Work', 'id': work.id,
+                                    'selection': work.label})
+                    filters.append({'type': 'Source', 'id':source.id,
+                                    'selection': source})
+    except ObjectDoesNotExist:
+        pass
+
+    return browse(request, mode, filters)
 
 def shelfmarkview(request,acHash,mode="OCVE"):
      #shelfmark=hashlib.md5(acHash).hexdigest()

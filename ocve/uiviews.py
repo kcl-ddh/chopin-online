@@ -36,7 +36,7 @@ def acview(request,acHash,mode="OCVE"):
     filters=[]
     for ac in AcCode.objects.all():
         if hashlib.md5(ac.accode.encode('UTF-8')).hexdigest() == str(acHash):
-            source=Source.objects.filter(sourceinformation__accode=ac)
+            source=Source.objects.filter(Q(ocve=1)|Q(cfeo=1)).filter(sourceinformation__accode=ac)
             if source.count() >0:
                 work=source[0].getWork()
                 filters.append({'type':'Work','id':work.id,'selection':work.label})
@@ -187,19 +187,11 @@ def browse(request,mode="OCVE",defaultFilters=None):
 
 #Optimised for OCVE
 def sourcejs(request):
+    s=Source.objects.get(id=18153)
+    #setPageImageTextLabel(s)
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()
-
-    # for pi in PageImage.objects.all():
-    #      textlabel="p. "+pi.page.label
-    #      if pi.page.sourcecomponent.label != 'Score':
-    #          textlabel=textlabel+" "+pi.page.sourcecomponent.label
-    #      if pi.endbar != '0':
-    #          textlabel=textlabel+", bs "+pi.startbar+"-"+pi.endbar
-    #      if len(pi.textlabel) == 0:
-    #         pi.textlabel=textlabel
-    #         pi.save()
     return HttpResponse("<html><head><title>UI JSONs rebuilt</title></head><body><a href='/ocve/dbmi/'>Return to DBMI</a></body></html>")
 
 def getNextPrevPages(p,pi):

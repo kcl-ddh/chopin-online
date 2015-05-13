@@ -41,6 +41,32 @@ def getAvailableBarsByOpus(opus):
     return Bar.objects.filter(
         barregion__page__sourcecomponent__sourcecomponent_workcomponent__workcomponent__opus=opus).distinct()
 
+def setPageImageTextLabel(source):
+    pageimages=PageImage.objects.filter(page__sourcecomponent__source=source)
+    for pi in pageimages:
+        m=re.search("([\[]*[\d|ivx]+[\]]*)(.*)",pi.page.label)
+        if m is not None and len(m.group(2)) > 0:
+            #Correct page problem Polonaise No. 1,
+            page=pi.page
+            l=page.label
+            l=l.replace(m.group(2),'')
+            page.label=l
+            page.save()
+        textlabel="p. "+pi.page.label
+        if pi.page.sourcecomponent.label != 'Score':
+            workcomps=WorkComponent.objects.filter(sourcecomponent_workcomponent__sourcecomponent=pi.page.sourcecomponent)
+            if workcomps.count() > 0:
+                wc=workcomps[0]
+                if wc.label != 'Score':
+                    textlabel=textlabel+" "+wc.label
+                    if pi.endbar != '0':
+                        textlabel=textlabel+', '
+        if pi.endbar != '0':
+            textlabel=textlabel+" bs "+pi.startbar+"-"+pi.endbar
+          #if len(pi.textlabel) == 0:
+        pi.textlabel=textlabel
+        pi.save()
+
 
 class SourceComponentItem:
     def __init__(self, sourcecomponent):
@@ -55,16 +81,16 @@ class SourceComponentItem:
         #May not be needed
         #w=Work.objects.filter(workcomponent__workcomponent_sourcecomponent__sourcecomponent=sourcecomponent)
         #if w.count() > 0:
-         #   self.work=w.id
+        #    self.work=w.id
         #else:
             #Non-music pages
-         #   self.work=0
+        #    self.work=0
 
     def toJson(self):
         scjson = "{'id': " + str(self.id) + ", 'label': " + json.dumps(self.label) + ", "
         scjson += "'orderno': " + json.dumps(self.orderno) + ", "
+        #scjson += "'work_id': " + json.dumps(self.work) + ", "
         scjson += "'source_id':" + json.dumps(self.source_id) + ','
-
         scjson += "'instruments':" + json.dumps(self.instruments)
         scjson += "}"
         return scjson
@@ -147,8 +173,10 @@ class SourceSearchItem:
         if self.mode == 'OCVE':
             #Filter out non-musical pages like blanks, title pages etc.
             musicpage=PageType.objects.get(type='music')
+            blank=PageType.objects.get(type='blank')
             nonmusic=SourceComponentType.objects.get(type="Non-music")
-            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id,page__pagetype=musicpage).exclude(page__sourcecomponent__sourcecomponenttype=nonmusic).order_by("page")
+            #.filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp))
+            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).exclude(page__sourcecomponent__sourcecomponenttype=nonmusic).exclude(page__sourcecomponent__sourcecomponenttype=blank).order_by("page")
         else:
             pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).order_by("page")
         for pi in pages:
@@ -178,14 +206,13 @@ class PageSearchItem:
         self.keypitch = 0
         self.keymode = 0
         genres = []
-        #if pageimage.startbar != '0' or pageimage.endbar != '0':
-        #    self.label +=' bs '+ pageimage.startbar + "-" + pageimage.endbar
+
         if work > 0:
-            self.work = work
             wc = WorkComponent.objects.filter(sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pageimage)
             if wc.count() > 0:
                 self.keypitch = wc[0].keypitch.id
                 self.keymode = wc[0].keymode.id
+                self.work = wc[0].work.id
             for g in Genre.objects.filter(work__id=work).distinct():
                 genres.append(int(g.id))
         self.genres = genres

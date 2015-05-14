@@ -2,60 +2,64 @@
 
 <div class="contextual">
     {% autoescape off %}
-    <h1>{{ si.accode }}</h1>
+    <div class="row">
+        <div class="large-12 columns">
+            <h1>{{ si.accode }}</h1>
+        </div>
+    </div>
     {% if mode == "OCVE" and si.title %}
     <div class="row">
-        <div class="contextual-label">Title</div>
-        <div class="contextual-value">{{ si.title|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Title</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.title|clean_si }}</div>
     </div>
     {% elif mode == "CFEO" and si.publicationtitle  %}
     <div class="row">
-        <div class="contextual-label">Title</div>
-        <div class="contextual-value">{{ si.publicationtitle|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Title</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.publicationtitle|clean_si }}</div>
     </div>
     {% endif %}
 
     {% if si.publisher and si.publisher|lower != 'none' and si.publisher|lower != 'unspecified' %}
     <div class="row">
-        <div class="contextual-label">Publisher</div>
-        <div class="contextual-value">{{ si.publisher.publisher|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Publisher</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.publisher.publisher|clean_si }}</div>
     </div>
     {% endif %}
 
     {% if si.placepublication %}
     <div class="row">
-        <div class="contextual-label">Place of publication</div>
-        <div class="contextual-value">{{ si.placepublication.city|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Place of publication</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.placepublication.city|clean_si }}</div>
     </div>
     {% endif %}
 
     {% if si.dedicatee and si.dedicatee|lower != 'none' and si.dedicatee|lower != 'unspecified' %}
     <div class="row">
-        <div class="contextual-label">Dedicatee</div>
-        <div class="contextual-value">{{ si.dedicatee.dedicatee|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Dedicatee</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.dedicatee.dedicatee|clean_si }}</div>
     </div>
     {% endif %}
 
     {% if si.platenumber %}
     <div class="row">
-        <div class="contextual-label">Plate number</div>
-        <div class="contextual-value">{{ si.platenumber|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Plate number</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.platenumber|clean_si }}</div>
     </div>
     {% endif %}
 
     {% if si.datepublication %}
     <div class="row">
-        <div class="contextual-label">Publication date</div>
-        <div class="contextual-value">{{ si.datepublication|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Publication date</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.datepublication|clean_si }}</div>
     </div>
     {% endif %}
 
     {% has_printing_method si as printing_method %}
     {% if printing_method %}
     <div class="row">
-        <div class="contextual-label">Printing method(s)</div>
+        <div class="contextual-label large-3 small-12 columns">Printing method(s)</div>
         {% for pr in si.printingmethod.all %}
-        <div class="contextual-value">
+        <div class="contextual-value large-9 small-12 columns">
             {% if pr.method|lower != 'unspecified' %}
             
                 {{ pr.method|clean_si }}
@@ -68,8 +72,8 @@
 
     {% if si.contentssummary or si.leaves %}
     <div class="row">
-        <div class="contextual-label">Contents summary</div>
-        <div class="contextual-value">
+        <div class="contextual-label large-3 small-12 columns">Contents summary</div>
+        <div class="contextual-value large-9 small-12 columns">
             {% if mode == "OCVE" %}
             {{ si.contentssummary|clean_si }}
             {% else %}
@@ -81,32 +85,33 @@
 
     {% if si.copyright %}
     <div class="row">
-        <div class="contextual-label">Source of images</div>
-        <div class="contextual-value">{{ si.copyright|clean_si }} </div>
+        <div class="contextual-label large-3 small-12 columns">Source of images</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.copyright|clean_si }} </div>
     </div>
     {% endif %}
 
     {% if  si.displayedcopy %}
     <div class="row">
-        <div class="contextual-label">Displayed copy</div>
-        <div class="contextual-value">{{ si.displayedcopy|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Displayed copy</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.displayedcopy|clean_si }}</div>
     </div>
     {% endif %}
 
     {% if mode == "CFEO" %}
     {% if si.reprints %}
     <div class="row">
-        <div class="contextual-label">Information on subsequent reprints</div>
-        <div class="contextual-value">{{ si.reprints }}</div>
+        <div class="contextual-label large-3 small-12 columns">Information on subsequent reprints</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.reprints }}</div>
     </div>
     {% endif %}
     {% if si.locationsimilarcopies %}
     <div class="row">
-        <div class="contextual-label">Location of similar copies</div>
-        <div class="contextual-value">{{ si.locationsimilarcopies|clean_si }}</div>
+        <div class="contextual-label large-3 small-12 columns">Location of similar copies</div>
+        <div class="contextual-value large-9 small-12 columns">{{ si.locationsimilarcopies|clean_si }}</div>
     </div>
     {% endif %}
     {% endif %}
 
     {% endautoescape %}
 </div>
+<a class="close-reveal-modal" aria-label="Close">&#215;</a>

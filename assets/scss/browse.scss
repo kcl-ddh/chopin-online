@@ -226,29 +226,12 @@ b.divider {
     display: inline;
 }
 
-.contextual-label {
-	@include grid-column(2);
-	p {
-		font-size: rem-calc(14px);
-		font-weight:700;
-	}
-}
+.contextual-label,
 .contextual-value {
-	@include grid-column(10);
-	p {
-		font-size: rem-calc(14px);
-	}
+    line-height: 1.5rem;
+    font-size: .875rem;
 }
 
-.contextual-modal.reveal-modal {
-	overflow-y: auto;
-	top:50px;
-}
-
-.contextual-further {
-	border-top:1px solid $borderColor;
-	padding-top:15px;
-	h5 {
-		font-weight: 700;
-	}
+.contextual-label {
+    font-weight: bold;
 }

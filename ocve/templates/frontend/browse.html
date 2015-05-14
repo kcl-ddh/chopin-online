@@ -246,25 +246,38 @@
         var output = "";
         var sourcePages = source.Pages;
         var scid = 0;
-        for (var x = 0; x < sourcePages.length; x++) {
-            if (sourcePages[x].sourcecomponent_id != scid) {
-                var scInstruments = sourcecomponentsById[sourcePages[x].sourcecomponent_id].instruments;
-                if (scInstruments) {
-                    for (var i = 0; i < scInstruments.length; i++) {
-                        availInstruments['' + scInstruments] = 1;
-                    }
-                } else {
-                    scInstruments = [];
-                }
-                output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page flag\"><p>" + sourcecomponentsById[sourcePages[x].sourcecomponent_id].label + "</p>";
-                scid = sourcePages[x].sourcecomponent_id;
-            } else {
-                output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page\">";
+        var workid=0;
+        for (var i = 0; i < filters.length; i++) {
+            if (filters[i].type == 'Work'){
+                workid=filters[i].id
             }
-            output += "<a class=\"pageView th\" data-sourcekey=\"" + sourcePages[x].id + "\" href=\"" + pageviewURL + "/" + sourcePages[x].id + "/\"> <img"
-                    + " class=\"lazy\" data-original=\"{{ IIP_URL }}?DeepZoom=" + sourcePages[x].thumbnail_url + "_files/0/0_0.jpg\" /></a>";
-            output += "<span class=\"page-label\" title=\"" + sourcePages[x].label + "\">" + (sourcePages[x].label.length > 30 ? sourcePages[x].label.substring(0, 27) + "..." : sourcePages[x].label) + "</span>";
-            output += "</li>"
+        }
+        console.log("source:"+source.Work);
+        console.log("filter:"+workid);
+        scid=0;
+        for (var x = 0; x < sourcePages.length; x++) {
+            //if (workid ==0 || (workid > 0 && sourcePages[x].Work == workid)) {
+                //sourcePages[x].sourcecomponent_id);
+                if (sourcePages[x].sourcecomponent_id != scid) {
+                    var scInstruments = sourcecomponentsById[sourcePages[x].sourcecomponent_id].instruments;
+                    if (scInstruments) {
+                        for (var i = 0; i < scInstruments.length; i++) {
+                            availInstruments['' + scInstruments] = 1;
+                        }
+                    } else {
+                        scInstruments = [];
+                    }
+                    //console.log(sourcecomponentsById[sourcePages[x].sourcecomponent_id].label);
+                    output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page flag\"><p>" + sourcecomponentsById[sourcePages[x].sourcecomponent_id].label + "</p>";
+                    scid = sourcePages[x].sourcecomponent_id;
+                } else {
+                    output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page\">";
+                }
+                output += "<a class=\"pageView th\" data-sourcekey=\"" + sourcePages[x].id + "\" href=\"" + pageviewURL + "/" + sourcePages[x].id + "/\"> <img"
+                        + " class=\"lazy\" data-original=\"{{ IIP_URL }}?DeepZoom=" + sourcePages[x].thumbnail_url + "_files/0/0_0.jpg\" /></a>";
+                output += "<span class=\"page-label\" title=\"" + sourcePages[x].label + "\">" + (sourcePages[x].label.length > 30 ? sourcePages[x].label.substring(0, 27) + "..." : sourcePages[x].label) + "</span>";
+                output += "</li>"
+            //}
         }
         return output;
     }

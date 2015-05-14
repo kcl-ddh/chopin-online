@@ -1,8 +1,9 @@
 __author__ = 'Elliot'
-from django.conf.urls import *
-from views import *
+from django.conf.urls import patterns, include, url
+
 from annotationviews import *
 from dbmi.uploader import newsourcefiles,posth
+from views import *
 
 urlpatterns = patterns('',
 
@@ -14,7 +15,7 @@ urlpatterns = patterns('',
                         #(r'^correctsi/$', correctSourceInformation ),
                         (r'^browse/acview/(?P<acHash>[\d|\w]+)/$', acview),
                        (r'^browse/sourcejs/$', sourcejs),
-                       (r'^browse/$', browse),
+                       url(r'^browse/$', browse, name='ocve_browse'),
                        (r'^browse/pageview/(?P<id>\d+)/$', ocvePageImageview),
                        (r'^browse/pageview/(?P<id>\d+)/(?P<barid>\d+)/$', ocveViewInPage),
                        (r'^browse/shelfmarkview/(?P<acHash>[\d|\w]+)/$', shelfmarkview),
@@ -48,8 +49,8 @@ urlpatterns = patterns('',
                        (r'^getAnnotationRegions/(?P<id>\d+)/$', getAnnotationRegions),
                        (r'^posth/$', posth),
 
-                       
-                       
+
+
                        # Ajax URLS for inline collections
                        (r'^ajax/inline-collections/$', ajaxInlineCollections),
                        (r'^ajax/change-collection-name/$', ajaxChangeCollectionName),
@@ -58,6 +59,8 @@ urlpatterns = patterns('',
                        (r'^ajax/add-image-to-collection/$', ajaxAddImageToCollection),
                        (r'^ajax/delete-image-from-collection/$', ajaxDeleteImageFromCollection),
                        (r'^ajax/delete-collection/$', ajaxDeleteCollection),
-                       
 
+                         #User account management - required for OCVE UI
+                       (r'^accounts/profile/$', user_profile),
+                       (r'^accounts/', include('registration.backends.default.urls')),
 )

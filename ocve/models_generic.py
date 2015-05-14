@@ -612,7 +612,7 @@ class Annotation(models.Model):
     table_group = ''
 
 class BarCollection(models.Model):
-    user = models.ForeignKey(User,blank=False, null=False, default=1)
+    user_id = models.IntegerField(User,blank=False, null=False, default=-1)
     name = models.TextField(null=False, default="", blank=True, )
     xystring = models.TextField(null=False, default="", blank=True, )
     regions = models.ManyToManyField(BarRegion)
@@ -633,12 +633,12 @@ class TreeType(models.Model):
 #
 class AcCode(models.Model):
     accode = models.CharField(max_length=255, null=False, default="", blank=True, )
+    accode_hash = models.CharField(max_length=256, editable=False)
     #sourceinformation = models.ForeignKey('SourceInformation', blank=False, null=False, default=1, )
 
     class Meta:
         verbose_name = 'AcCode'
         verbose_name_plural = 'AcCodes'
-
 
     table_group = ''
 

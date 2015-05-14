@@ -13,7 +13,7 @@ def cut(value, arg):
 @register.filter(name='get_collections')
 def get_collections(user):
 	if user.is_authenticated():
-		collections = BarCollection.objects.select_related().filter(user=user)
+		collections = BarCollection.objects.select_related().filter(user_id=user.id)
 	else:
 		collections = None
 			

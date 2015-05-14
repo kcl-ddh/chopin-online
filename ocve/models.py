@@ -1,8 +1,8 @@
 from django.db import models
+
 from models_generic import *
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django.conf import settings
+
+import hashlib
 
 # Create your models here.
 
@@ -178,6 +178,13 @@ def ac_unicode(self):
     return self.accode
 
 AcCode.__unicode__=ac_unicode
+
+def save(self, *args, **kwargs):
+    self.accode_hash = hashlib.md5(self.accode.encode('UTF-8')).hexdigest()
+    super(AcCode, self).save(*args, **kwargs)
+
+AcCode.save = save
+
 
 def dedicatee_unicode(self):
     return self.dedicatee

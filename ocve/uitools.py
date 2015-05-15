@@ -41,6 +41,15 @@ def getAvailableBarsByOpus(opus):
     return Bar.objects.filter(
         barregion__page__sourcecomponent__sourcecomponent_workcomponent__workcomponent__opus=opus).distinct()
 
+#Overwrite source component label with its work components if link exists
+def overwritesourcecomponentlabels(source):
+    for sc in SourceComponent.objects.filter(source=source):
+        wc=WorkComponent.objects.filter(sourcecomponent_workcomponent__sourcecomponent=sc)
+        if wc.count() > 0:
+            sc.label=wc[0].label
+            sc.save()
+
+
 def setPageImageTextLabel(source):
     pageimages=PageImage.objects.filter(page__sourcecomponent__source=source)
     for pi in pageimages:
@@ -304,7 +313,7 @@ def serializeAcCodeConnector():
                 if first > 0:
                     destination.write(',\n')
                 accode=s.getSourceInformation().accode.accode
-                acHash=hashlib.md5(accode.encode('UTF-8')).hexdigest()
+                acHash=s.getSourceInformation().accode.accode_hash
                 acjson =  "{'accode':"+json.dumps(accode)+",'achash':"+json.dumps(acHash)+",'id':"+json.dumps(s.id)
                 if s.cfeo == 1:
                     acjson  += ",'cfeo':1"

@@ -34,10 +34,13 @@ def cfeoacview(request,acHash,mode="OCVE"):
 #Takes a passed hashed accode from annotated catalogue and displays the source in browse
 def acview(request,acHash,mode="OCVE"):
     filters = []
+
     try:
         ac = AcCode.objects.get(accode_hash=acHash)
+
         if ac:
-            sources = Source.objects.filter(Q(ocve=1)|Q(cfeo=1)).filter(sourceinformation__accode=ac)
+            sources = Source.objects.filter(
+                sourceinformation__accode=ac).filter(Q(ocve=1) | Q(cfeo=1))
 
             if sources and sources.count() > 0:
                 source = sources[0]
@@ -50,6 +53,7 @@ def acview(request,acHash,mode="OCVE"):
                                     'selection': source})
     except ObjectDoesNotExist:
         pass
+
     return browse(request, mode, filters)
 
 
@@ -409,158 +413,158 @@ def barview(request):
 
     # Quick and dirty way of setting a test template mode
     try:
-    	request.GET['template']
-    	return render_to_response('frontend/bar-view-html-design.html', {}, context_instance=RequestContext(request))
+        request.GET['template']
+        return render_to_response('frontend/bar-view-html-design.html', {}, context_instance=RequestContext(request))
     except:
-	    return render_to_response('frontend/bar-view.html', {'mode' : mode, 'next':next,'range':range,'prev':prev, 'opuses': opuses,'orderNo':orderno,'bar':bar,'barregions':regionThumbs,'sources': sources, 'work': work, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL, }, context_instance=RequestContext(request))
+            return render_to_response('frontend/bar-view.html', {'mode' : mode, 'next':next,'range':range,'prev':prev, 'opuses': opuses,'orderNo':orderno,'bar':bar,'barregions':regionThumbs,'sources': sources, 'work': work, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL, }, context_instance=RequestContext(request))
 
 
 # Ajax call for inline collections display
 @csrf_exempt
 def ajaxInlineCollections(request):
-	if request.user.is_authenticated():
-		collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
-		thumbs = {}
-		for c in collections:
-			for r in c.regions.all():
-				thumbs[r.id] =  BarRegionThumbnail(r, r.pageimage.page, r.pageimage)
-	else:
-		collections = None
+        if request.user.is_authenticated():
+                collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
+                thumbs = {}
+                for c in collections:
+                        for r in c.regions.all():
+                                thumbs[r.id] =  BarRegionThumbnail(r, r.pageimage.page, r.pageimage)
+        else:
+                collections = None
 
-	return render_to_response('frontend/ajax/inline-collections.html', {"collections" : collections, "thumbs" : thumbs, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL}, context_instance=RequestContext(request))
+        return render_to_response('frontend/ajax/inline-collections.html', {"collections" : collections, "thumbs" : thumbs, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def ajaxChangeCollectionName(request):
-	if request.user.is_authenticated():
-		try:
-			collection_id = int(request.POST["collection_id"])
-			new_name = request.POST["new_collection_name"]
+        if request.user.is_authenticated():
+                try:
+                        collection_id = int(request.POST["collection_id"])
+                        new_name = request.POST["new_collection_name"]
 
-			collection = BarCollection.objects.get(pk=collection_id)
-			if collection.user_id == request.user.id:
-				collection.name = new_name
-				collection.save()
-				status = 1
-			else:
-				status = 0
+                        collection = BarCollection.objects.get(pk=collection_id)
+                        if collection.user_id == request.user.id:
+                                collection.name = new_name
+                                collection.save()
+                                status = 1
+                        else:
+                                status = 0
 
-		except Exception, e:
-			status = 0
-	else:
-		status = 0
-	return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+                except Exception, e:
+                        status = 0
+        else:
+                status = 0
+        return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def ajaxAddCollection(request):
-	if request.user.is_authenticated():
-		try:
-			new_name = request.POST["new_collection_name"]
+        if request.user.is_authenticated():
+                try:
+                        new_name = request.POST["new_collection_name"]
 
-			collection = BarCollection(user_id=request.user.id, name=new_name, xystring="")
-			collection.save()
+                        collection = BarCollection(user_id=request.user.id, name=new_name, xystring="")
+                        collection.save()
 
-			status = collection.id
+                        status = collection.id
 
-		except Exception, e:
-			status = 0
-	else:
-		status = 0
-	return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+                except Exception, e:
+                        status = 0
+        else:
+                status = 0
+        return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
 
 # Ajax call for inline collections display
 @csrf_exempt
 def ajaxAddImageToCollectionModal(request):
-	if request.user.is_authenticated():
-		collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
-	else:
-		collections = None
+        if request.user.is_authenticated():
+                collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
+        else:
+                collections = None
 
-	return render_to_response('frontend/ajax/add-image-to-collection-modal.html', {"collections" : collections,}, context_instance=RequestContext(request))
+        return render_to_response('frontend/ajax/add-image-to-collection-modal.html', {"collections" : collections,}, context_instance=RequestContext(request))
 
 # Ajax call for adding image to collection
 @csrf_exempt
 def ajaxAddImageToCollection(request):
-	if request.user.is_authenticated():
-		try:
-			# get post
-			collection_id = request.POST["collection_id"]
-			region_id = int(request.POST["region_id"])
+        if request.user.is_authenticated():
+                try:
+                        # get post
+                        collection_id = request.POST["collection_id"]
+                        region_id = int(request.POST["region_id"])
 
-			# fetch collection
-			collection = BarCollection.objects.get(pk=collection_id)
+                        # fetch collection
+                        collection = BarCollection.objects.get(pk=collection_id)
 
-			if collection.user_id == request.user.id:
+                        if collection.user_id == request.user.id:
 
-				# fetch region
-				bar_region = BarRegion.objects.get(pk=region_id)
+                                # fetch region
+                                bar_region = BarRegion.objects.get(pk=region_id)
 
-				#check if it exists
-				if collection.regions.all().filter(id=bar_region.id).exists():
-					status = 2
-				else:
-					collection.regions.add(bar_region)
-					status = 1
-			else:
-				status = 0
+                                #check if it exists
+                                if collection.regions.all().filter(id=bar_region.id).exists():
+                                        status = 2
+                                else:
+                                        collection.regions.add(bar_region)
+                                        status = 1
+                        else:
+                                status = 0
 
-		except Exception, e:
-			status = 0
-	else:
-		status = 0
+                except Exception, e:
+                        status = 0
+        else:
+                status = 0
 
-	return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+        return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
 
 
 # Ajax call for deleting an image from a collection
 @csrf_exempt
 def ajaxDeleteImageFromCollection(request):
-	if request.user.is_authenticated():
-		try:
-			# get post
-			collection_id = request.POST["collection_id"]
-			region_id = int(request.POST["region_id"])
+        if request.user.is_authenticated():
+                try:
+                        # get post
+                        collection_id = request.POST["collection_id"]
+                        region_id = int(request.POST["region_id"])
 
-			# fetch collection
-			collection = BarCollection.objects.get(pk=collection_id)
+                        # fetch collection
+                        collection = BarCollection.objects.get(pk=collection_id)
 
-			if collection.user_id == request.user.id:
+                        if collection.user_id == request.user.id:
 
-				# fetch region
-				bar_region = BarRegion.objects.get(pk=region_id)
+                                # fetch region
+                                bar_region = BarRegion.objects.get(pk=region_id)
 
-				#check if it exists
-				if collection.regions.all().filter(id=bar_region.id).exists():
+                                #check if it exists
+                                if collection.regions.all().filter(id=bar_region.id).exists():
 
-					#delete!
-					collection.regions.remove(bar_region)
-					status = 1
-				else:
-					status = 2
-			else:
-				status = 3
+                                        #delete!
+                                        collection.regions.remove(bar_region)
+                                        status = 1
+                                else:
+                                        status = 2
+                        else:
+                                status = 3
 
-		except Exception, e:
-			status = 4
-	else:
-		status = 0
+                except Exception, e:
+                        status = 4
+        else:
+                status = 0
 
-	return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+        return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def ajaxDeleteCollection(request):
-	if request.user.is_authenticated():
-		try:
-			collection_id = int(request.POST["collection_id"])
-			collection = BarCollection.objects.get(pk=collection_id)
-			if collection.user_id == request.user.id:
-				collection.delete()
-				status = 1
-			else:
-				status = 0
+        if request.user.is_authenticated():
+                try:
+                        collection_id = int(request.POST["collection_id"])
+                        collection = BarCollection.objects.get(pk=collection_id)
+                        if collection.user_id == request.user.id:
+                                collection.delete()
+                                status = 1
+                        else:
+                                status = 0
 
-		except Exception, e:
-			status = 0
-	else:
-		status = 0
-	return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+                except Exception, e:
+                        status = 0
+        else:
+                status = 0
+        return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
 

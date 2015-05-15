@@ -196,6 +196,10 @@ def browse(request,mode="OCVE",defaultFilters=None):
         instruments=Instrument.objects.filter(sourcecomponent_instrument__sourcecomponent__source__ocve=True).distinct()
     else:
         works=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__cfeo=True).distinct()
+        if works.count() > 0:
+            for w in works:
+                if len(w.workinformation.analysis)> 0 or len(w.workinformation.generalinfo)> 0 or len(w.workinformation.relevantmanuscripts)> 0:
+                    workinfos.append(w.id)
         #dedicatees=Dedicatee.objects.filter(sourceinformation__source__cfeo=True).distinct()
         publishers=Publisher.objects.filter(sourceinformation__source__cfeo=True).distinct()
         years=Year.objects.filter(sourceinformation__source__cfeo=True).distinct()

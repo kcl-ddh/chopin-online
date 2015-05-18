@@ -208,7 +208,7 @@
             //Edit link to source editor, for stage only.
             opusOutput += "<span class=\"contextual-info right\">"
                     if (sources[x].achash.length > 0){
-                        opusOutput +="<a class=\"ctrl more\" data-tooltip=\"\"  title=\"View in annotated catalogue\" href=\"/aco/catalogue/impression/"+sources[x].achash+"/\"><i class=\"fa fa-link\"></i></a>&nbsp;";
+                        opusOutput +="<a class=\"ctrl more\" data-tooltip=\"\"  title=\"View in Annotated Catalogue\" href=\"/aco/catalogue/impression/"+sources[x].achash+"/\"><i class=\"fa fa-link\"></i></a>&nbsp;";
                     }
             opusOutput += "<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/{{ mode|lower }}/browse/sourceinformation/" + sources[x].id + "/\"  title=\"Witness overview\" data-reveal-id=\"witness-info\"><i class=\"fa fa-info-circle fa-lg\"></i></a></span>";
             opusOutput +="<h5><a href=\"#\" class=\"expandme\"><i class=\"expandd fa fa-caret-right\"></i> " + sources[x].label + "</a></h5>";
@@ -582,11 +582,11 @@
 
 {% block footer %}
     {{ block.super }}
-    <div id="witness-info" class="reveal-modal xlarge contextual-modal" data-reveal>
+    <div id="witness-info" class="reveal-modal" data-reveal>
 
     </div>
 
-    <div id="opus-info" class="reveal-modal contextual-modal" data-reveal>
+    <div id="opus-info" class="reveal-modal" data-reveal>
 
     </div>
 {% endblock %}

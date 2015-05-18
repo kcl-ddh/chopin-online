@@ -64,13 +64,26 @@ ul.search-results {
 }
 
 /*** Footnotes ***/
+
 /* Formatting the footnotes to match the inline style */
 
+.rich-text:last-of-type hr {
+    margin-bottom: 0;
+}
+
+/* Style everything after the last hr in the .rich-text div */
 .rich-text:last-of-type hr ~ * {
-        /* font-size: 9pt; */
-        font-size: 1rem !important;
-        line-height: 115%;
-        text-align: justify;
+    /* font-size: 9pt; */
+    font-size: 1rem !important;
+    line-height: 115%;
+    text-align: justify;
+    background: #e7e7e7;
+    margin: 0;
+    padding: .5rem 1rem;
+}
+
+.rich-text:last-child {
+    margin-bottom: 1rem;
 }
 
 /*** PDF display fallback ***/

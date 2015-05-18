@@ -25,7 +25,7 @@ import os
 from dbmi.datatools import convertEntities
 from imagetools import verifyImageDimensions
 
-IIP_URL = settings.IIP_URL
+#IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
 
 def cfeoacview(request,acHash,mode="OCVE"):
@@ -201,8 +201,9 @@ def browse(request,mode="OCVE",defaultFilters=None):
 
 #Optimised for OCVE
 def sourcejs(request):
-    s=Source.objects.get(id=18153)
-    #setPageImageTextLabel(s)
+    #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
+    #    overwritesourcecomponentlabels(s)
+    #    setPageImageTextLabel(s)
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()

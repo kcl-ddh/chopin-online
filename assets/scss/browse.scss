@@ -232,6 +232,12 @@ b.divider {
     font-size: .875rem;
 }
 
+.contextual-label p,
+.contextual-value p {
+	margin: 0;
+    font-size: .875rem;
+}
+
 .contextual-label {
     font-weight: bold;
 }

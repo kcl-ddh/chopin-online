@@ -183,9 +183,11 @@ class SourceSearchItem:
             #Filter out non-musical pages like blanks, title pages etc.
             musicpage=PageType.objects.get(type='music')
             blank=PageType.objects.get(type='blank')
+            tp=PageType.objects.get(type='title page')
             nonmusic=SourceComponentType.objects.get(type="Non-music")
-            #.filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp))
-            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).exclude(page__sourcecomponent__sourcecomponenttype=nonmusic).exclude(page__sourcecomponent__sourcecomponenttype=blank).order_by("page")
+            #.exclude(page__sourcecomponent__sourcecomponenttype=blank)
+            #.exclude(page__sourcecomponent__sourcecomponenttype=nonmusic)
+            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).order_by("page")
         else:
             pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).order_by("page")
         for pi in pages:

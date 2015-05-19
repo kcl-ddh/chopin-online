@@ -213,6 +213,20 @@ def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
     #    setPageImageTextLabel(s)
+    pages=Page.objects.filter(sourcecomponent__label='Front Matter')
+    tp=PageType.objects.get(id=4)
+    blank=PageType.objects.get(id=5)
+    for p in pages:
+        if p.orderno == 1 and p.pagetype.id != 4:
+            p.pagetype=tp
+        elif p.pagetype.id == 3:
+            p.pagetype=blank
+        p.save()
+    pages=Page.objects.filter(sourcecomponent__label='End Matter')
+    for p in pages:
+        if p.pagetype.id == 3:
+            p.pagetype=blank
+            p.save()
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()

@@ -52,7 +52,7 @@ def newsourcefiles(request):
 def convertFolder(request,folderName):
     newS=NewSource(label=folderName,sourcecreated=0)
     newS.save()
-    files=os.listdir(settings.CONVERTED_UPLOAD_PATH+'/'+folderName)
+    files=os.listdir(unicode(settings.CONVERTED_UPLOAD_PATH+u'/'+folderName,'utf8'))
     for f in files:
         npi = NewPageImage(source=newS, filename=f, surrogate=1, versionnumber=1, permission=False,
                         permissionnote='', height=0, width=0, startbar=0, endbar=0, corrected=0)
@@ -70,7 +70,7 @@ def convertFolder(request,folderName):
         except OSError:
                 logger.error(OSError)
         else:
-            logger.debug('Copied '+settings.CONVERTED_UPLOAD_PATH+'/'+'/'+folderName+'/'+f+'" "'+settings.NEWJP2_UPLOAD_PATH+'/'+str(npi.id)+'.jp2"')
+            logger.debug(unicode('Copied '+settings.CONVERTED_UPLOAD_PATH+'/'+'/'+folderName+'/'+f+'" "'+settings.NEWJP2_UPLOAD_PATH+'/'+str(npi.id)+'.jp2"','utf8'))
 
     return HttpResponseRedirect('/ocve/sourceeditor/new/' + str(newS.id))
 

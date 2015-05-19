@@ -35,20 +35,27 @@
                 <nav class="tab-bar">
                     <section class=" tab-bar-section">
                         <ul class="left inline-list contextual-menu">
+
                             <li>
-                                <div class="menu-item opus-title"><a href="#" class="ctrl more"
-                                                                     data-reveal-ajax="/{{ mode|lower }}/browse/workinformation/{{ work.id }}/"
-                                                                     title="Work overview"
-                                                                     data-reveal-id="opus-info" class="ctrl more"
-                                                                     data-tooltip=""
-                                                                     title="Work overview">{{ work }}</a>, <a
-                                        href="#" class="ctrl more" data-tooltip data-reveal-id="witness-info" data-reveal-ajax="/{{ mode|lower }}/browse/sourceinformation/{{ source.id }}/"
-                                        title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
+                                <div class="menu-item">
+                                    <a href="{% url 'cfeo_browse' %}"><i class="fa fa-arrow-circle-left"></i> Back to results</a>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="menu-item opus-title"><a href="#" data-reveal-ajax="/{{ mode|lower }}/browse/workinformation/{{ work.id }}/" title="Work overview" data-reveal-id="opus-info">{{ work }}</a>, <a
+                                        href="#" data-tooltip data-reveal-id="witness-info" data-reveal-ajax="/{{ mode|lower }}/browse/sourceinformation/{{ source.id }}/" title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
                                   </div>
                             </li>
-                        {% load catalogue_tags %}
-{% get_impression_exists achash as impression_exists %}
-{% if  impression_exists %}<li><a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a> </li>{% endif %}
+                            {% load catalogue_tags %}
+                            {% get_impression_exists achash as impression_exists %}
+                            {% if  impression_exists %}
+                            <li>
+                                <div class="menu-item">
+                                    <a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a>
+                                </div>
+                            </li>
+                            {% endif %}
                             <!-- TODO: Bar Ids? -->
                             {% if prev %}
                                 <li>
@@ -72,12 +79,6 @@
                                             <li><a href="/{{ mode|lower }}/browse/pageview/{{ pi.id }}/">{{ pi.textlabel }}</a> </li>
                                         {% endfor %}
                                     </ul>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="menu-item">
-                                    <a href="{% url 'cfeo_browse' %}">Back to results</a>
                                 </div>
                             </li>
                            {% if mode == 'CFEO' %}

@@ -174,9 +174,11 @@
     outputWorkGroup = function (sourceList, opusOutput, opusid) {
         var output = "<div id=\"opus" + opusid + "\" class=\"opus\">";
         output += "<h2> " + workLabels[opusid] +
-                " <span class=\"contextual-info\">" +
-                "<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/{{ mode|lower }}/browse/workinformation/" + opusid + "/\" title=\"Work overview\" data-reveal-id=\"opus-info\">" +
-                "<span class=\"fa fa-book\"></span></a></span></h2>";
+                " <span class=\"contextual-info\">";
+                if (workinfos.indexOf(opusid) > -1){
+                    output +="<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/{{ mode|lower }}/browse/workinformation/" + opusid + "/\" title=\"Work overview\" data-reveal-id=\"opus-info\"><span class=\"fa fa-book\"></span></a></span>" ;
+                }
+                output+="</h2>";
         output += opusOutput;
         return output;
     }
@@ -252,8 +254,6 @@
                 workid=filters[i].id
             }
         }
-        console.log("source:"+source.Work);
-        console.log("filter:"+workid);
         scid=0;
         for (var x = 0; x < sourcePages.length; x++) {
             //if (workid ==0 || (workid > 0 && sourcePages[x].Work == workid)) {
@@ -337,6 +337,7 @@
      Authority List arrays for filters
      */
     works = [0, {% for w in works %}{{ w.id }}{% if forloop.last != True %}, {% endif %}{% endfor %}];
+    workinfos = [0, {% for wi in workinfos %}{{ wi }}{% if forloop.last != True %}, {% endif %}{% endfor %}];
     workLabels = [];
     {% for w in works %}
         workLabels['{{ w.id }}'] = '{{ w }}';

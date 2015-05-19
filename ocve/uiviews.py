@@ -181,8 +181,13 @@ def browse(request,mode="OCVE",defaultFilters=None):
         pass
         #defaultFilters = ''u' Bodleian Library, Oxford'
     sourceTypes=SourceType.objects.all()
+    workinfos=[]
     if mode == 'OCVE':
         works=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__ocve=True).distinct()
+        if works.count() > 0:
+            for w in works:
+                if len(w.workinformation.OCVE)> 0:
+                    workinfos.append(w.id)
         #dedicatees=Dedicatee.objects.filter(sourceinformation__source__ocve=True).filter(id__gt=2).distinct()
         publishers=Publisher.objects.filter(sourceinformation__source__ocve=True).filter(id__gt=2).distinct()
         years=Year.objects.filter(sourceinformation__source__ocve=True).distinct()
@@ -191,12 +196,16 @@ def browse(request,mode="OCVE",defaultFilters=None):
         instruments=Instrument.objects.filter(sourcecomponent_instrument__sourcecomponent__source__ocve=True).distinct()
     else:
         works=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__cfeo=True).distinct()
+        if works.count() > 0:
+            for w in works:
+                if len(w.workinformation.analysis)> 0 or len(w.workinformation.generalinfo)> 0 or len(w.workinformation.relevantmanuscripts)> 0:
+                    workinfos.append(w.id)
         #dedicatees=Dedicatee.objects.filter(sourceinformation__source__cfeo=True).distinct()
         publishers=Publisher.objects.filter(sourceinformation__source__cfeo=True).distinct()
         years=Year.objects.filter(sourceinformation__source__cfeo=True).distinct()
         genres=Genre.objects.filter(work__workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__cfeo=True).distinct()
         instruments=Instrument.objects.filter(sourcecomponent_instrument__sourcecomponent__source__cfeo=True).distinct()
-    return render_to_response('frontend/browse.html', {'defaultFilters':defaultFilters, 'mode':mode,'sourceTypes':sourceTypes,'instruments':instruments,'years':years,'publishers':publishers,'genres':genres,'works':works, 'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL}, context_instance=RequestContext(request))
+    return render_to_response('frontend/browse.html', {'defaultFilters':defaultFilters, 'mode':mode,'workinfos':workinfos,'sourceTypes':sourceTypes,'instruments':instruments,'years':years,'publishers':publishers,'genres':genres,'works':works, 'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL}, context_instance=RequestContext(request))
 
 
 #Optimised for OCVE
@@ -204,6 +213,20 @@ def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
     #    setPageImageTextLabel(s)
+    pages=Page.objects.filter(sourcecomponent__label='Front Matter')
+    tp=PageType.objects.get(id=4)
+    blank=PageType.objects.get(id=5)
+    for p in pages:
+        if p.orderno == 1 and p.pagetype.id != 4:
+            p.pagetype=tp
+        elif p.pagetype.id == 3:
+            p.pagetype=blank
+        p.save()
+    pages=Page.objects.filter(sourcecomponent__label='End Matter')
+    for p in pages:
+        if p.pagetype.id == 3:
+            p.pagetype=blank
+            p.save()
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()

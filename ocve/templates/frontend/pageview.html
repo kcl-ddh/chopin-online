@@ -738,6 +738,7 @@ initAnnotationPanel = function (alayer) {
 
                 {% if view == 'annotations' %}
                 <div id="annotations" class="large-4 columns">
+                {% if user.is_authenticated %}
                     <div id="annotationTools">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
@@ -746,6 +747,7 @@ initAnnotationPanel = function (alayer) {
                             <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new circle annotation</a></li>
                         </ul>
                     </div>
+                    {% endif %}
                             {% if comments.count > 0 %}
                             <div class="page-comments">
                                 <div id="commentary">

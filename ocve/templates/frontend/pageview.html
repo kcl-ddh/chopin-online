@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 
 {% block custom_stylesheets %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css"
-          type="text/css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
+{{ block.super }}
+<link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css"
+type="text/css">
+<link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
 
 {% endblock custom_stylesheets %}
 
 {% block header_scripts %}
-    <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript">
+<script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
     //Annotation functions
     //Show/hide for openlayers annotation controls
     aselector = '#annotations';
@@ -40,19 +40,19 @@
 
     initSquareAnnotation = function () {
         squareFeature.activate();
-        hideExistingNotes();
+        // hideExistingNotes();
         showNewAnnotationWindow();
     }
 
     initCircleAnnotation = function () {
         circleFeature.activate();
-        hideExistingNotes();
+        // hideExistingNotes();
         showNewAnnotationWindow();
     }
 
     initBarSelect = function () {
         toggleBarBoxes();
-        hideExistingNotes();
+        // hideExistingNotes();
         showNewAnnotationWindow();
     }
 
@@ -91,7 +91,7 @@
         barSelectFeature.deactivate();
         noteSelectFeature.deactivate();
         deleteOrphanAnnotations();
-        hideAnnotationTools();
+        //hideAnnotationTools();
         hideNewAnnotationWindow();
     }
 
@@ -165,29 +165,29 @@
             $('#id_noteBars').val('');
             $('#id_noteregions').val('');
         }, "json");
-    }
+}
 
-    initAnnotationPanel = function (alayer) {
-        squareFeature = new OpenLayers.Control.DrawFeature(alayer,
-                OpenLayers.Handler.RegularPolygon,
-                {displayClass: "olControlDrawFeaturePolygon",
-                    title: "Draw Custom Annotation",
-                    featureAdded: newDrawnAnnotation
-                });
+initAnnotationPanel = function (alayer) {
+    squareFeature = new OpenLayers.Control.DrawFeature(alayer,
+        OpenLayers.Handler.RegularPolygon,
+        {displayClass: "olControlDrawFeaturePolygon",
+        title: "Draw Custom Annotation",
+        featureAdded: newDrawnAnnotation
+    });
 
 
-        circleFeature = new OpenLayers.Control.DrawFeature(alayer,
-                OpenLayers.Handler.RegularPolygon,
-                {displayClass: "olControlDrawFeaturePolygon",
-                    title: "Draw Custom Annotation",
-                    featureAdded: newDrawnAnnotation
-                });
-        circleFeature.handler.sides = 40
+    circleFeature = new OpenLayers.Control.DrawFeature(alayer,
+        OpenLayers.Handler.RegularPolygon,
+        {displayClass: "olControlDrawFeaturePolygon",
+        title: "Draw Custom Annotation",
+        featureAdded: newDrawnAnnotation
+    });
+    circleFeature.handler.sides = 40
 
-        barSelectFeature = new OpenLayers.Control.SelectFeature(vlayer,
-                {title: 'Select', clickout: true, toggle: false,
-                    displayClass: "olControlModifyFeature",
-                    multiple: true, hover: false,
+    barSelectFeature = new OpenLayers.Control.SelectFeature(vlayer,
+        {title: 'Select', clickout: true, toggle: false,
+        displayClass: "olControlModifyFeature",
+        multiple: true, hover: false,
                     toggleKey: "ctrlKey", // ctrl key removes from selection
                     multipleKey: "shiftKey", // shift key adds to selection
                     onSelect: showNewAnnotationWindow,
@@ -195,10 +195,10 @@
                 });
 
 
-        noteSelectFeature = new OpenLayers.Control.SelectFeature(alayer,
-                {title: 'Select', clickout: true, toggle: false,
-                    displayClass: "olControlDrawFeaturePolygon",
-                    multiple: true, hover: false,
+    noteSelectFeature = new OpenLayers.Control.SelectFeature(alayer,
+        {title: 'Select', clickout: true, toggle: false,
+        displayClass: "olControlDrawFeaturePolygon",
+        multiple: true, hover: false,
                     toggleKey: "ctrlKey", // ctrl key removes from selection
                     multipleKey: "shiftKey", // shift key adds to selection
                     renderIntent: "selectedNote",
@@ -206,10 +206,10 @@
                 });
 
 
-        var panelControls = [barSelectFeature, squareFeature, circleFeature, noteSelectFeature];
-        toolbarPanel = new OpenLayers.Control.Panel(
-                {displayClass: "olControlEditingToolbar"});
-        toolbarPanel.addControls(panelControls);
+    var panelControls = [barSelectFeature, squareFeature, circleFeature, noteSelectFeature];
+    toolbarPanel = new OpenLayers.Control.Panel(
+        {displayClass: "olControlEditingToolbar"});
+    toolbarPanel.addControls(panelControls);
 
         //Connect bar labels to feaures with hover highlight
         $('.noteBarHighlight').hover(function () {
@@ -278,7 +278,7 @@
     toggleExistingNotes = function (noteType) {
         for (var f in alayer.features) {
             if (alayer.features[f].attributes.noteid > 0) {
-                if (noteType == 'all' || (noteType == 'notes' && alayer.features[f].data.noteType != 2) || (noteType == 'commentary' && alayer.features[f].data.noteType == 2))
+                if (noteType=='all' || (noteType == 'notes' && alayer.features[f].data.noteType !=2)|| (noteType == 'commentary' && alayer.features[f].data.noteType ==2))
                     if (alayer.features[f].renderIntent == "default") {
                         allNotesVisible = true;
                         alayer.features[f].renderIntent = "visibleNote";
@@ -286,21 +286,22 @@
                         allNotesVisible = false;
                         alayer.features[f].renderIntent = "default";
                     }
+                }
             }
+            alayer.redraw();
         }
-        alayer.redraw();
-    }
 
-    showAnnotationTools = function () {
+        showAnnotationTools = function () {
         //Replace bar styles
         vlayer.styleMap.styles["default"] = vlayer.styleMap.styles["annotation"]
         vlayer.setVisibility(false);
         //alayer.setVisibility(true);
         map.addControl(toolbarPanel);
         /*highlightCtrl.deactivate();
-         selectControl.deactivate();*/
+        selectControl.deactivate();*/
         $(atoolselector).fadeIn();
     }
+
 
 
     hideAnnotationTools = function () {
@@ -311,7 +312,7 @@
         $(atoolselector).fadeOut();
         map.removeControl(toolbarPanel);
         /*vlayer.setVisibility(true);
-         alayer.setVisibility(false);*/
+        alayer.setVisibility(false);*/
     }
 
     hideAnnotations = function () {
@@ -341,12 +342,12 @@
     annotationEvents = function () {
         //Init state
         $('#newNote').hide();
-        $(atoolselector).hide();
+        //$(atoolselector).hide();
 
         $('#barAttachToggle').click(function () {
 
             toggleBarBoxes();
-            hideExistingNotes();
+            // hideExistingNotes();
             barSelectFeature.activate();
 
             return false;
@@ -365,19 +366,26 @@
         initAnnotationPanel(alayer);
 
         //Events
-        $(atoggleselector).click(function () {
+        //$(atoggleselector).click(function () {
             //todo: change map size/pos?
-            if ($(atoolselector).is(':hidden')) {
+            //if ($(atoolselector).is(':hidden')) {
                 //showAnnotations();
                 //TODO: Only if logged in
-                showAnnotationTools();
-            } else {
+                //showAnnotationTools();
+            //} else {
                 //hideAnnotations();
                 //TODO: Only if logged in
-                hideAnnotationTools();
-            }
-            return false;
-        });
+                //hideAnnotationTools();
+            //}
+            //return false;
+        //});
+
+        {% if view == 'annotations' %}
+            showAnnotationTools();
+        {% else %}
+            hideAnnotationTools();
+        {% endif %}
+
         $('#newNoteForm').submit(function (event) {
             event.preventDefault();
         });
@@ -388,23 +396,24 @@
 
         $('#cancelNote').click(function () {
             resetPage();
+            toggleBarBoxes();
             return false;
         });
     }
-    </script>
-    <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
 
 
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/OpenLayers.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/BaseTypes/Class.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Util.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Events.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Tween.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Console.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Lang.js"></script>
-    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Layer/Grid.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/OpenLayers.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/BaseTypes/Class.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Util.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Events.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Tween.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Console.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Lang.js"></script>
+<script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Layer/Grid.js"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
     var zoomify_width = {{pageimage.width}};   // 3368;
     var zoomify_height = {{pageimage.height}};  //4210;
 
@@ -414,16 +423,16 @@
         //Ajax URL to get bar regions, switches between grouped and ungrouped geometries
         var regionURL = "{{regionURL}}";
         var noteURL = "{{noteURL}}";
-    {% endautoescape %}
-    startX = 0;
-    startY = 0;
-    endX = 0;
-    endY = 0;
-    workid ={{ work.id }};
+        {% endautoescape %}
+        startX = 0;
+        startY = 0;
+        endX = 0;
+        endY = 0;
+        workid ={{ work.id }};
 
 
-    var map, zoomify;
-    $(document).ready(function () {
+        var map, zoomify;
+        $(document).ready(function () {
         //Display work information / source information
         addOverview = function (url, selector) {
             $.get(url, function (data) {
@@ -445,7 +454,7 @@
 
         /* First we initialize the zoomify pyramid (to get number of tiers) */
         var zoomify = new OpenLayers.Layer.Zoomify("Zoomify", zoomify_url,
-                new OpenLayers.Size(zoomify_width, zoomify_height));
+            new OpenLayers.Size(zoomify_width, zoomify_height));
 
         /* Map with raster coordinates (pixels) from Zoomify image */
         var options = {
@@ -604,7 +613,7 @@
         });
 
         selectControl = new OpenLayers.Control.SelectFeature(vlayer,
-                {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+            {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
 
         map.addLayers([zoomify, vlayer, alayer]);
 
@@ -621,226 +630,233 @@
         selectControl.activate();
         annotationEvents();
     })
-    ;
-    </script>
+;
+</script>
 
 
 {% endblock header_scripts %}
 
 {% block content %}
-    <section class="main content-section page-view">
-    <div class="row">
-    <div class="large-12 columns">
-    <nav class="tab-bar">
-    <section class=" tab-bar-section">
-    <ul class="left inline-list contextual-menu">
-
-        <li>
-            <div class="menu-item">
-                <a href="{% url 'ocve_browse' %}"><i class="fa fa-arrow-circle-left"></i> Back to results</a>
-            </div>
-        </li>
-        <li>
-            <div class="menu-item opus-title"><a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/"
-                                                 title="Work overview" data-reveal-id="opus-info"
-                                                 title="Work overview">{{ work }}</a>, <a
-                    href="#" data-reveal-id="witness-info"
-                    data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/"
-                    title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
-            </div>
-        </li>
-
-        {% load catalogue_tags %}
-        {% get_impression_exists achash as impression_exists %}
-        {% if  impression_exists %}
-            <li>
-                <div class="menu-item">
-                    <a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a>
-                </div>
-            </li>
-        {% endif %}
-
-
-
-        {% if prev %}
-            <li>
-                <div class="menu-item">
-                    <a href="/{{ mode|lower }}/browse/pageview/{{ prev.id }}/" class="ctrl prev"><span
-                            class="fa fa-caret-left"></span></a>
-                </div>
-            </li>
-        {% endif %}
-        {% if next %}
-            <li>
-                <div class="menu-item"><a
-                        href="/{{ mode|lower }}/browse/pageview/{{ next.id }}/"
-                        class="ctrl next"><span class="fa fa-caret-right"></span></a>
-                </div>
-            </li>
-        {% endif %}
-        <li>
-            <div class="menu-item">
-                <a href="#" data-dropdown="available-pages">Jump to page</a>
-                <ul id="available-pages" class="f-dropdown" data-dropdown-content="">
-                    {% for pi in pageimages %}
-                        <li>
-                            <a href="/{{ mode|lower }}/browse/pageview/{{ pi.id }}/">{{ pi.textlabel }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </li>
-        {% if user.is_authenticated %}
-            <li>
-                <div class="menu-item">
-
-                    <a id="annotationToggle" href="#">Annotation tools <i class="fa fa-caret-down"></i></a>
-
-                    <div id="annotationTools">
-                        <a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a> |
-                        <a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new
-                            square annotation</a>
-                        <a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new
-                            circle annotation</a>
-                    </div>
-                </div>
-            </li>
-        {% endif %}
-    </ul>
-    </section></nav>
-
-    <div class="row">
-        <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns">
-            <div id="map"></div>
-            <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
-        </div>
-
-        {% if view == 'annotations' %}
-            <div id="annotations" class="large-4 columns">
-                <div id="annotationTools">
-                    <a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a> |
-                    <a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new
-                        square annotation</a>
-                    <a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new
-                        circle annotation</a>
-                </div>
-                {% if comments.count > 0 %}
-                    <div class="page-comments">
-                    <div id="commentary">
-                        <h4 class="comm">Commentary <span
-                                class="label radius secondary">{{ comments.count }}</span> <i
-                                class="fa fa-plus-circle right"></i></h4>
-
-                        <div class="collapseme">
-                            {% for c in comments %}
-                                <div id="comment-{{ c.id }}" class="annotation-box">
-                                    <p class="annotation-details">{% for br in c.getBarRegions %}
-                                        {% for b in br.bar.all %}
-                                            <span class="label radius secondary noteBarHighlight"
-                                                  data-barid="{{ b.barlabel }}">
-                                                    Bar <strong>{{ b.barlabel }}</strong></span>
-                                        {% endfor %}{% endfor %}
-                                    </p>
-
-                                    <div class="annotation"><p>{{ c.notetext }} </p></div>
-                                </div>
-                                <hr>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% if notes.count > 0 %}
-                    <div id="notes">
-                        <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i
-                                class="fa fa-plus-circle right"></i></h4>
-
-                        <div class="collapseme">
-                            {% for c in notes %}
-                                <div id="comment-{{ c.id }}" class="annotation-box">
-                                    <p class="annotation-details">{% for br in c.getBarRegions %}
-                                        {% for b in br.bar.all %}
-                                            <span class="label radius secondary noteBarHighlight"
-                                                  data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong>
-                                                    </span> {% endfor %}{% endfor %}
-                                        {% if c.noteregions|length > 0 %}
-                                            <span class="noteRegionHighlight"
-                                                  data-noteid="{{ c.id }}">Region</span>
-                                        {% endif %}
-                                    </p>
-
-                                    <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
-                                        {% if c.user == request.user %}
-                                            <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
-                                            <a href="#" class="deleteNote" data-noteid="{{ c.id }}">Delete</a>
-                                        {% endif %}</p>
-
-                                    <div class="annotation">
-                                        <p>{{ c.notetext }} </p>
-                                    </div>
-                                </div>
-                                <hr>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-                <div id="newNote">
-                    <form id="newNoteForm" method="POST" action="/ocve/saveNote/">
-                        <table>
-                            {{ annotationForm }}
-                            <tr>
-                                <th><label for="type_id">Visibility:</label></th>
-                                <td>
-                                    <select id="type" name="type_id">
-                                        <option value="3" selected="selected">Private</option>
-                                        <option value="4" selected="selected">Public</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                        <button id="createNote" type="submit">Save</button>
-                        <input type="hidden" id="annotation_id" name="annotation_id" value="0"/>
-                        <input type="hidden" id="noteBars" name="noteBars" value=""/>
-                        <button id="cancelNote" type="submit">Cancel</button>
-                    </form>
-                </div>
-                </div>
-            </div>
-        {% endif %}
-    </div>
-    </div>
-    </div>
-
-
+<section class="main content-section page-view">
     <div class="row">
         <div class="large-12 columns">
-            <div class="thumbnail-carousel">
-                <b class="divider"></b>
-                {% for p in pageimages %}
-                    <div>
-                        <div class="carousel-image">
-                            <a class="pageView thumb"
-                               href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
-                                <img border align="0"
-                                     src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg"
-                                     class="lazy thumbnail"/></a>
-                            <span class="page-label">{{ p.textlabel }}</span>
-                        </div>
-                    </div>
-                {% endfor %}
+            <nav class="tab-bar">
+                <section class=" tab-bar-section">
+                    <ul class="left inline-list contextual-menu">
+
+                        <li>
+                            <div class="menu-item">
+                                <a href="{% url 'ocve_browse' %}"><i class="fa fa-arrow-circle-left"></i> Back to results</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="menu-item opus-title"><a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/" title="Work overview" data-reveal-id="opus-info" title="Work overview">{{ work }}</a>, <a
+                                href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/"title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
+                            </div>
+                        </li>
+
+                        {% load catalogue_tags %}
+                        {% get_impression_exists achash as impression_exists %}
+                        {% if  impression_exists %}
+                        <li>
+                            <div class="menu-item">
+                                <a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a>
+                            </div>
+                        </li>
+                        {% endif %}
+
+
+                        {% if prev %}
+                        <li>
+                            <div class="menu-item">
+                                <a href="/{{ mode|lower }}/browse/pageview/{{ prev.id }}/" class="ctrl prev"><span class="fa fa-caret-left"></span></a>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% if next %}
+                        <li>
+                            <div class="menu-item"><a
+                                href="/{{ mode|lower }}/browse/pageview/{{ next.id }}/"
+                                class="ctrl next"><span class="fa fa-caret-right"></span></a>
+                            </div>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <div class="menu-item">
+                                <a href="#" data-dropdown="available-pages">Jump to page</a>
+                                <ul id="available-pages" class="f-dropdown" data-dropdown-content="">
+                                    {% for pi in pageimages %}
+                                    <li>
+                                        <a href="/{{ mode|lower }}/browse/pageview/{{ pi.id }}/">{{ pi.textlabel }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="menu-item">
+                                {% if view == 'annotations' %}
+                                <a href="?view=full">Hide annotations</a>
+                                {% else %}
+                                <a  href="?view=annotations">Annotations</a>
+                                {% endif %}
+                            </div>
+                        </li>
+
+                        {% if mode == 'CFEO' %}
+                        <li>
+                            <div class="menu-item">
+                                <a href="#" class="cfeo-add-to-compare">Add To Compare</a>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </section>
+            </nav>
+
+            <div class="row add-to-compare-bar" data-page-id="{{ pageimages.0.id }}">
+                <div class="large-6 columns ">
+                    <a href="#" data-cookie="left" data-page-id="{{ pageimages.0.id }}">Compare on Left</a>
+                </div>
+                <div class="large-6 columns ">
+                    <a href="#" data-cookie="right" data-page-id="{{ pageimages.0.id }}">Compare on Right</a>
+                </div>
             </div>
+
+            <div class="row add-to-compare-notification">
+                <div class="large-12 columns ">
+                    <span class="alert-box success">Added to comparison.</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns">
+                    <div id="map"></div>
+                    <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
+                </div>
+
+                {% if view == 'annotations' %}
+                <div id="annotations" class="large-4 columns">
+                {% if user.is_authenticated %}
+                    <div id="annotationTools">
+                        <p><strong>Annotation tools</strong></p>
+                        <ul class="no-bullet">
+                            <li><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
+                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new square annotation</a></li>
+                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new circle annotation</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                            {% if comments.count > 0 %}
+                            <div class="page-comments">
+                                <div id="commentary">
+                                    <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+
+                                    <div class="collapseme">
+                                        {% for c in comments %}
+                                        <div id="comment-{{ c.id }}" class="annotation-box">
+                                            <p class="annotation-details">
+                                                {% for br in c.getBarRegions %}
+                                                {% for b in br.bar.all %}
+                                                <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}"> Bar <strong>{{ b.barlabel }}</strong></span>
+                                                {% endfor %}
+                                                {% endfor %}
+                                            </p>
+
+                                            <div class="annotation"><p>{{ c.notetext }} </p></div>
+                                        </div>
+                                        <hr>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if notes.count > 0 %}
+                                <div id="notes">
+                                    <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+
+                                    <div class="collapseme">
+                                        {% for c in notes %}
+                                        <div id="comment-{{ c.id }}" class="annotation-box">
+                                            <p class="annotation-details">
+                                                {% for br in c.getBarRegions %}
+                                                {% for b in br.bar.all %}
+                                                <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
+                                                {% endfor %}
+                                                {% endfor %}
+                                                {% if c.noteregions|length > 0 %}
+                                                <span class="noteRegionHighlight" data-noteid="{{ c.id }}">Region</span>
+                                                {% endif %}
+                                            </p>
+
+                                            <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
+                                                {% if c.user == request.user %}
+                                                <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
+                                                <a href="#" class="deleteNote" data-noteid="{{ c.id }}">Delete</a>{% endif %}
+                                            </p>
+
+                                            <div class="annotation">
+                                                <p>{{ c.notetext }} </p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div id="newNote">
+                                    <form id="newNoteForm" method="POST" action="/ocve/saveNote/">
+                                        <table>
+                                            {{ annotationForm }}
+                                            <tr>
+                                                <th><label for="type_id">Visibility:</label></th>
+                                                <td>
+                                                    <select id="type" name="type_id">
+                                                        <option value="3" selected="selected">Private</option>
+                                                        <option value="4" selected="selected">Public</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <button id="createNote" type="submit" class="tiny radius">Save</button>
+                                        <input type="hidden" id="annotation_id" name="annotation_id" value="0"/>
+                                        <input type="hidden" id="noteBars" name="noteBars" value=""/>
+                                        <button id="cancelNote" type="submit" class="tiny radius">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="large-12 columns">
+                    <div class="thumbnail-carousel">
+                        <b class="divider"></b>
+                        {% for p in pageimages %}
+                        <div>
+                            <div class="carousel-image">
+                                <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
+                                    <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/></a>
+                                <span class="page-label">{{ p.textlabel }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endblock %}
+
+        {% block footer %}
+        {{ block.super }}
+        <div id="witness-info" class="reveal-modal" data-reveal>
+
         </div>
-    </div>
-    </section>
-{% endblock %}
 
+        <div id="opus-info" class="reveal-modal" data-reveal>
 
-{% block footer %}
-    {{ block.super }}
-    <div id="witness-info" class="reveal-modal" data-reveal>
-
-    </div>
-
-    <div id="opus-info" class="reveal-modal" data-reveal>
-
-    </div>
-{% endblock %}
+        </div>
+        {% endblock %}

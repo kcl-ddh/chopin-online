@@ -198,23 +198,34 @@ p.annotation-posted {
     padding: .5rem .5rem .25rem !important;
 }
 
+#annotationTools,
+#annotationTools p,
+#annotationTools ul {
+    font-size: .875rem;
+}
+
 #annotationTools {
     border-top: 2px solid #ccc;
-    position: absolute;
-    margin-left: 4em;
-    margin-top: 1.0625em;
+    /* position: absolute; */
+    /* margin-left: 4em; */
+    /* margin-top: 1.0625em; */
     padding: .5em;
-    min-width: 320px;
+    min-width: 100%;
     background: $secondary-color;
-    z-index: 9999;
+    /* z-index: 9999; */
 }
 
-#annotationTools a {
-    padding: .5em;
+#annotationTools ul,
+#annotationTools p {
+    margin: 0;
 }
 
-#annotationTools a:hover {
+/* #annotationTools a {
     padding: .5em;
+} */
+
+.annotationTools a:hover {
+    background: #fff;
 }
 
 .context-panel {

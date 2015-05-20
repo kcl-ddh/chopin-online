@@ -28,6 +28,7 @@ from imagetools import verifyImageDimensions
 #IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
 
+
 def cfeoacview(request,acHash,mode="OCVE"):
     return acview(request,acHash,'CFEO')
 
@@ -213,7 +214,7 @@ def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
     #    setPageImageTextLabel(s)
-    
+
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()
@@ -244,7 +245,7 @@ def ocvePageImageview(request,id):
     source=pi.page.sourcecomponent.source
     #allBars=Bar.objects.filter(barregion__pageimage__page__sourcecomponent__source=source).order_by('barnumber').distinct()
     barDict={}
-    pageimages=PageImage.objects.filter(page__sourcecomponent__source=pi.page.sourcecomponent.source,page__pagetype_id=3).order_by('page__orderno')
+    pageimages=getOCVEPageImages(source)
     #Get all bars on relevant pages to form quickjump menu 'allBars':allBars,
     cursor=connections['ocve_db'].cursor()
     cursor.execute("select bar.barlabel,pi.id from ocve_bar as bar,ocve_bar_barregion as brr, ocve_barregion as barregion,ocve_pageimage as pi,ocve_page as p,ocve_sourcecomponent as sc where bar.id=brr.bar_id and brr.barregion_id=barregion.id and barregion.pageimage_id=pi.id and pi.page_id=p.id and p.sourcecomponent_id=sc.id and sc.source_id="+str(source.id)+" order by bar.barnumber")
@@ -253,7 +254,13 @@ def ocvePageImageview(request,id):
     [next,prev]=getNextPrevPages(p,pi)
     ac=source.getAcCode()
     achash=hashlib.md5(ac.encode('UTF-8')).hexdigest()
-    work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
+    works=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()
+    if works.count() > 0:
+        work=works[0]
+    else:
+        #Title page, use source's work
+        work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()[0]
+        
     zoomifyURL=pi.getZoomifyPath()
     mode="OCVE"
     return render_to_response('frontend/pageview.html', {'achash':achash,'annotationForm':annotationForm,'notes':notes,'comments':comments,'allBars':cursor,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'zoomifyURL':zoomifyURL,'regionURL':regionURL,'noteURL':noteURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))

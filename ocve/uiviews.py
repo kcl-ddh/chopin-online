@@ -235,35 +235,55 @@ def getNextPrevPages(p,pi):
     return [next,prev]
 #Annotation.objects.filter(type_id=1).delete()
 @csrf_exempt
-def ocvePageImageview(request,id):
-    regionURL = "/ocve/getBarRegions/" + id + "/"
+def ocvePageImageview(request, id):
+    mode = "OCVE"
     noteURL = "/ocve/getAnnotationRegions/" + id + "/"
-    pi=PageImage.objects.get(id=id)
-    p=pi.page
-    newN=Annotation(pageimage=pi)
-    annotationForm=AnnotationForm(instance=newN)
-    source=pi.page.sourcecomponent.source
-    #allBars=Bar.objects.filter(barregion__pageimage__page__sourcecomponent__source=source).order_by('barnumber').distinct()
-    barDict={}
-    pageimages=getOCVEPageImages(source)
-    #Get all bars on relevant pages to form quickjump menu 'allBars':allBars,
-    cursor=connections['ocve_db'].cursor()
-    cursor.execute("select bar.barlabel,pi.id from ocve_bar as bar,ocve_bar_barregion as brr, ocve_barregion as barregion,ocve_pageimage as pi,ocve_page as p,ocve_sourcecomponent as sc where bar.id=brr.bar_id and brr.barregion_id=barregion.id and barregion.pageimage_id=pi.id and pi.page_id=p.id and p.sourcecomponent_id=sc.id and sc.source_id="+str(source.id)+" order by bar.barnumber")
-    notes=Annotation.objects.filter(pageimage_id=id,type_id=1)
-    comments=Annotation.objects.filter(pageimage_id=id,type_id=2)
-    [next,prev]=getNextPrevPages(p,pi)
-    ac=source.getAcCode()
-    achash=hashlib.md5(ac.encode('UTF-8')).hexdigest()
-    works=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()
-    if works.count() > 0:
-        work=works[0]
-    else:
-        #Title page, use source's work
-        work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()[0]
-        
-    zoomifyURL=pi.getZoomifyPath()
-    mode="OCVE"
-    return render_to_response('frontend/pageview.html', {'achash':achash,'annotationForm':annotationForm,'notes':notes,'comments':comments,'allBars':cursor,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'zoomifyURL':zoomifyURL,'regionURL':regionURL,'noteURL':noteURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
+    regionURL = "/ocve/getBarRegions/" + id + "/"
+
+    pi = PageImage.objects.get(id=id)
+    p = pi.page
+
+    newN = Annotation(pageimage=pi)
+    annotationForm = AnnotationForm(instance=newN)
+
+    source = pi.page.sourcecomponent.source
+
+    accode = source.getAcCodeObject()
+    achash = None
+
+    if accode:
+        achash = accode.accode_hash
+
+    pageimages = getOCVEPageImages(source)
+
+    cursor = connections['ocve_db'].cursor()
+    cursor.execute(
+        """select bar.barlabel, pi.id from ocve_bar as bar,
+        ocve_bar_barregion as brr, ocve_barregion as barregion,
+        ocve_pageimage as pi, ocve_page as p, ocve_sourcecomponent as sc
+        where bar.id=brr.bar_id and brr.barregion_id=barregion.id
+        and barregion.pageimage_id=pi.id and pi.page_id=p.id
+        and p.sourcecomponent_id=sc.id
+        and sc.source_id=""" + str(source.id) + " order by bar.barnumber")
+
+    notes = Annotation.objects.filter(pageimage_id=id, type_id=1)
+    comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
+    [next_page, prev_page] = getNextPrevPages(p, pi)
+    work = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
+    zoomifyURL = pi.getZoomifyPath()
+
+    request.session['page_image'] = id
+
+    return render_to_response('frontend/pageview.html', {
+        'achash': achash, 'annotationForm': annotationForm, 'notes': notes,
+        'comments': comments, 'allBars': cursor, 'work': work,
+        'source': source, 'prev': prev_page, 'next': next_page,
+        'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,
+        'pageimages': pageimages, 'mode': mode, 'zoomifyURL': zoomifyURL,
+        'regionURL': regionURL, 'noteURL': noteURL, 'page': p,
+        'pageimage': pi}, context_instance=RequestContext(request))
+
 
 def addImageDimensions(pi):
     pl = PageLegacy.objects.get(pageimage=pi)

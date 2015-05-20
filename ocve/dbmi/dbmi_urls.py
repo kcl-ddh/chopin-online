@@ -6,7 +6,7 @@ from sourceeditor import *
 from bareditor import *
 from datatools import correctSourceInformation
 from uploader import convertFolder,convertimage
-# URLS for the CFEO skin of the UI
+from spine import *
 
 urlpatterns = patterns('', (r'^source/(?P<id>\d+)/$', source),
                        #Source and source information

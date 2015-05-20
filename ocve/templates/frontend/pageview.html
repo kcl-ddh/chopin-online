@@ -685,21 +685,22 @@
                                     </ul>
                                 </div>
                             </li>
-
+                        {% if user.is_authenticated %}
                             <li>
                                 <div class="menu-item">
-                                    <a id="annotationToggle" href="#">Annotation tools <i class="fa fa-caret-down"></i></a>
 
+                                    <a id="annotationToggle" href="#">Annotation tools <i class="fa fa-caret-down"></i></a>
                                     <div id="annotationTools">
                                         <a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a> |
                                         <a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new
                                             square annotation</a>
                                         <a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new
                                             circle annotation</a>
-
                                     </div>
+
                                 </div>
                             </li>
+                        {% endif %}
                             {% if mode == 'CFEO' %}
 
                                 <li>
@@ -780,7 +781,8 @@
                                                 {% if c.user == request.user %}
                                                     <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
                                                     <a href="#" class="deleteNote"
-                                                       data-noteid="{{ c.id }}">Delete</a>{% endif %}</p>
+                                                       data-noteid="{{ c.id }}">Delete</a>
+                                                {% endif %}</p>
 
                                             <div class="annotation">
                                                 <p>{{ c.notetext }} </p>

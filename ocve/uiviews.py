@@ -214,7 +214,6 @@ def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
     #    setPageImageTextLabel(s)
-
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()
@@ -244,6 +243,8 @@ def ocvePageImageview(request, id):
     p = pi.page
 
     newN = Annotation(pageimage=pi)
+    if request.user is not None and request.user.id is not None:
+        newN.user=request.user
     annotationForm = AnnotationForm(instance=newN)
 
     source = pi.page.sourcecomponent.source

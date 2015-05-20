@@ -2,7 +2,7 @@
 
 {% block custom_stylesheets %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/OpenLayers/theme/default/style.css"
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css"
           type="text/css">
     <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
 
@@ -635,28 +635,33 @@
                 <nav class="tab-bar">
                     <section class=" tab-bar-section">
                         <ul class="left inline-list contextual-menu">
+
                             <li>
-                                <div class="menu-item opus-title"><a href="#" class="ctrl more"
-                                                                     data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/"
-                                                                     title="Work overview"
-                                                                     data-reveal-id="opus-info" class="ctrl more"
-                                                                     data-tooltip=""
-                                                                     title="Work overview">{{ work }}</a>, <a
-                                        href="#" class="ctrl more" data-tooltip data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/"
-                                        title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
+                                <div class="menu-item">
+                                    <a href="{% url 'ocve_browse' %}"><i class="fa fa-arrow-circle-left"></i> Back to results</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="menu-item opus-title"><a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/" title="Work overview" data-reveal-id="opus-info" title="Work overview">{{ work }}</a>, <a
+                                        href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/"title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
                                 </div>
                             </li>
 
-                                {% load catalogue_tags %}
-{% get_impression_exists achash as impression_exists %}
-{% if  impression_exists %}<li><a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a> </li>{% endif %}
+                            {% load catalogue_tags %}
+                            {% get_impression_exists achash as impression_exists %}
+                            {% if  impression_exists %}
+                            <li>
+                                <div class="menu-item">
+                                    <a href="/aco/catalogue/impression/{{ achash }}/">Catalogue</a>
+                                </div>
+                            </li>
+                            {% endif %}
 
 
                             {% if prev %}
                                 <li>
-                                    <div class="menu-item"><a href="/{{ mode|lower }}/browse/pageview/{{ prev.id }}/"
-                                                              class="ctrl prev"><span
-                                            class="fa fa-caret-left"></span></a>
+                                    <div class="menu-item">
+                                        <a href="/{{ mode|lower }}/browse/pageview/{{ prev.id }}/" class="ctrl prev"><span class="fa fa-caret-left"></span></a>
                                     </div>
                                 </li>
                             {% endif %}
@@ -693,12 +698,6 @@
                                             circle annotation</a>
 
                                     </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="menu-item">
-                                    <a href="{% url 'ocve_browse' %}">Back to results</a>
                                 </div>
                             </li>
                             {% if mode == 'CFEO' %}

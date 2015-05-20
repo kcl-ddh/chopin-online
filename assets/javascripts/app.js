@@ -957,7 +957,7 @@ $(document).ready( function() {
 	    return false;
 	  });
 	  $('#commentary h4.comm').bind("click", function() { toggleExistingNotes('commentary'); });
-        $('#notes h4.comm').bind("click", function() { toggleExistingNotes('notes'); });
+      $('#notes h4.comm').bind("click", function() { toggleExistingNotes('notes'); });
 	});
 		
 });

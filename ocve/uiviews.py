@@ -28,6 +28,7 @@ from imagetools import verifyImageDimensions
 #IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
 
+
 def cfeoacview(request,acHash,mode="OCVE"):
     return acview(request,acHash,'CFEO')
 
@@ -213,20 +214,7 @@ def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
     #    setPageImageTextLabel(s)
-    pages=Page.objects.filter(sourcecomponent__label='Front Matter')
-    tp=PageType.objects.get(id=4)
-    blank=PageType.objects.get(id=5)
-    for p in pages:
-        if p.orderno == 1 and p.pagetype.id != 4:
-            p.pagetype=tp
-        elif p.pagetype.id == 3:
-            p.pagetype=blank
-        p.save()
-    pages=Page.objects.filter(sourcecomponent__label='End Matter')
-    for p in pages:
-        if p.pagetype.id == 3:
-            p.pagetype=blank
-            p.save()
+
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()
@@ -252,6 +240,8 @@ def ocvePageImageview(request, id):
     noteURL = "/ocve/getAnnotationRegions/" + id + "/"
     regionURL = "/ocve/getBarRegions/" + id + "/"
 
+    view = request.GET.get('view')
+
     pi = PageImage.objects.get(id=id)
     p = pi.page
 
@@ -266,9 +256,7 @@ def ocvePageImageview(request, id):
     if accode:
         achash = accode.accode_hash
 
-    pageimages = PageImage.objects.filter(
-        page__sourcecomponent__source=source,
-        page__pagetype_id=3).order_by('page__orderno')
+    pageimages = getOCVEPageImages(source)
 
     cursor = connections['ocve_db'].cursor()
     cursor.execute(
@@ -296,7 +284,9 @@ def ocvePageImageview(request, id):
         'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,
         'pageimages': pageimages, 'mode': mode, 'zoomifyURL': zoomifyURL,
         'regionURL': regionURL, 'noteURL': noteURL, 'page': p,
-        'pageimage': pi}, context_instance=RequestContext(request))
+        'pageimage': pi, 'view': view},
+        context_instance=RequestContext(request))
+
 
 def addImageDimensions(pi):
     pl = PageLegacy.objects.get(pageimage=pi)

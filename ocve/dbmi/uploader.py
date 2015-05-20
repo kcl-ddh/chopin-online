@@ -52,7 +52,7 @@ def newsourcefiles(request):
 def convertFolder(request,folderName):
     newS=NewSource(label=folderName,sourcecreated=0)
     newS.save()
-    folderName=folderName.decode('utf-8')
+    folderName=folderName.encode('utf-8')
     files=os.listdir(os.path.join(settings.CONVERTED_UPLOAD_PATH, folderName))
     for f in files:
         npi = NewPageImage(source=newS, filename=f, surrogate=1, versionnumber=1, permission=False,

@@ -326,3 +326,16 @@ def serializeAcCodeConnector():
                 first=1
     destination.write(']')
     destination.close()
+
+
+#Get the pageimages from a source, filtered to include only music pages and the title page
+def getOCVEPageImages(source):
+    try:
+        musicpage=PageType.objects.get(type='music')
+        tp=PageType.objects.get(type='title page')
+        pi=PageImage.objects.filter(page__sourcecomponent__source=source).filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).order_by('page__orderno')
+        return pi
+    except IndexError:
+        return []
+    except ObjectDoesNotExist:
+        return []

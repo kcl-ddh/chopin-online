@@ -239,6 +239,8 @@ def ocvePageImageview(request, id):
     noteURL = "/ocve/getAnnotationRegions/" + id + "/"
     regionURL = "/ocve/getBarRegions/" + id + "/"
 
+    view = request.GET.get('view')
+
     pi = PageImage.objects.get(id=id)
     p = pi.page
 
@@ -283,7 +285,8 @@ def ocvePageImageview(request, id):
         'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,
         'pageimages': pageimages, 'mode': mode, 'zoomifyURL': zoomifyURL,
         'regionURL': regionURL, 'noteURL': noteURL, 'page': p,
-        'pageimage': pi}, context_instance=RequestContext(request))
+        'pageimage': pi, 'view': view},
+        context_instance=RequestContext(request))
 
 
 def addImageDimensions(pi):

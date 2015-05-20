@@ -198,6 +198,12 @@ p.annotation-posted {
     padding: .5rem .5rem .25rem !important;
 }
 
+#annotationTools,
+#annotationTools p,
+#annotationTools ul {
+    font-size: .875rem;
+}
+
 #annotationTools {
     border-top: 2px solid #ccc;
     /* position: absolute; */
@@ -209,12 +215,17 @@ p.annotation-posted {
     /* z-index: 9999; */
 }
 
-#annotationTools a {
-    padding: .5em;
+#annotationTools ul,
+#annotationTools p {
+    margin: 0;
 }
 
-#annotationTools a:hover {
+/* #annotationTools a {
     padding: .5em;
+} */
+
+.annotationTools a:hover {
+    background: #fff;
 }
 
 .context-panel {

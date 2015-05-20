@@ -164,8 +164,16 @@ class Source(models.Model):
         except ObjectDoesNotExist:
             return ""
         except MultipleObjectsReturned:
-            si=SourceInformation.objects.filter(source=self)
             return ""
+
+    def getAcCodeObject(self):
+        try:
+            si = SourceInformation.objects.get(source=self)
+            return si.accode
+        except ObjectDoesNotExist:
+            return None
+        except MultipleObjectsReturned:
+            return None
 
     def getSourceComponents(self):
         try:

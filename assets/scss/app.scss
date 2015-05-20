@@ -1056,17 +1056,17 @@ b.top-spacing {
             font-size: inherit;
         }
     }
-    li:first-child {
+    .menu-item.opus-title {
         padding: 0 14px 0 10px;
+    }
+    .menu-item.opus-title a {
+        padding: 0;
     }
     .menu-item {
         margin: rem-calc(12px) 0;
 
         a {
             padding: rem-calc(20px);
-        }
-        a.more {
-            padding: 0;
         }
     }
     .menu-item.has-button {

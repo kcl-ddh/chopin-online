@@ -1338,8 +1338,9 @@ b.top-spacing {
 
 /** Rich Text **/
 
-.rich-text ul, .rich-text ol {
-    margin-bottom: .625rem !important;
+.rich-text ul,
+.rich-text ol {
+    padding-bottom: .625rem !important;
 }
 
 /** Special characters **/

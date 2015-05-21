@@ -245,8 +245,10 @@ def ocvePageImageview(request, id):
     p = pi.page
 
     newN = Annotation(pageimage=pi)
-    if request.user is not None and request.user.id is not None:
+
+    if request.user and request.user.id:
         newN.user=request.user
+
     annotationForm = AnnotationForm(instance=newN)
 
     source = pi.page.sourcecomponent.source

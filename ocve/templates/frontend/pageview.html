@@ -380,26 +380,26 @@ initAnnotationPanel = function (alayer) {
             //return false;
         //});
 
-        {% if view == 'annotations' %}
-            showAnnotationTools();
-        {% else %}
-            hideAnnotationTools();
-        {% endif %}
+{% if view == 'annotations' %}
+showAnnotationTools();
+{% else %}
+hideAnnotationTools();
+{% endif %}
 
-        $('#newNoteForm').submit(function (event) {
-            event.preventDefault();
-        });
+$('#newNoteForm').submit(function (event) {
+    event.preventDefault();
+});
 
-        $('#createNote').click(function () {
-            saveNote();
-        });
+$('#createNote').click(function () {
+    saveNote();
+});
 
-        $('#cancelNote').click(function () {
-            resetPage();
-            toggleBarBoxes();
-            return false;
-        });
-    }
+$('#cancelNote').click(function () {
+    resetPage();
+    toggleBarBoxes();
+    return false;
+});
+}
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
 
@@ -738,7 +738,7 @@ initAnnotationPanel = function (alayer) {
 
                 {% if view == 'annotations' %}
                 <div id="annotations" class="large-4 columns">
-                {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
                     <div id="annotationTools">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
@@ -748,115 +748,116 @@ initAnnotationPanel = function (alayer) {
                         </ul>
                     </div>
                     {% endif %}
-                            {% if comments.count > 0 %}
-                            <div class="page-comments">
-                                <div id="commentary">
-                                    <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+                    
+                    {% if comments.count > 0 %}
+                    <div class="page-comments">
+                        <div id="commentary">
+                            <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
 
-                                    <div class="collapseme">
-                                        {% for c in comments %}
-                                        <div id="comment-{{ c.id }}" class="annotation-box">
-                                            <p class="annotation-details">
-                                                {% for br in c.getBarRegions %}
-                                                {% for b in br.bar.all %}
-                                                <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}"> Bar <strong>{{ b.barlabel }}</strong></span>
-                                                {% endfor %}
-                                                {% endfor %}
-                                            </p>
-
-                                            <div class="annotation"><p>{{ c.notetext }} </p></div>
-                                        </div>
-                                        <hr>
+                            <div class="collapseme">
+                                {% for c in comments %}
+                                <div id="comment-{{ c.id }}" class="annotation-box">
+                                    <p class="annotation-details">
+                                        {% for br in c.getBarRegions %}
+                                        {% for b in br.bar.all %}
+                                        <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}"> Bar <strong>{{ b.barlabel }}</strong></span>
                                         {% endfor %}
-                                    </div>
-                                </div>
-                                {% endif %}
-                                {% if notes.count > 0 %}
-                                <div id="notes">
-                                    <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
-
-                                    <div class="collapseme">
-                                        {% for c in notes %}
-                                        <div id="comment-{{ c.id }}" class="annotation-box">
-                                            <p class="annotation-details">
-                                                {% for br in c.getBarRegions %}
-                                                {% for b in br.bar.all %}
-                                                <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
-                                                {% endfor %}
-                                                {% endfor %}
-                                                {% if c.noteregions|length > 0 %}
-                                                <span class="noteRegionHighlight" data-noteid="{{ c.id }}">Region</span>
-                                                {% endif %}
-                                            </p>
-
-                                            <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
-                                                {% if c.user == request.user %}
-                                                <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
-                                                <a href="#" class="deleteNote" data-noteid="{{ c.id }}">Delete</a>{% endif %}
-                                            </p>
-
-                                            <div class="annotation">
-                                                <p>{{ c.notetext }} </p>
-                                            </div>
-                                        </div>
-                                        <hr>
                                         {% endfor %}
-                                    </div>
+                                    </p>
+
+                                    <div class="annotation"><p>{{ c.notetext }} </p></div>
                                 </div>
-                                {% endif %}
-                                <div id="newNote">
-                                    <form id="newNoteForm" method="POST" action="/ocve/saveNote/">
-                                        <table>
-                                            {{ annotationForm }}
-                                            <tr>
-                                                <th><label for="type_id">Visibility:</label></th>
-                                                <td>
-                                                    <select id="type" name="type_id">
-                                                        <option value="3" selected="selected">Private</option>
-                                                        <option value="4" selected="selected">Public</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <button id="createNote" type="submit" class="tiny radius">Save</button>
-                                        <input type="hidden" id="annotation_id" name="annotation_id" value="0"/>
-                                        <input type="hidden" id="noteBars" name="noteBars" value=""/>
-                                        <button id="cancelNote" type="submit" class="tiny radius">Cancel</button>
-                                    </form>
-                                </div>
+                                <hr>
+                                {% endfor %}
                             </div>
                         </div>
                         {% endif %}
-                    </div>
-                </div>
-            </div>
+                        {% if notes.count > 0 %}
+                        <div id="notes">
+                            <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
 
-            <div class="row">
-                <div class="large-12 columns">
-                    <div class="thumbnail-carousel">
-                        <b class="divider"></b>
-                        {% for p in pageimages %}
-                        <div>
-                            <div class="carousel-image">
-                                <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
-                                    <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/></a>
-                                <span class="page-label">{{ p.textlabel }}</span>
+                            <div class="collapseme">
+                                {% for c in notes %}
+                                <div id="comment-{{ c.id }}" class="annotation-box">
+                                    <p class="annotation-details">
+                                        {% for br in c.getBarRegions %}
+                                        {% for b in br.bar.all %}
+                                        <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
+                                        {% endfor %}
+                                        {% endfor %}
+                                        {% if c.noteregions|length > 0 %}
+                                        <span class="noteRegionHighlight" data-noteid="{{ c.id }}">Region</span>
+                                        {% endif %}
+                                    </p>
+
+                                    <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
+                                        {% if c.user == request.user %}
+                                        <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
+                                        <a href="#" class="deleteNote" data-noteid="{{ c.id }}">Delete</a>{% endif %}
+                                    </p>
+
+                                    <div class="annotation">
+                                        <p>{{ c.notetext }} </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                {% endfor %}
                             </div>
                         </div>
-                        {% endfor %}
+                        {% endif %}
+                        <div id="newNote">
+                            <form id="newNoteForm" method="POST" action="/ocve/saveNote/">
+                                <table>
+                                    {{ annotationForm }}
+                                    <tr>
+                                        <th><label for="type_id">Visibility:</label></th>
+                                        <td>
+                                            <select id="type" name="type_id">
+                                                <option value="3" selected="selected">Private</option>
+                                                <option value="4" selected="selected">Public</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button id="createNote" type="submit" class="tiny radius">Save</button>
+                                <input type="hidden" id="annotation_id" name="annotation_id" value="0"/>
+                                <input type="hidden" id="noteBars" name="noteBars" value=""/>
+                                <button id="cancelNote" type="submit" class="tiny radius">Cancel</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
-        </section>
-        {% endblock %}
-
-        {% block footer %}
-        {{ block.super }}
-        <div id="witness-info" class="reveal-modal" data-reveal>
-
         </div>
+    </div>
 
-        <div id="opus-info" class="reveal-modal" data-reveal>
-
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="thumbnail-carousel">
+                <b class="divider"></b>
+                {% for p in pageimages %}
+                <div>
+                    <div class="carousel-image">
+                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
+                            <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/></a>
+                            <span class="page-label">{{ p.textlabel }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-        {% endblock %}
+    </section>
+    {% endblock %}
+
+    {% block footer %}
+    {{ block.super }}
+    <div id="witness-info" class="reveal-modal" data-reveal>
+
+    </div>
+
+    <div id="opus-info" class="reveal-modal" data-reveal>
+
+    </div>
+    {% endblock %}

@@ -92,8 +92,12 @@ ul.search-results {
 }
 
 .rich-text li {
-    text-indent: -1em;
+    text-indent: -.875em;
     padding-left: 1em;
+}
+
+.rich-text p:empty {
+    display: none;
 }
 
 /*** PDF display fallback ***/

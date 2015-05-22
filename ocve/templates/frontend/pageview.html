@@ -260,6 +260,10 @@ initAnnotationPanel = function (alayer) {
                 var noteid = $(this).data('noteid');
                 $.post('/ocve/deleteNote/' + noteid, null, function () {
                     $('#comment-' + noteid).fadeOut();
+                    var select = alayer.getFeaturesByAttribute('noteid', noteid);
+                    if (select.length > 0) {
+                         alayer.eraseFeatures(select[0]);
+                    }
                 });
             }
             return false;

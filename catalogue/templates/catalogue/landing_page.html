@@ -40,13 +40,13 @@ Typekit.load();
     {% for section in self.sections.all %}
     <div class="large-4 columns panel {{ section.css_class }}">
         <div class="home-block-header">
-            <h2>{{ section.abbreviation }}</h2>
+            <a href="{{ section.page.url }}"><h2>{{ section.abbreviation }}</h2></a>
             <p>{{ section.title }}</p>
         </div>
         <div class="home-block-content">
             <p>{{ section.introduction }}</p>
         </div>
-        {% image section.image original %}
+        <a href="{{ section.page.url }}">{% image section.image original %}</a>
         <a href="{{ section.page.url }}" class="button expand">Go to site <i class="fa fa-angle-double-right"></i></a>
     </div>
     {% endfor %}

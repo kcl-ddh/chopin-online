@@ -79,11 +79,6 @@ $(document).ready(function () {
     winHeight = $(window).height();
     resizeModal(winHeight);
 
-    // Foundation JavaScript
-// Documentation can be found at: http://foundation.zurb.com/docs
-    $(document).foundation();
-
-
     /* Annotations panel */
     $("a.ctrl.show-annotations").click(function () {
         $cpanel = $("#context-panel");

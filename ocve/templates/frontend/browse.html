@@ -57,6 +57,7 @@
         $('dl.selected-filter.' + type).remove();
         filterFacets(sourceview.getCurrentItems(), type);
         removeFromFilterArray(type)
+        serializeFilters();
     }
 
     removeFromFilterArray = function (type) {
@@ -425,9 +426,13 @@
                 {% if f.type == "Source" %}
                     $('#source{{ f.id }} h5').click();
                     $('#source{{ f.id }} h5 a').focus();
-                {% elif f.type == "Work" %}
+                {% else %}
                     filters.push({"type": '{{ f.type }}', "id":{{ f.id }}, "selection": '{{ f.selection }}'})
-                    applyFilter('{{ f.type }}', {{ f.id }}, '{{ f.selection }}');
+                    //applyFilter(, {{ f.id }}, '{{ f.selection }}');
+                    addSelectedFilter('{{ f.type }}', '{{ f.selection }}')
+                    //if (type != 'KeyPitch') {
+                     sourceCollection.filters['{{ f.type }}'].query({{ f.id }});
+                    //}
                     filterFacets(sourceview.getCurrentItems(), '{{ f.type }}');
                 {% endif %}
 

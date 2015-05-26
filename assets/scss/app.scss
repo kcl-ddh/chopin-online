@@ -505,6 +505,10 @@ p.annotation-posted {
     top: 1em !important;
 } */
 
+.reveal-modal.open {
+    z-index: 9999;
+}
+
 /** CFEO Compare */
 .add-to-compare-bar {
     display: none;

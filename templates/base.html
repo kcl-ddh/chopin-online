@@ -94,6 +94,11 @@
     {% block footer_scripts %}
     <script src="{% static 'vendor/foundation/js/foundation.min.js' %}"></script>
     <script src="{% static 'javascripts/app.js' %}"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $(document).foundation();
+    });
+    </script>
     {% endblock %}
 
     {# wagtailuserbar #}

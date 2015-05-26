@@ -86,6 +86,20 @@ ul.search-results {
     margin-bottom: 1rem;
 }
 
+.rich-text ul,
+.rich-text ol {
+    list-style-position: inside;
+}
+
+.rich-text li {
+    text-indent: -.875em;
+    padding-left: 1em;
+}
+
+.rich-text p:empty {
+    display: none;
+}
+
 /*** PDF display fallback ***/
 
 .pdf-canvas-error {

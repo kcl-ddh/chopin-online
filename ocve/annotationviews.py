@@ -11,13 +11,7 @@ from django.template.context import RequestContext
 from bartools import toGeos
 from ocve.models import Annotation_BarRegion,Bar,BarRegion
 from django.views.decorators.csrf import csrf_exempt
-
-
-
-
-
-
-
+from django.contrib.auth.decorators import login_required
 
 
 #Note edit views
@@ -38,6 +32,7 @@ class noteGeos:
 
 #Delete user annotation
 @csrf_exempt
+@login_required
 def deleteNote(request,id):
     try:
         Annotation.objects.get(id=id).delete()
@@ -48,6 +43,7 @@ def deleteNote(request,id):
 
 #Takes an annotation form and updates
 @csrf_exempt
+@login_required
 def saveNote(request):
     #Delete, don't bother with the rest
     noteid=request.POST['annotation_id']

@@ -60,6 +60,9 @@ def saveNote(request):
         #Insert Annotation()
         note=Annotation()
     n=AnnotationForm(request.POST,instance=note)
+
+    print('user', n.user)
+
     try:
         typeid=request.POST['type_id']
         type=AnnotationType.objects.get(id=int(typeid))
@@ -67,6 +70,7 @@ def saveNote(request):
         type=AnnotationType.objects.get(id=1)
     n.type=type
     newNote=n.save()
+    print('user', newNote.user)
     #Transform POLYGON feature def for later GeoJSON export
     #POLYGON((1426 2368,1170 2036,1358 1824,1350 2084,1526 2152,1426 2368))
     geotext=newNote.noteregions

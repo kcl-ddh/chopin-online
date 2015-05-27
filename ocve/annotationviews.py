@@ -45,48 +45,57 @@ def deleteNote(request,id):
 @csrf_exempt
 @login_required
 def saveNote(request):
-    #Delete, don't bother with the rest
-    noteid=request.POST['annotation_id']
-    if int(noteid) != 0:
+    annotation_id = request.POST['annotation_id']
+    annotation = None
+
+    if int(annotation_id) > 0:
         #Update
-        note=Annotation.objects.get(id=int(noteid))
+        annotation = Annotation.objects.get(id=int(annotation_id))
         #Clear previous notes
-        Annotation_BarRegion.objects.filter(annotation=note).delete()
+        Annotation_BarRegion.objects.filter(annotation=annotation).delete()
     else:
         #Insert Annotation()
-        note=Annotation()
-    n=AnnotationForm(request.POST,instance=note)
-
-    print('user', n.user)
+        annotation = Annotation()
 
     try:
-        typeid=request.POST['type_id']
-        type=AnnotationType.objects.get(id=int(typeid))
+        annotation_type_id = request.POST['type_id']
+        annotation_type = AnnotationType.objects.get(
+            id=int(annotation_type_id))
     except Exception:
-        type=AnnotationType.objects.get(id=1)
-    n.type=type
-    newNote=n.save()
-    print('user', newNote.user)
+        annotation_type = AnnotationType.objects.get(id=1)
+
+    form = AnnotationForm(request.POST, instance=annotation)
+    form.type = annotation_type
+
+    new_annotation = form.save()
+
     #Transform POLYGON feature def for later GeoJSON export
     #POLYGON((1426 2368,1170 2036,1358 1824,1350 2084,1526 2152,1426 2368))
-    geotext=newNote.noteregions
+    geotext = new_annotation.noteregions
     if len(geotext) > 0 :
-        geotext=geotext.replace('POLYGON((','').replace('))','').replace(',','],[').replace(' ',',')
-        newNote.noteregions='['+geotext+']'
-        newNote.save()
+        geotext=geotext.replace('POLYGON((', '').replace('))', '').replace(
+            ',', '],[').replace(' ', ',')
+        new_annotation.noteregions = '[' + geotext + ']'
+        new_annotation.save()
+    
     #Recalculate which bar regions intersect with this note
     try:
-        notebars=request.POST['noteBars']
-        barLabels=notebars.split(",")
-        for bl in barLabels:
-            b=Bar.objects.filter(barlabel=bl)
-            if b.count() > 0:
-                regions=BarRegion.objects.filter(bar=b,pageimage_id=newNote.pageimage_id)
-                for r in regions:
-                    Annotation_BarRegion(annotation=newNote,barregion=r).save()
+        bars = request.POST['noteBars']
+        labels = notebars.split(',')
+        for label in labels:
+            bar = Bar.objects.filter(barlabel=label)
+            if bar and bar.count() > 0:
+                regions = BarRegion.objects.filter(
+                    bar=bar, pageimage_id=new_annotation.pageimage_id)
+
+                for region in regions:
+                    Annotation_BarRegion(
+                        annotation=new_annotation, barregion=region).save()
     except Exception:
         pass
-    return render_to_response('frontend/ajax/updatenote.html', {'note': newNote})
+
+    return render_to_response('frontend/ajax/updatenote.html',
+                              {'note': new_annotation})
 
 
 @csrf_exempt

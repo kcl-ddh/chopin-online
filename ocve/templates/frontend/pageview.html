@@ -97,6 +97,7 @@ type="text/css">
                 </section>
             </nav>
 
+            {% if mode == 'CFEO' %}
             <div class="row add-to-compare-bar" data-page-id="{{ pageimages.0.id }}">
                 <div class="large-6 columns ">
                     <a href="#" data-cookie="left" data-page-id="{{ pageimages.0.id }}">Compare on Left</a>
@@ -111,6 +112,7 @@ type="text/css">
                     <span class="alert-box success">Added to comparison.</span>
                 </div>
             </div>
+            {% endif %}
 
             <div class="row">
                 <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns">

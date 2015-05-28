@@ -16,7 +16,7 @@ from dbmi.sourceeditor import cleanHTML,cleanSourceInformationHTML
 
 #Takes pageimageid
 from models import keyPitch
-from models_generic import BarCollection
+from models_generic import BarCollection, OCVEUser
 import json
 import hashlib
 from django.db import connection, connections, transaction
@@ -244,12 +244,13 @@ def ocvePageImageview(request, id):
     pi = PageImage.objects.get(id=id)
     p = pi.page
 
-    newN = Annotation(pageimage=pi)
+    annotation = Annotation(pageimage=pi)
 
     if request.user and request.user.id:
-        newN.user=request.user
+        ocve_user = OCVEUser.objects.get(id=request.user.id)
+        annotation.user =  ocve_user
 
-    annotationForm = AnnotationForm(instance=newN)
+    annotationForm = AnnotationForm(instance=annotation)
 
     source = pi.page.sourcecomponent.source
 

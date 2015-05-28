@@ -41,7 +41,7 @@
                                         </p>
 
                                         <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
-                                            {% if c.user == request.user %}
+                                            {% if c.user.id == request.user.id %}
                                                 <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
                                                 <a href="#" class="deleteNote"
                                                    data-noteid="{{ c.id }}">Delete</a>{% endif %}</p>

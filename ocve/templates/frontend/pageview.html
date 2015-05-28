@@ -85,34 +85,9 @@ type="text/css">
                             </div>
                         </li>
                         {% endif %}
-
-                        {% if mode == 'CFEO' %}
-                        <li>
-                            <div class="menu-item">
-                                <a href="#" class="cfeo-add-to-compare">Add To Compare</a>
-                            </div>
-                        </li>
-                        {% endif %}
                     </ul>
                 </section>
             </nav>
-
-            {% if mode == 'CFEO' %}
-            <div class="row add-to-compare-bar" data-page-id="{{ pageimages.0.id }}">
-                <div class="large-6 columns ">
-                    <a href="#" data-cookie="left" data-page-id="{{ pageimages.0.id }}">Compare on Left</a>
-                </div>
-                <div class="large-6 columns ">
-                    <a href="#" data-cookie="right" data-page-id="{{ pageimages.0.id }}">Compare on Right</a>
-                </div>
-            </div>
-
-            <div class="row add-to-compare-notification">
-                <div class="large-12 columns ">
-                    <span class="alert-box success">Added to comparison.</span>
-                </div>
-            </div>
-            {% endif %}
 
             <div class="row">
                 <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns">
@@ -277,4 +252,4 @@ type="text/css">
         {% endif %}
     });
 </script>
-    {% endblock %}
+{% endblock %}

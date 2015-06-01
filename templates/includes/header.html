@@ -21,7 +21,7 @@
     {% if BASE_URL == 'ocve' %}
     <div class="large-2 columns">
         {% if request.user.is_authenticated %}
-        <div class="user-box">
+        <div class="user-box right">
             <ul>
                 <li>
                     <a href="/ocve/accounts/profile"><i class="fa fa-user"></i>
@@ -45,15 +45,8 @@
                 {% endif %}
             </ul>
         </div>
-        {% else %} 
-        <div class="user-box">
-            <ul>
-                <li>
-                    <a href="/ocve/accounts/login/"><i class="fa fa-user"></i>
-                       Login</a>
-                </li>
-            </ul>
-        </div>
+        {% else %}
+            {% include 'registration/login.html' %}
         {% endif %}
     </div>
     {% endif %}

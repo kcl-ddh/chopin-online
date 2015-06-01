@@ -14,6 +14,10 @@ type="text/css">
 <section class="main content-section page-view">
     <div class="row">
         <div class="large-12 columns">
+            <div id="messages">
+            {% include 'frontend/messages.html' %}
+            </div>
+
             <nav class="tab-bar">
                 <section class=" tab-bar-section">
                     <ul class="left inline-list contextual-menu">
@@ -102,8 +106,8 @@ type="text/css">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
                             <li><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
-                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new square annotation</a></li>
-                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new circle annotation</a></li>
+                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
+                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
                         </ul>
                     </div>
                     {% endif %}
@@ -221,8 +225,8 @@ type="text/css">
 </div>
 {% endblock %}
 
-    {% block footer_scripts %}
-    {{ block.super }}
+{% block footer_scripts %}
+{{ block.super }}
 <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}vendor/OpenLayers/OpenLayers.js"></script>
 <script type="text/javascript">

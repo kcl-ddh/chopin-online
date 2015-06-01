@@ -129,7 +129,7 @@ $(document).ready(function () {
         //Submit the lot
         var noteData = $("#newNoteForm").serialize();
 
-        $.post('/ocve/saveNote/', noteData, function (data) {
+        $.post('/ocve/saveNote/', noteData, function(data) {
             //Add/update with new note
             var noteid = data.noteid;
             // update alayer
@@ -157,6 +157,8 @@ $(document).ready(function () {
             $('#id_notetext').val('');
             $('#id_noteBars').val('');
             $('#id_noteregions').val('');
+
+            $('#messages').html(data.messages);
         }, "json");
     }
 
@@ -255,14 +257,18 @@ $(document).ready(function () {
             showNewAnnotationWindow();
         });
 
-        $('a.deleteNote').click(function () {
+        $('a.deleteNote').click(function() {
             var sure = confirm('Delete This Note?');
+
             if (sure == true) {
                 var noteid = $(this).data('noteid');
-                $.post('/ocve/deleteNote/' + noteid, null, function () {
+
+                $.post('/ocve/deleteNote/' + noteid, function(data) {
                     $('#comment-' + noteid).fadeOut();
-                });
+                    $('#messages').html(data.messages);
+                }, 'json');
             }
+
             return false;
         });
     }

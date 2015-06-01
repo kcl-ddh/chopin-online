@@ -466,16 +466,23 @@ def barview(request):
 # Ajax call for inline collections display
 @csrf_exempt
 def ajaxInlineCollections(request):
-        if request.user.is_authenticated():
-                collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
-                thumbs = {}
-                for c in collections:
-                        for r in c.regions.all():
-                                thumbs[r.id] =  BarRegionThumbnail(r, r.pageimage.page, r.pageimage)
-        else:
-                collections = None
+    if request.user.is_authenticated():
+        collections = BarCollection.objects.select_related().filter(
+            user_id=request.user.id)
+        thumbs = {}
 
-        return render_to_response('frontend/ajax/inline-collections.html', {"collections" : collections, "thumbs" : thumbs, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL}, context_instance=RequestContext(request))
+        for c in collections:
+            for r in c.regions.all():
+                thumbs[r.id] = BarRegionThumbnail(
+                    r, r.pageimage.page, r.pageimage)
+    else:
+        collections = None
+
+    return render_to_response(
+        'frontend/ajax/inline-collections.html',
+        {'collections' : collections, 'thumbs' : thumbs,
+            'IMAGE_SERVER_URL': IMAGE_SERVER_URL},
+        context_instance=RequestContext(request))
 
 @csrf_exempt
 def ajaxChangeCollectionName(request):

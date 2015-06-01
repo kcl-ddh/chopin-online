@@ -444,6 +444,7 @@ a:focus {
     position: fixed;
     width: 100%;
     z-index: 99; /** Foundation modals use 100 */
+    box-shadow: 0 0 5px 0 #333;
 }
 
 .collections-inline .close-collections-inline {
@@ -1228,7 +1229,6 @@ b.top-spacing {
 }
 
 .inner-wrap {
-
     height: 100%;
 }
 

@@ -39,16 +39,15 @@
 				{% for region in collection.regions.all %}
 				<li class="thumb" data-region-id="{{ region.id }}">
 					{% with thumbs|lookup:region.id as thumbnail %}
-					<div class="removeFromCollection"><a href="#"  data-region-id="{{ region.id }}" data-collection-id="{{collection.id}}"><span
-						        class="fa fa-times-circle"></span></a></div>
+					<div class="removeFromCollection">
+						<a href="#" data-region-id="{{ region.id }}" data-collection-id="{{collection.id}}"><span class="fa fa-times-circle"></span></a>
+					</div>
 						        
 					<span class="thumb-title">{{ thumbnail.getSource.label }}</span>        
 						
 					<div class="thumb-options">
-						<a href="/ocve/barview?workid={{region.pageimage.page.sourcecomponent.source.getWork.id}}&barid={{region.bar.all.0.id}}"><span
-								        class="fa fa-th"></span></a>
-						<a href="/ocve/ui/pageview/{{thumbnail.pi.id}}/{{region.id}}/"><span
-								        class="fa fa-file-text"></span></a>
+						<a href="/ocve/barview?workid={{region.pageimage.page.sourcecomponent.source.getWork.id}}&barid={{region.bar.all.0.id}}"><span class="fa fa-th"></span></a>
+						<a href="/ocve/ui/pageview/{{thumbnail.pi.id}}/{{region.id}}/"><span class="fa fa-file-text"></span></a>
 						<a href="{{ IIP_URL }}?FIF={{ thumbnail.getLargeURL }}"><span class="fa fa-download"></span></a>
         			</div>
 					<img class="region" src="{{ IIP_URL }}?FIF={{ thumbnail.getLargeURL }}">

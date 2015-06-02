@@ -61,14 +61,15 @@ ul.search-results {
     margin-bottom: 1rem;
 }
 
-.rich-text ul,
-.rich-text ol {
+.rich-text:last-of-type hr ~ ul,
+.rich-text:last-of-type hr ~ ol {
     list-style-position: inside;
 }
 
-.rich-text li {
-    text-indent: -.875em;
-    padding-left: 1em;
+.rich-text:last-of-type hr ~ ul li,
+.rich-text:last-of-type hr ~ ol li {
+    text-indent: -.875em !important;
+    padding-left: 1em !important;
 }
 
 .rich-text p:empty {

@@ -451,7 +451,8 @@ a:focus {
     background: #e8e8e8;
     float: right;
     font-size: 16pt;
-    margin: -26px 20px 0 0;
+    /* margin: -26px 20px 0 0; */
+    margin: 5px 20px 0 0;
     padding: 5px 10px 0 10px;
 }
 
@@ -1194,9 +1195,9 @@ b.top-spacing {
 .barList li .caption {
     background: #fff;
     height: 30px;
-    overflow: hidden;
+   /*  overflow: hidden; */
     position: absolute;
-    line-height: 30px;
+    line-height: 1;
     z-index: 1;
 }
 
@@ -1208,8 +1209,9 @@ b.top-spacing {
 }
 
 .barList li .caption:hover {
-    overflow: visible;
+   /*  overflow: visible; */
     width: auto;
+    background: rgba(255, 255, 255, 1);
 }
 
 .barList li .close {

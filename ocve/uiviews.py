@@ -240,6 +240,20 @@ def getNextPrevPages(p,pi):
         if ppi.count() > 0:
             prev=ppi[0]
     return [next,prev]
+
+#Get relevant work for a pageimage object
+def getPageImageWork(pi,source):
+    work=None
+    works = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()
+    if works.count() ==0:
+        #This is Front Matter, use the work from the whole source
+        works = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()
+    if works.count() >0:
+        work=works[0]
+    return work
+
 #Annotation.objects.filter(type_id=1).delete()
 @csrf_exempt
 def ocvePageImageview(request, id):
@@ -280,8 +294,7 @@ def ocvePageImageview(request, id):
     notes = Annotation.objects.filter(pageimage_id=id, type_id=1)
     comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
     [next_page, prev_page] = getNextPrevPages(p, pi)
-    work = Work.objects.filter(
-        workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
+    work=getPageImageWork(pi,source)
     zoomifyURL = pi.getZoomifyPath()
 
     request.session['page_image'] = id
@@ -329,7 +342,7 @@ def cfeoPageImageview(request,id):
     ac=source.getAcCode()
     achash=hashlib.md5(ac.encode('UTF-8')).hexdigest()
     [next,prev]=getNextPrevPages(p,pageimages)
-    work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()[0]
+    work=getPageImageWork(pi,source)
     seaDragonURL=pi.getZoomifyPath()
     return render_to_response('frontend/cfeopageview.html', {'achash':achash,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'seaDragonURL':seaDragonURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
 

@@ -1,7 +1,7 @@
 <div class="user-box right">
     <a href="#" class="tiny button radius" data-dropdown="login-drop" data-options="align:left" aria-controls="login-drop" aria-expanded="false"><i class="fa fa-user"></i> Login</a>
     <div id="login-drop" class="f-dropdown content medium" data-dropdown-content aria-hidden="true" tabindex="-1">
-        <form action=".{# url auth_login #}" method="post" id="login-form">
+        <form action="{% url "auth_login" %}" method="post" id="login-form">
             {% csrf_token %}
             <input id="id_username" name="username" type="text" placeholder="Username">
             <input id="id_password" name="password" type="password" placeholder="Password">
@@ -13,9 +13,9 @@
         <hr>
 
         <a href="/ocve/accounts/register" class="tiny button radius secondary expand">Create an account</a>
-
-        <script type="text/javascript">
-            document.getElementById('id_username').focus();
-        </script>
     </div>
 </div>
+
+<script type="text/javascript">
+    document.getElementById('id_username').focus();
+</script>

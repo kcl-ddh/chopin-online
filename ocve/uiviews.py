@@ -167,13 +167,21 @@ def fixsourceinformation(request):
 
 
 def browse(request,mode="OCVE",defaultFilters=None):
+    #component_workcomponent__workcomponent__work_id=6355
+    comps=SourceComponent.objects.filter(source_id=18036)
+    piano=Instrument.objects.get(instrument="Piano")
+    for c in comps:
+        sourceomponentinstruments=SourceComponent_Instrument.objects.filter(sourcecomponent=c)
+        if sourceomponentinstruments.count() == 0:
+            SourceComponent_Instrument(sourcecomponent=c,instrument=piano).save()
+        #for sci in sourceomponentinstruments:
+        #    sci.instrument=piano
+        #    sci.save()
+
     #Filter Items
     for si in SourceInformation.objects.filter(contentssummary__startswith='<p></p>'):
         si.contentssummary=si.contentssummary.replace('<p></p>','')
         si.save()
-    #    si=cleanSourceInformationHTML(si)
-    #    si.save()
-    #fixsourceinformation(request)
     try:
         if defaultFilters is None and request.session[mode+'_current_filters']:
             filterJSON=request.session[mode+'_current_filters']

@@ -649,9 +649,13 @@ def clonesource(request,id):
     newPageImages={}
     pageimages=PageImage.objects.filter(page__sourcecomponent__source=source)
     for pi in pageimages:
-        if newPageImages[str(pi.id)] is None:
+        try:
+            #Already cloned
+            pi=newPageImages[str(pi.id)]
+        except KeyError:
             newPageImages[str(pi.id)]=pi
             legacy=PageLegacy.objects.filter(pageimage=pi)
+            originalpageimageid=pi.id
             pl=None
             if legacy.count() > 0:
                 pl=legacy[0]
@@ -668,7 +672,9 @@ def clonesource(request,id):
             comp=None
             comps=SourceComponent.objects.filter(page=p)
             for c in comps:
-                if newSourceComponents[str(c.id)] is None:
+                try:
+                    comp=newSourceComponents[str(c.id)]
+                except KeyError:
                     newSourceComponents[str(c.id)]=c
                     #New Source component
                     c.pk=None
@@ -678,9 +684,6 @@ def clonesource(request,id):
                     for link in scwc:
                         SourceComponent_WorkComponent(sourcecomponent=c,workcomponent=link.workcomponent).save()
                     comp=c
-
-                else:
-                    comp=newSourceComponents[str(c.id)]
             #clone pages
             p.pk=None
             if comp is not None:
@@ -688,18 +691,19 @@ def clonesource(request,id):
             p.save()
             pi.page=p
             pi.save()
-        else:
-            #Already cloned
-            pi=newPageImages[str(pi.id)]
-            #Link new pi to region
-        regions=BarRegion.objects.filter(bar__page__pageimage__sourcecomponent__source=source)
+
+
+        #Link new pi to region
+        regions=BarRegion.objects.filter(pageimage_id=originalpageimageid)
         if regions.count() > 0:
             for r in regions:
+                #Original region id
+                rid=r.id
                 #For each region
                 r.pk = None
                 r.save()
                 #Clone bars
-                bars=Bar.objects.filter(barregion=r)
+                bars=Bar.objects.filter(bar_barregion__barregion_id=rid)
                 for b in bars:
                     b.pk = None
                     b.save()
@@ -722,8 +726,8 @@ def clonesource(request,id):
     info.accode=AcCode.objects.get(id=1)
     info.save()
     for sc in newSourceComponents:
-        sc.source=source
-        sc.save()
+        newSourceComponents[sc].source=source
+        newSourceComponents[sc].save()
 
     return HttpResponseRedirect('/ocve/sourceeditor/' + str(source.id))
 

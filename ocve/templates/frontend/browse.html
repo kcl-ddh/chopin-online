@@ -227,7 +227,7 @@
         var avail = 0;
         //Show Instrument filters
         $('li.instrumentFilter').each(function (index) {
-            if (availInstruments['' + $(this).data('instrument_id') + ''] == 1) {
+            if (availInstruments['' + $(this).data('instrument_id') + ''] == 1 && $(this).data('instrument_id') != 2) {
                 avail += 1;
                 $(this).show();
             } else if ($(this).data('instrument_id') != '0') {

@@ -213,27 +213,31 @@ $(document).ready(function () {
         //Connect bar labels to features with hover highlight
         $('.noteBarHighlight').hover(function () {
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('barid', $(this).data('barid'));
+            var select = alayer.getFeaturesByAttribute(
+                'barid', $(this).find('span').data('barid'));
             if (select.length > 0) {
                 noteSelectFeature.select(select[0]);
             }
         }, function () {
             //visibleNote
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('barid', $(this).data('barid'))[0];
+            var select = alayer.getFeaturesByAttribute(
+                'barid', $(this).find('span').data('barid'))[0];
             select.renderIntent = "visibleNote";
             alayer.redraw();
         });
 
         $('.noteRegionHighlight').hover(function () {
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('noteid', $(this).data('noteid'));
+            var select = alayer.getFeaturesByAttribute(
+                'noteid', $(this).find('div.annotation').data('noteid'));
             if (select.length > 0) {
                 noteSelectFeature.select(select[0]);
             }
         }, function () {
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('noteid', $(this).data('noteid'));
+            var select = alayer.getFeaturesByAttribute(
+                'noteid', $(this).find('div.annotation').data('noteid'));
             if (select.length > 0) {
                 select[0].renderIntent = "visibleNote";
                 alayer.redraw();
@@ -251,6 +255,7 @@ $(document).ready(function () {
             //Select current notes/regions
             var curFeatures = alayer.getFeaturesByAttribute('noteid', noteid);
             for (var c in curFeatures) {
+                console.log(curFeatures[c]);
                 noteSelectFeature.select(curFeatures[c]);
             }
 

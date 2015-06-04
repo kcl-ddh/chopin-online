@@ -1,23 +1,13 @@
-import os
 import subprocess
 import shlex
-
-from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 
 __author__ = 'Elliott Hall'
 #All view functions for editing bar information
-from ocve.forms import *
-from ocve.imagetools import verifyImageDimensions, verifyImagesViaIIP
-from django.http import HttpResponseRedirect
-from django.template.context import RequestContext
-from django.forms.formsets import formset_factory
+from ocve.imagetools import verifyImagesViaIIP
 from django.contrib.auth.decorators import login_required
-from ocve.bartools import *
-from datatools import *
-from bareditor import editBars,editBarsURL
+from bareditor import editBarsURL
 from django.db.models import *
-from spine import *
 from sourceeditor import *
 import shutil
 

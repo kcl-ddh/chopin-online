@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 # auto generated from an XMI file
-from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
+from django.db import models
 from django.utils.encoding import force_unicode
-from django.contrib.auth.models import User
-import re
-
-
 
 
 def getUnicode(object):
@@ -88,7 +84,6 @@ class BarRegion(models.Model):
         return num
 
     def getLowestBarNumber(self):
-        num=0
         bars=self.bar.all().order_by('barnumber')
         if bars.count() >0:
             return bars[0].barnumber
@@ -164,8 +159,16 @@ class Source(models.Model):
         except ObjectDoesNotExist:
             return ""
         except MultipleObjectsReturned:
-            si=SourceInformation.objects.filter(source=self)
             return ""
+
+    def getAcCodeObject(self):
+        try:
+            si = SourceInformation.objects.get(source=self)
+            return si.accode
+        except ObjectDoesNotExist:
+            return None
+        except MultipleObjectsReturned:
+            return None
 
     def getSourceComponents(self):
         try:
@@ -592,8 +595,18 @@ class AnnotationType(models.Model):
     annotationType = models.CharField(max_length=255, null=False, default="", blank=True, )
 
 
+
+class OCVEUser(models.Model):
+    id = models.PositiveIntegerField(primary_key=True)
+    username = models.CharField(max_length=256)
+    updated = models.DateTimeField(auto_now=True, auto_now_add=True)
+
+    def __unicode__(self):
+        return self.username
+
+
 class Annotation(models.Model):
-    user = models.ForeignKey(User,blank=False, null=False, default=1)
+    user = models.ForeignKey(OCVEUser,blank=False, null=False, default=1)
     notetext = models.TextField(null=False, default="", blank=True, )
     noteregions = models.TextField(null=False, default="", blank=True, )
     pageimage = models.ForeignKey('PageImage', blank=False, null=False, default=1 )
@@ -612,7 +625,7 @@ class Annotation(models.Model):
     table_group = ''
 
 class BarCollection(models.Model):
-    user_id = models.IntegerField(User,blank=False, null=False, default=-1)
+    user_id = models.IntegerField(OCVEUser,blank=False, null=False, default=-1)
     name = models.TextField(null=False, default="", blank=True, )
     xystring = models.TextField(null=False, default="", blank=True, )
     regions = models.ManyToManyField(BarRegion)

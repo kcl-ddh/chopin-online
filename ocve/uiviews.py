@@ -2,31 +2,32 @@ __author__ = 'Elliot'
  # coding=utf8
 
 #Views for the user interface
+import re
+
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from bartools import *
 from uitools import *
 from dbmi.spine import getSpinesByWork,spinesToRegionThumbs
-from dbmi.sourceeditor import cleanHTML,cleanSourceInformationHTML
+from dbmi.sourceeditor import cleanSourceInformationHTML
+
 
 #Takes pageimageid
 from models import keyPitch
-from models_generic import BarCollection
+from models_generic import BarCollection, OCVEUser
 import json
 import hashlib
-from django.db import connection, connections, transaction
+from django.db import connections
 from forms import AnnotationForm
-import os
 from dbmi.datatools import convertEntities
 from imagetools import verifyImageDimensions
 
 #IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
+
 
 def cfeoacview(request,acHash,mode="OCVE"):
     return acview(request,acHash,'CFEO')
@@ -166,13 +167,11 @@ def fixsourceinformation(request):
 
 
 def browse(request,mode="OCVE",defaultFilters=None):
+
     #Filter Items
     for si in SourceInformation.objects.filter(contentssummary__startswith='<p></p>'):
         si.contentssummary=si.contentssummary.replace('<p></p>','')
         si.save()
-    #    si=cleanSourceInformationHTML(si)
-    #    si.save()
-    #fixsourceinformation(request)
     try:
         if defaultFilters is None and request.session[mode+'_current_filters']:
             filterJSON=request.session[mode+'_current_filters']
@@ -213,7 +212,6 @@ def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
     #    setPageImageTextLabel(s)
-    
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()
@@ -232,31 +230,78 @@ def getNextPrevPages(p,pi):
         if ppi.count() > 0:
             prev=ppi[0]
     return [next,prev]
+
+#Get relevant work for a pageimage object
+def getPageImageWork(pi,source):
+    work=None
+    works = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()
+    if works.count() ==0:
+        #This is Front Matter, use the work from the whole source
+        works = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()
+    if works.count() >0:
+        work=works[0]
+    return work
+
 #Annotation.objects.filter(type_id=1).delete()
 @csrf_exempt
-def ocvePageImageview(request,id):
-    regionURL = "/ocve/getBarRegions/" + id + "/"
+def ocvePageImageview(request, id):
+    mode = "OCVE"
     noteURL = "/ocve/getAnnotationRegions/" + id + "/"
-    pi=PageImage.objects.get(id=id)
-    p=pi.page
-    newN=Annotation(pageimage=pi)
-    annotationForm=AnnotationForm(instance=newN)
-    source=pi.page.sourcecomponent.source
-    #allBars=Bar.objects.filter(barregion__pageimage__page__sourcecomponent__source=source).order_by('barnumber').distinct()
-    barDict={}
-    pageimages=PageImage.objects.filter(page__sourcecomponent__source=pi.page.sourcecomponent.source,page__pagetype_id=3).order_by('page__orderno')
-    #Get all bars on relevant pages to form quickjump menu 'allBars':allBars,
-    cursor=connections['ocve_db'].cursor()
-    cursor.execute("select bar.barlabel,pi.id from ocve_bar as bar,ocve_bar_barregion as brr, ocve_barregion as barregion,ocve_pageimage as pi,ocve_page as p,ocve_sourcecomponent as sc where bar.id=brr.bar_id and brr.barregion_id=barregion.id and barregion.pageimage_id=pi.id and pi.page_id=p.id and p.sourcecomponent_id=sc.id and sc.source_id="+str(source.id)+" order by bar.barnumber")
-    notes=Annotation.objects.filter(pageimage_id=id,type_id=1)
-    comments=Annotation.objects.filter(pageimage_id=id,type_id=2)
-    [next,prev]=getNextPrevPages(p,pi)
-    ac=source.getAcCode()
-    achash=hashlib.md5(ac.encode('UTF-8')).hexdigest()
-    work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
-    zoomifyURL=pi.getZoomifyPath()
-    mode="OCVE"
-    return render_to_response('frontend/pageview.html', {'achash':achash,'annotationForm':annotationForm,'notes':notes,'comments':comments,'allBars':cursor,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'zoomifyURL':zoomifyURL,'regionURL':regionURL,'noteURL':noteURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
+    regionURL = "/ocve/getBarRegions/" + id + "/"
+
+    view = request.GET.get('view')
+
+    pi = PageImage.objects.get(id=id)
+    p = pi.page
+
+    annotation = Annotation(pageimage=pi)
+
+    if request.user and request.user.id:
+        ocve_user = OCVEUser.objects.get(id=request.user.id)
+        annotation.user =  ocve_user
+
+    annotationForm = AnnotationForm(instance=annotation)
+
+    source = pi.page.sourcecomponent.source
+
+    accode = source.getAcCodeObject()
+    achash = None
+
+    if accode:
+        achash = accode.accode_hash
+
+    pageimages = getOCVEPageImages(source)
+
+    cursor = connections['ocve_db'].cursor()
+    cursor.execute(
+        """select bar.barlabel, pi.id from ocve_bar as bar,
+        ocve_bar_barregion as brr, ocve_barregion as barregion,
+        ocve_pageimage as pi, ocve_page as p, ocve_sourcecomponent as sc
+        where bar.id=brr.bar_id and brr.barregion_id=barregion.id
+        and barregion.pageimage_id=pi.id and pi.page_id=p.id
+        and p.sourcecomponent_id=sc.id
+        and sc.source_id=""" + str(source.id) + " order by bar.barnumber")
+
+    notes = Annotation.objects.filter(pageimage_id=id, type_id=1)
+    comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
+    [next_page, prev_page] = getNextPrevPages(p, pi)
+    work=getPageImageWork(pi,source)
+    zoomifyURL = pi.getZoomifyPath()
+
+    request.session['page_image'] = id
+
+    return render_to_response('frontend/pageview.html', {
+        'achash': achash, 'annotationForm': annotationForm, 'notes': notes,
+        'comments': comments, 'allBars': cursor, 'work': work,
+        'source': source, 'prev': prev_page, 'next': next_page,
+        'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,
+        'pageimages': pageimages, 'mode': mode, 'zoomifyURL': zoomifyURL,
+        'regionURL': regionURL, 'noteURL': noteURL, 'page': p,
+        'pageimage': pi, 'view': view},
+        context_instance=RequestContext(request))
+
 
 def addImageDimensions(pi):
     pl = PageLegacy.objects.get(pageimage=pi)
@@ -290,7 +335,7 @@ def cfeoPageImageview(request,id):
     ac=source.getAcCode()
     achash=hashlib.md5(ac.encode('UTF-8')).hexdigest()
     [next,prev]=getNextPrevPages(p,pageimages)
-    work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()[0]
+    work=getPageImageWork(pi,source)
     seaDragonURL=pi.getZoomifyPath()
     return render_to_response('frontend/cfeopageview.html', {'achash':achash,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'seaDragonURL':seaDragonURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
 
@@ -303,8 +348,6 @@ def comparePageImageview(request,compareleft=0,compareright=0):
 
     if compareright == 0:
         compareright = request.COOKIES.get('cfeo_compare_right')
-
-
 
     try:
         pi_left=PageImage.objects.get(id=compareleft)
@@ -432,16 +475,23 @@ def barview(request):
 # Ajax call for inline collections display
 @csrf_exempt
 def ajaxInlineCollections(request):
-        if request.user.is_authenticated():
-                collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
-                thumbs = {}
-                for c in collections:
-                        for r in c.regions.all():
-                                thumbs[r.id] =  BarRegionThumbnail(r, r.pageimage.page, r.pageimage)
-        else:
-                collections = None
+    if request.user.is_authenticated():
+        collections = BarCollection.objects.select_related().filter(
+            user_id=request.user.id)
+        thumbs = {}
 
-        return render_to_response('frontend/ajax/inline-collections.html', {"collections" : collections, "thumbs" : thumbs, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL}, context_instance=RequestContext(request))
+        for c in collections:
+            for r in c.regions.all():
+                thumbs[r.id] = BarRegionThumbnail(
+                    r, r.pageimage.page, r.pageimage)
+    else:
+        collections = None
+
+    return render_to_response(
+        'frontend/ajax/inline-collections.html',
+        {'collections' : collections, 'thumbs' : thumbs,
+            'IMAGE_SERVER_URL': IMAGE_SERVER_URL},
+        context_instance=RequestContext(request))
 
 @csrf_exempt
 def ajaxChangeCollectionName(request):

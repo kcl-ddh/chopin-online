@@ -1,3 +1,4 @@
+{% if BASE_URL == 'aco' %}
 <div class="search-box">
     <form action="{% url 'haystack_search' %}" method="get">
         <div class="row collapse">
@@ -12,3 +13,4 @@
         </div>
     </form>
 </div>
+{% endif %}

@@ -158,65 +158,6 @@ a:focus {
     }
 }
 
-/* Annotations panel */
-
-p.annotation-details,
-p.annotation-posted {
-    margin: 0 0 .2em 0;
-}
-
-.annotation-details .label {
-    text-transform: uppercase;
-    font-size: .9375em;
-}
-
-p.annotation-posted {
-    font-size: 12px;
-    font-style: italic;
-    color: #666;
-}
-
-#commentary,
-#notes {
-    margin-top: 2em;
-}
-
-#commentary h4,
-#notes h4 {
-    padding: .25em .5em 0;
-    background: $primary-color;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1.1875em;
-}
-
-#commentary h4 .label,
-#notes h4 .label {
-    margin-bottom: 0;
-    margin-top: -5px;
-    vertical-align: middle;
-    padding: .5rem .5rem .25rem !important;
-}
-
-#annotationTools {
-    border-top: 2px solid #ccc;
-    position: absolute;
-    margin-left: 4em;
-    margin-top: 1.0625em;
-    padding: .5em;
-    min-width: 320px;
-    background: $secondary-color;
-    z-index: 9999;
-}
-
-#annotationTools a {
-    padding: .5em;
-}
-
-#annotationTools a:hover {
-    padding: .5em;
-}
-
 .context-panel {
     -webkit-box-shadow: -5px 5px 5px 0px rgba(0, 0, 0, .75);
     -moz-box-shadow: -5px 5px 5px 0px rgba(0, 0, 0, .75);
@@ -489,32 +430,8 @@ p.annotation-posted {
     }
 }
 
-/* .dialog,
-.reveal-modal {
-    top: 1em !important;
-} */
-
-/** CFEO Compare */
-.add-to-compare-bar {
-    display: none;
-    padding: 20px 0;
-}
-
-.add-to-compare-bar a {
-    display: block;
-    background-color: rgb(232, 232, 232);
-    text-align: center;
-    width: 100%;
-    padding: 10px 0;
-}
-
-.add-to-compare-bar a:hover {
-    background-color: rgb(212, 212, 212);
-}
-
-.add-to-compare-notification {
-    display: none;
-    padding: 20px 0 0 0;
+.reveal-modal.open {
+    z-index: 9999;
 }
 
 /* Collections */
@@ -527,13 +444,15 @@ p.annotation-posted {
     position: fixed;
     width: 100%;
     z-index: 99; /** Foundation modals use 100 */
+    box-shadow: 0 0 5px 0 #333;
 }
 
 .collections-inline .close-collections-inline {
     background: #e8e8e8;
     float: right;
     font-size: 16pt;
-    margin: -26px 20px 0 0;
+    /* margin: -26px 20px 0 0; */
+    margin: 5px 20px 0 0;
     padding: 5px 10px 0 10px;
 }
 
@@ -647,7 +566,7 @@ p.annotation-posted {
     display: block;
     color: #fff;
     font-size: 12pt;
-    padding: 8px 10px;
+    padding: 3px 10px;
 }
 
 .collection-thumbs li .thumb-options a:hover {
@@ -728,8 +647,13 @@ p.annotation-posted {
     font-size: .875rem;
 }
 
+.home-block-header h2 {
+    font-family: 'Hero', sans-serif;
+}
+
 .homepage h1 {
     font-size: 4em;
+    font-family: 'Hero', sans-serif;
 }
 
 .homepage .panel {
@@ -1056,17 +980,17 @@ b.top-spacing {
             font-size: inherit;
         }
     }
-    li:first-child {
+    .menu-item.opus-title {
         padding: 0 14px 0 10px;
+    }
+    .menu-item.opus-title a {
+        padding: 0;
     }
     .menu-item {
         margin: rem-calc(12px) 0;
 
         a {
             padding: rem-calc(20px);
-        }
-        a.more {
-            padding: 0;
         }
     }
     .menu-item.has-button {
@@ -1271,9 +1195,9 @@ b.top-spacing {
 .barList li .caption {
     background: #fff;
     height: 30px;
-    overflow: hidden;
+   /*  overflow: hidden; */
     position: absolute;
-    line-height: 30px;
+    line-height: 1;
     z-index: 1;
 }
 
@@ -1285,8 +1209,9 @@ b.top-spacing {
 }
 
 .barList li .caption:hover {
-    overflow: visible;
+   /*  overflow: visible; */
     width: auto;
+    background: rgba(255, 255, 255, 1);
 }
 
 .barList li .close {
@@ -1306,7 +1231,6 @@ b.top-spacing {
 }
 
 .inner-wrap {
-
     height: 100%;
 }
 
@@ -1327,132 +1251,7 @@ b.top-spacing {
 
 /** Rich Text **/
 
-.rich-text ul, .rich-text ol {
-    margin-bottom: .625rem !important;
-}
-
-/** Special characters **/
-
-.symbol-os,
-.symbol-ie,
-.symbol-meul,
-.symbol-12,
-.symbol-wesseldec,
-.symbol-iequotesitalics,
-.symbol-iundotteditalics,
-.symbol-ieitalics,
-.symbol-lithographersinitials,
-.symbol-hl,
-.symbol-creversecedilla,
-.symbol-l,
-.symbol-eitalics,
-.symbol-er,
-.symbol-iundotted-eitalics {
-    height: 15px;
-    display: inline-block;
-    /* background-size: auto 15px !important; */
-    background-position: bottom !important;
-}
-
-.symbol-os {
-    background: url("/static/images/special-characters/01-symbol-os-code-127.png") top center no-repeat;
-    width: 12px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-ie {
-    background: url("/static/images/special-characters/02-symbol-ie-code-65.png") top center no-repeat;
-    width: 7px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-meul {
-    background: url("/static/images/special-characters/03-symbol-MEul.png") top center no-repeat;
-    width: 18px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-12 {
-    background: url("/static/images/special-characters/04-symbol-12-code-116.png") top center no-repeat;
-    width: 5px;
-    background-size: auto 15px;
-}
-
-.symbol-wesseldec {
-    background: url("/static/images/special-characters/05-symbol-wesseldec.png") top center no-repeat;
-    width: 44px;
-    background-size: auto 15px;
-}
-
-.symbol-iequotesitalics {
-    background: url("/static/images/special-characters/06-symbol-ie-italics-code-63.png") top center no-repeat;
-    width: 9px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-iundotteditalics {
-    background: url("/static/images/special-characters/07-symbol-iundotteditalics.png") top center no-repeat;
-    width: 6px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-ieitalics {
-    background: url("/static/images/special-characters/08-symbol-ie-italics.png") top center no-repeat;
-    width: 8px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-lithographersinitials {
-    background: url("/static/images/special-characters/09-symbol-lithographersinitials-code-193.png") top center no-repeat;
-    /* width: 21px; */
-    width: 18px;
-    background-size: auto 13px;
-}
-
-.symbol-hl {
-    background: url("/static/images/special-characters/10-symbol-HL-code-128.png") top center no-repeat;
-    /* width: 21px; */
-    width: 18px;
-    background-size: auto 13px;
-}
-
-.symbol-creversecedilla {
-    background: url("/static/images/special-characters/11-symbol-Creversecedilla-code-244.png") top center no-repeat;
-    width: 10px;
-    background-size: auto 15px;
-    vertical-align: text-bottom;
-}
-
-.symbol-l {
-    background: url("/static/images/special-characters/12-symbol-L-code-238.png") top center no-repeat;
-    /* width: 13px; */
-    width: 12px;
-    background-size: auto 14px;
-}
-
-.symbol-eitalics {
-    background: url("/static/images/special-characters/13-symbol-e=italics-code-97.png") top center no-repeat;
-    width: 9px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-er {
-    background: url("/static/images/special-characters/14-symbol-ER-code-246.png") top center no-repeat;
-    width: 12px;
-    background-size: auto 15px;
-    vertical-align: text-top;
-}
-
-.symbol-iundotted-eitalics {
-    background: url("/static/images/special-characters/15-symbol-iundotted-eitalics.png") top center no-repeat;
-    width: 10px;
-    background-size: auto 15px;
-    vertical-align: text-top;
+.rich-text ul,
+.rich-text ol {
+    padding-bottom: .5rem !important;
 }

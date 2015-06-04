@@ -3,7 +3,7 @@
 {% block metatitle %}Opus {{ opus }}, Bar {{ bar }} (prototype){% endblock %}
 
 {% block header_scripts %}
-<script src="{{ STATIC_URL }}assets/bower_components/jquery-ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}vendor/jquery-ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <!-- Note RE Jquery. I have added another version of jquery UI since
          I did not want to interfere with versions currently in use. We can
          tidy this later - BM -->
@@ -30,6 +30,12 @@
                         <nav class="tab-bar">
                             <section class=" tab-bar-section">
                                 <ul class="left inline-list contextual-menu">
+                                    <!-- Back button -->
+                                    <li>
+                                        <div class="menu-item">
+                                            <a href="{% url 'ocve_pageview' id=request.session.page_image %}"><i class="fa fa-arrow-circle-left"></i> Back to page view</a>
+                                        </div>
+                                    </li>
                                     <li>
                                         <div class="menu-item opus-title">{{ work }}, Bar {{ bar }}</div>
                                     </li>

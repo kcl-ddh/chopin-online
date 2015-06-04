@@ -16,7 +16,8 @@ urlpatterns = patterns('',
                         (r'^browse/acview/(?P<acHash>[\d|\w]+)/$', acview),
                        (r'^browse/sourcejs/$', sourcejs),
                        url(r'^browse/$', browse, name='ocve_browse'),
-                       (r'^browse/pageview/(?P<id>\d+)/$', ocvePageImageview),
+                       url(r'^browse/pageview/(?P<id>\d+)/$',
+                           ocvePageImageview, name='ocve_pageview'),
                        (r'^browse/pageview/(?P<id>\d+)/(?P<barid>\d+)/$', ocveViewInPage),
                        (r'^browse/shelfmarkview/(?P<acHash>[\d|\w]+)/$', shelfmarkview),
                        (r'^browse/sourceinformation/(?P<id>\d+)/$', sourceinformation),
@@ -25,9 +26,6 @@ urlpatterns = patterns('',
                        (r'^browse/resetFilter/$', resetFilter),
                        #Ajax url for annotation fetch
                        (r'^browse/getAnnotations/(?P<id>\d+)/$', getAnnotations),
-
-                       #User account management
-                       #(r'^accounts/', include('registration.backends.default.urls')),
 
 
 
@@ -60,7 +58,7 @@ urlpatterns = patterns('',
                        (r'^ajax/delete-image-from-collection/$', ajaxDeleteImageFromCollection),
                        (r'^ajax/delete-collection/$', ajaxDeleteCollection),
 
-                         #User account management - required for OCVE UI
+                       #User account management - required for OCVE UI
                        (r'^accounts/profile/$', user_profile),
                        (r'^accounts/', include('registration.backends.default.urls')),
 )

@@ -59,3 +59,28 @@ section.expandable-list {
 		padding: .9375rem 1.5rem;
 	}
 }
+
+.expandable-list.fixed-open {
+    margin-top:rem-calc(60px);
+    .list-content {
+        display: block;
+    }
+    li {
+        @include grid-row();
+    }
+    .input-box {
+        @include grid-column(1);
+        padding-left: 0;
+        input {
+            margin-bottom: 0;
+            padding-left: 0;
+        }
+    }
+    .input-label {
+        @include grid-column(10);
+    }
+
+    li.separator {
+        border-top: 1px solid $borderColor;
+    }      
+}

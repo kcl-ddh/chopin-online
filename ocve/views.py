@@ -59,3 +59,4 @@ def user_profile(request):
     return render_to_response("registration/user_profile.html",
             {},
         context_instance=RequestContext(request))
+    

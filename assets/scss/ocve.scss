@@ -1,9 +1,25 @@
 $primary-color: #7d0000;
 $secondary-color: #e7e7e7;
 
+/** Log in **/
+
+#login-drop,
+#login-drop p {
+    font-size: .75rem;
+}
+
+#login-drop p {
+    margin: .5rem 0 0;
+}
+
+#login-drop .button {
+    margin-bottom: 0;
+}
+
 /** Pageview / Annotation tools **/
 
-.olControlEditingToolbar {
+.olControlEditingToolbar,
+.olControlMousePosition {
 	display: none;
 }
 

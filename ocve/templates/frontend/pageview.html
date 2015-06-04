@@ -89,34 +89,9 @@ type="text/css">
                             </div>
                         </li>
                         {% endif %}
-
-                        {% if mode == 'CFEO' %}
-                        <li>
-                            <div class="menu-item">
-                                <a href="#" class="cfeo-add-to-compare">Add To Compare</a>
-                            </div>
-                        </li>
-                        {% endif %}
                     </ul>
                 </section>
             </nav>
-
-            {% if mode == 'CFEO' %}
-            <div class="row add-to-compare-bar" data-page-id="{{ pageimages.0.id }}">
-                <div class="large-6 columns ">
-                    <a href="#" data-cookie="left" data-page-id="{{ pageimages.0.id }}">Compare on Left</a>
-                </div>
-                <div class="large-6 columns ">
-                    <a href="#" data-cookie="right" data-page-id="{{ pageimages.0.id }}">Compare on Right</a>
-                </div>
-            </div>
-
-            <div class="row add-to-compare-notification">
-                <div class="large-12 columns ">
-                    <span class="alert-box success">Added to comparison.</span>
-                </div>
-            </div>
-            {% endif %}
 
             <div class="row">
                 <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns">
@@ -131,8 +106,8 @@ type="text/css">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
                             <li><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
-                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new square annotation</a></li>
-                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new circle annotation</a></li>
+                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
+                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
                         </ul>
                     </div>
                     {% endif %}
@@ -250,8 +225,8 @@ type="text/css">
 </div>
 {% endblock %}
 
-    {% block footer_scripts %}
-    {{ block.super }}
+{% block footer_scripts %}
+{{ block.super }}
 <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}vendor/OpenLayers/OpenLayers.js"></script>
 <script type="text/javascript">
@@ -281,4 +256,4 @@ type="text/css">
         {% endif %}
     });
 </script>
-    {% endblock %}
+{% endblock %}

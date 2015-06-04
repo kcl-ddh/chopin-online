@@ -9,7 +9,7 @@
         </h2>
     </div>
     {% else %}
-    <div class="large-10 columns">
+    <div class="{% if BASE_URL == 'ocve' %}large-10{% else %}large-12{% endif %} columns">
         <h1>
             <a href="/{{ BASE_URL }}">{{ BASE_URL|upper }}</a>
         </h1>
@@ -17,9 +17,11 @@
             <a href="/{{ BASE_URL }}">{{ PROJECT_TITLE }}</a>
         </h2>
     </div>
+    {% endif %}
+    {% if BASE_URL == 'ocve' %}
     <div class="large-2 columns">
         {% if request.user.is_authenticated %}
-        <div class="user-box">
+        <div class="user-box right">
             <ul>
                 <li>
                     <a href="/ocve/accounts/profile"><i class="fa fa-user"></i>
@@ -30,7 +32,7 @@
                         {%endif%}
                     </a>
                     <span class="label radius secondary">
-                        <a href="/ocve/accounts/logout">&nbsp;(Logout)</a>
+                        <a href="/ocve/accounts/logout">Logout</a>
                     </span>
                 </li>
 
@@ -43,17 +45,8 @@
                 {% endif %}
             </ul>
         </div>
-        {% else %} 
-
-         <div class="user-box">
-            <ul>
-                <li>
-                    <a href="/ocve/accounts/login/"><i class="fa fa-user"></i>
-                       Login</a>
-                </li>
-            </ul>
-        </div>
-
+        {% else %}
+            {% include 'registration/login.html' %}
         {% endif %}
     </div>
     {% endif %}

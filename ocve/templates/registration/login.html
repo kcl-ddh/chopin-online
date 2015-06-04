@@ -1,36 +1,22 @@
-{% extends "base.html" %}
-{% block title %}Login{% endblock %}
+<div class="user-box right">
+    <a href="#" class="tiny button radius" data-dropdown="login-drop" data-options="align:left" aria-controls="login-drop" aria-expanded="false"><i class="fa fa-user"></i> Login</a>
+    <div id="login-drop" class="f-dropdown content medium" data-dropdown-content aria-hidden="true" tabindex="-1">
+        <form action="{% url "auth_login" %}" method="post" id="login-form">
+            {% csrf_token %}
+            <input id="id_username" name="username" type="text" placeholder="Username">
+            <input id="id_password" name="password" type="password" placeholder="Password">
+            <button type="submit" class="tiny button radius expand">Log in</button>
+            <!-- <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/{% endif %}"/> -->
+            <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+        </form>
+        <p><em><a href="/ocve/accounts/password/reset">Forgot your password?</a></em></p>
 
+        <hr>
 
-
-{% block content %}
-
-<section class="main content-section">
-       <div class="row">
-         <div class="large-12 columns">
-
-          <header><h1>Login</h1></header>
-
-          <p>Please enter your username and password to login. Logging in allows you to create collections in OCVE. If you don't have an account, you can register one <a href="/ocve/accounts/register">here</a>. If you have forgotten your password you can reset it <a href="/ocve/accounts/password/reset">here</a>.</p>
-	       </div>
-	   </div>
-
-
-     <div class="row">
-       <div class="large-6 columns">
-
-			<form action="." method="post" id="login-form">{% csrf_token %}
-  				
-		  		{{ form.as_p }}
-			  <div class="submit-row">
-			    <label>&nbsp;</label><input type="submit" value="Login" />
-			  </div>
-			</form>
-
-			<script type="text/javascript">
-			document.getElementById('id_username').focus()
-			</script>
-		</div>
+        <a href="/ocve/accounts/register" class="tiny button radius secondary expand">Create an account</a>
+    </div>
 </div>
-</section>
-{% endblock %}
+
+<script type="text/javascript">
+    document.getElementById('id_username').focus();
+</script>

@@ -1,0 +1,6 @@
+{# This template uses single quotes, instead of double quotes, in the html attributes because it is rendered to string and added to a json response.#}
+{% if messages %}
+{% for message in messages %}
+<div data-alert class='alert-box {{ message.tags }}'>{{ message }}<a href='#' class='close'>&times;</a></div>
+{% endfor %}
+{% endif %}

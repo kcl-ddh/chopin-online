@@ -2,29 +2,28 @@ __author__ = 'Elliot'
  # coding=utf8
 
 #Views for the user interface
+import re
+
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from bartools import *
 from uitools import *
 from dbmi.spine import getSpinesByWork,spinesToRegionThumbs
-from dbmi.sourceeditor import cleanHTML,cleanSourceInformationHTML
+from dbmi.sourceeditor import cleanSourceInformationHTML
+
 
 #Takes pageimageid
 from models import keyPitch
-from models_generic import BarCollection
+from models_generic import BarCollection, OCVEUser
 import json
 import hashlib
-from django.db import connection, connections, transaction
+from django.db import connections
 from forms import AnnotationForm
-import os
 from dbmi.datatools import convertEntities
 from imagetools import verifyImageDimensions
-from uitools import generateThumbnails
 
 #IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
@@ -257,10 +256,13 @@ def ocvePageImageview(request, id):
     pi = PageImage.objects.get(id=id)
     p = pi.page
 
-    newN = Annotation(pageimage=pi)
-    if request.user is not None and request.user.id is not None:
-        newN.user=request.user
-    annotationForm = AnnotationForm(instance=newN)
+    annotation = Annotation(pageimage=pi)
+
+    if request.user and request.user.id:
+        ocve_user = OCVEUser.objects.get(id=request.user.id)
+        annotation.user =  ocve_user
+
+    annotationForm = AnnotationForm(instance=annotation)
 
     source = pi.page.sourcecomponent.source
 
@@ -473,16 +475,23 @@ def barview(request):
 # Ajax call for inline collections display
 @csrf_exempt
 def ajaxInlineCollections(request):
-        if request.user.is_authenticated():
-                collections = BarCollection.objects.select_related().filter(user_id=request.user.id)
-                thumbs = {}
-                for c in collections:
-                        for r in c.regions.all():
-                                thumbs[r.id] =  BarRegionThumbnail(r, r.pageimage.page, r.pageimage)
-        else:
-                collections = None
+    if request.user.is_authenticated():
+        collections = BarCollection.objects.select_related().filter(
+            user_id=request.user.id)
+        thumbs = {}
 
-        return render_to_response('frontend/ajax/inline-collections.html', {"collections" : collections, "thumbs" : thumbs, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL}, context_instance=RequestContext(request))
+        for c in collections:
+            for r in c.regions.all():
+                thumbs[r.id] = BarRegionThumbnail(
+                    r, r.pageimage.page, r.pageimage)
+    else:
+        collections = None
+
+    return render_to_response(
+        'frontend/ajax/inline-collections.html',
+        {'collections' : collections, 'thumbs' : thumbs,
+            'IMAGE_SERVER_URL': IMAGE_SERVER_URL},
+        context_instance=RequestContext(request))
 
 @csrf_exempt
 def ajaxChangeCollectionName(request):

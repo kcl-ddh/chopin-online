@@ -1,1 +1,86 @@
 $primary-color: #7d0000;
+$secondary-color: #e7e7e7;
+
+/** Log in **/
+
+#login-drop,
+#login-drop p {
+    font-size: .75rem;
+}
+
+#login-drop p {
+    margin: .5rem 0 0;
+}
+
+#login-drop .button {
+    margin-bottom: 0;
+}
+
+/** Pageview / Annotation tools **/
+
+.olControlEditingToolbar,
+.olControlMousePosition {
+	display: none;
+}
+
+/* Annotations panel */
+
+p.annotation-details,
+p.annotation-posted {
+    margin: 0 0 .2em 0;
+}
+
+.annotation-details .label {
+    text-transform: uppercase;
+    font-size: .9375em;
+}
+
+p.annotation-posted {
+    font-size: 12px;
+    font-style: italic;
+    color: #666;
+}
+
+#commentary h4,
+#notes h4 {
+    padding: .25em .5em 0;
+    background: $primary-color;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.1875em;
+}
+
+#commentary h4 .label,
+#notes h4 .label {
+    margin-bottom: 0;
+    margin-top: -5px;
+    vertical-align: middle;
+    padding: .5rem .5rem .25rem !important;
+}
+
+#annotationTools,
+#annotationTools p,
+#annotationTools ul {
+    font-size: .875rem;
+}
+
+#annotationTools {
+    border-top: 2px solid #ccc;
+    /* position: absolute; */
+    /* margin-left: 4em; */
+    /* margin-top: 1.0625em; */
+    margin-bottom: .5em;
+    padding: .5em;
+    min-width: 100%;
+    background: $secondary-color;
+    /* z-index: 9999; */
+}
+
+#annotationTools ul,
+#annotationTools p {
+    margin: 0;
+}
+
+.annotationTools a:hover {
+    background: #fff;
+}

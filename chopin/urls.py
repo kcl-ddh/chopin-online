@@ -17,6 +17,7 @@ from ddhldap.signal_handlers import register_signal_handlers as \
     ddhldap_register_signal_handlers
 ddhldap_register_signal_handlers()
 
+import chopin.signal_handlers
 import os.path
 
 admin.autodiscover()

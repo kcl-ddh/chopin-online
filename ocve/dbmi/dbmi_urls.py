@@ -52,6 +52,7 @@ urlpatterns = patterns('', (r'^source/(?P<id>\d+)/$', source),
                        (r'^dbmi/$', dbmiView),
                        (r'^findunverified/$', findUnverifiedImages),
                        (r'^sourcesbywork/$', sourcesbywork),
+                       (r'^generatethumbnails/$', generateAllThumbnails),
 
                        #upload
                        (r'^upload/selectsource/', selectSource),

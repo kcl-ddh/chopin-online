@@ -20,3 +20,4 @@ pdfs
 testupload/*
 @material
 bower_components
+thumbnails/*

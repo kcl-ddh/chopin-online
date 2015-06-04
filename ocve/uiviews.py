@@ -168,7 +168,7 @@ def fixsourceinformation(request):
 
 
 def browse(request,mode="OCVE",defaultFilters=None):
-    
+
     #Filter Items
     for si in SourceInformation.objects.filter(contentssummary__startswith='<p></p>'):
         si.contentssummary=si.contentssummary.replace('<p></p>','')

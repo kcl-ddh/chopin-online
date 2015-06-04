@@ -3,10 +3,12 @@ __author__ = 'Elliott Hall'
 #Kept here for the sake of hygiene, and hopefully resuability
 from models import *
 import json
+import os
 from unicodedata import normalize as _n
 from django.conf import settings
 from django.db import connections
 from catalogue.templatetags.catalogue_tags import get_impression_exists
+import urllib
 
 import hashlib
 
@@ -339,3 +341,28 @@ def getOCVEPageImages(source):
         return []
     except ObjectDoesNotExist:
         return []
+
+def generateThumbnails(sources):
+    log=""
+    for s in sources:
+        pageimages=PageImage.objects.filter(page__sourcecomponent__source=s)
+        log+="\nFor source "+str(s.id)
+        for pi in pageimages:
+            log+=generateThumbnail(pi)
+    return log
+
+def generateThumbnail(pageimage):
+    result=""
+    #Get page legacy for jp2 path
+    path=pageimage.getJP2Path()
+    if len(path) > 0:
+        #Query iip server for deepzoom
+        path=settings.IMAGE_SERVER_URL+'?DeepZoom='+path+'_files/0/0_0.jpg'
+        #Save in thumbnial using pageimage id
+        thumb=os.path.join(settings.THUMBNAIL_DIR,str(pageimage.id)+".jpg")
+        result="Saving "+path+" at "+thumb
+        try:
+            urllib.urlretrieve(path, thumb)
+        except IOError:
+            result=IOError.message
+    return result

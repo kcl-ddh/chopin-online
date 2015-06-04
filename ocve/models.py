@@ -83,6 +83,8 @@ def getWorkComponentLabel(self):
         label=wc.label
     except ObjectDoesNotExist:
         pass
+    except MultipleObjectsReturned:
+        pass
     return label
 
 SourceComponent.getWorkComponentLabel=getWorkComponentLabel

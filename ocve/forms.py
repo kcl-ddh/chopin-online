@@ -19,20 +19,24 @@ class SourceForm(ModelForm):
 
     class Meta:
         model = Source
+        exclude = ()
 
 class SourceComponentForm(ModelForm):
     class Meta:
         model = SourceComponent
+        exclude = ()
 
 class WorkInformationForm(ModelForm):
 
     class Meta:
         model = WorkInformation
+        exclude = ()
 
 class WorkComponentForm(ModelForm):
 
     class Meta:
         model = WorkComponent
+        exclude = ()
 
 WorkComponentFormset=modelformset_factory(WorkComponent)
 
@@ -40,6 +44,7 @@ class SourceInformationForm(ModelForm):
 
     class Meta:
         model = SourceInformation
+        exclude = ()
 
 class AnnotationForm(ModelForm):
 

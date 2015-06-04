@@ -334,7 +334,7 @@ UPLOAD_EXTENSION = '.tif'
 THUMBNAIL_WIDTH = 500
 
 #Folder where thumbnails generated from iip reside
-THUMBNAIL_DIR =''
+THUMBNAIL_DIR ='/vol/ocve3/images/thumbnails/'
 
 # -----------------------------------------------------------------------------
 # Registration

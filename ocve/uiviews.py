@@ -288,6 +288,9 @@ def ocvePageImageview(request, id):
     comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
     [next_page, prev_page] = getNextPrevPages(p, pi)
     work=getPageImageWork(pi,source)
+    if pi.width == 0:
+        #Resolution not set, add
+        addImageDimensions(pi)
     zoomifyURL = pi.getZoomifyPath()
 
     request.session['page_image'] = id

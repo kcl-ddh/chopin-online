@@ -24,6 +24,7 @@ from forms import AnnotationForm
 import os
 from dbmi.datatools import convertEntities
 from imagetools import verifyImageDimensions
+from uitools import generateThumbnails
 
 #IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
@@ -167,17 +168,7 @@ def fixsourceinformation(request):
 
 
 def browse(request,mode="OCVE",defaultFilters=None):
-    #component_workcomponent__workcomponent__work_id=6355
-    comps=SourceComponent.objects.filter(source_id=18036)
-    piano=Instrument.objects.get(instrument="Piano")
-    for c in comps:
-        sourceomponentinstruments=SourceComponent_Instrument.objects.filter(sourcecomponent=c)
-        if sourceomponentinstruments.count() == 0:
-            SourceComponent_Instrument(sourcecomponent=c,instrument=piano).save()
-        #for sci in sourceomponentinstruments:
-        #    sci.instrument=piano
-        #    sci.save()
-
+    
     #Filter Items
     for si in SourceInformation.objects.filter(contentssummary__startswith='<p></p>'):
         si.contentssummary=si.contentssummary.replace('<p></p>','')
@@ -355,8 +346,6 @@ def comparePageImageview(request,compareleft=0,compareright=0):
 
     if compareright == 0:
         compareright = request.COOKIES.get('cfeo_compare_right')
-
-
 
     try:
         pi_left=PageImage.objects.get(id=compareleft)

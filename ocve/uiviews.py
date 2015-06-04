@@ -631,3 +631,5 @@ def ajaxDeleteCollection(request):
                 status = 0
         return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
 
+
+

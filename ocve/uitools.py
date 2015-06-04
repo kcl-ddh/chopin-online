@@ -342,13 +342,14 @@ def getOCVEPageImages(source):
     except ObjectDoesNotExist:
         return []
 
+
 def generateThumbnails(sources):
     log=""
     for s in sources:
         pageimages=PageImage.objects.filter(page__sourcecomponent__source=s)
         log+="\nFor source "+str(s.id)
         for pi in pageimages:
-            log+=generateThumbnail(pi)
+            log+="\n"+generateThumbnail(pi)
     return log
 
 def generateThumbnail(pageimage):

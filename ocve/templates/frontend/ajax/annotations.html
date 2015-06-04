@@ -36,8 +36,8 @@
             <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
             <div class="collapseme">
                 {% for c in notes %}
-                <div id="comment-{{ c.id }}" class="annotation-box {% if c.noteregions|length > 0 %}noteRegionHighlight{% else %}noteBarHighlight{% endif %}">
-                    <p class="annotation-details">
+                <div id="comment-{{ c.id }}" class="annotation-box">
+                    <p class="annotation-details {% if c.noteregions|length > 0 %}noteRegionHighlight{% else %}noteBarHighlight{% endif %}" data-noteid="{{ c.id }}">
                     {% for br in c.getBarRegions %}
                     {% for b in br.bar.all %}
                     <span class="label radius secondary" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
@@ -46,7 +46,7 @@
                     </p>
 
                     {% if c.noteregions|length > 0 %}
-                    <div class="annotation" data-noteid="{{ c.id }}">
+                    <div class="annotation noteRegionHighlight"  data-noteid="{{ c.id }}">
                         <p>{{ c.notetext }}</p>
                     </div>
                     {% endif %}

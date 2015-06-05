@@ -31,9 +31,9 @@
         </div>
         {% endif %}
 
-        {% if notes.count > 0 %}
-        <div id="notes">
-            <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+
+        <div id="notes" {% if notes.count == 0 %}class="hidden"{% endif %}>
+            <h4 class="comm">Notes <span id="note_count" class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
             <div class="collapseme">
                 {% for c in notes %}
                 <div id="comment-{{ c.id }}" class="annotation-box">
@@ -68,7 +68,7 @@
                 {% endfor %}
             </div>
         </div>
-        {% endif %}
+
 
 {% if not without_wrapper %}
     </div>

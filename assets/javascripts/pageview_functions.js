@@ -58,6 +58,17 @@ $(document).ready(function () {
         newNotes += "<p class=\"annotation-details\">";
     }
 
+    //Change the user annotation count by inc
+    incrementNoteCount=function(inc){
+        var count=parseInt($('#note_count').html())
+        count+=inc;
+        $('#note_count').html(count)
+        if (count == 0){
+            //No more notes, hide dropdown
+            $('#notes').hide();
+        }
+    }
+
     //Remove any notes drawn but not saved
     deleteOrphanAnnotations = function () {
         for (var f in alayer.features) {
@@ -71,13 +82,19 @@ $(document).ready(function () {
     //Deactivate all annotation functions
     resetPage = function () {
         selectControl.unselectAll()
-        noteSelectFeature.unselectAll();
-        circleFeature.deactivate();
+        var features=alayer.selectedFeatures;
+        for (var a in features) {
+           var f=features[a]
+           noteSelectFeature.unselect(f);
+           f.renderIntent="visibleNote";
+        }
+        alayer.redraw();
+        /*circleFeature.deactivate();
         squareFeature.deactivate();
+        noteSelectFeature.deactivate();*/
         barSelectFeature.deactivate();
-        noteSelectFeature.deactivate();
         deleteOrphanAnnotations();
-        hideAnnotationTools();
+        //hideAnnotationTools();
         hideNewAnnotationWindow();
     }
 
@@ -101,14 +118,25 @@ $(document).ready(function () {
 
         if (alayer.selectedFeatures.length > 0) {
             for (var a in alayer.selectedFeatures) {
-                //Serialize
-                if (barString.length > 0) {
-                    barString += ",";
+                var feature=alayer.selectedFeatures[a];
+                if (alayer.selectedFeatures[a].attributes.barid != undefined) {
+                    //Serialize
+                    if (barString.length > 0) {
+                        barString += ",";
+                    }
+                    barString += alayer.selectedFeatures[a].attributes.barid;
+                }else{
+                    var geoString=alayer.selectedFeatures[a].geometry.toString();
+                    if (geoString.length>0){
+                        $('#id_noteregions').val(geoString);
+                    }
                 }
-                barString += alayer.selectedFeatures[a].attributes.barid;
+                noteSelectFeature.unselect(alayer.selectedFeatures[a]);
+                feature.renderIntent="visibleNote";
             }
         }
 
+        alayer.redraw();
         //Add to form
         $('#noteBars').val(barString);
 
@@ -154,6 +182,11 @@ $(document).ready(function () {
             // Clear and hide new note form
             hideNewAnnotationWindow();
 
+            //Increment note count
+            if ($('#annotation_id').val() == '0'){
+                incrementNoteCount(1);
+            }
+
             $('#id_notetext').val('');
             $('#id_noteBars').val('');
             $('#id_noteregions').val('');
@@ -167,6 +200,7 @@ $(document).ready(function () {
             alayer, OpenLayers.Handler.RegularPolygon,
             {displayClass: "olControlDrawFeaturePolygon",
                 title: "Draw Custom Annotation",
+                handlerOptions:{sides:4, irregular:true},
                 featureAdded: newDrawnAnnotation
             });
 
@@ -268,10 +302,12 @@ $(document).ready(function () {
 
             if (sure == true) {
                 var noteid = $(this).data('noteid');
-
                 $.post('/ocve/deleteNote/' + noteid, function(data) {
                     $('#comment-' + noteid).fadeOut();
                     $('#messages').html(data.messages);
+                    noteFeatures = alayer.getFeaturesByAttribute('noteid', noteid);
+                    alayer.removeFeatures(noteFeatures);
+                    incrementNoteCount(-1);
                 }, 'json');
             }
 
@@ -382,7 +418,6 @@ $(document).ready(function () {
 
         $('#cancelNote').click(function () {
             resetPage();
-            toggleBarBoxes();
             return false;
         });
     }

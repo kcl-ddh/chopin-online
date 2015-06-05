@@ -213,27 +213,31 @@ $(document).ready(function () {
         //Connect bar labels to features with hover highlight
         $('.noteBarHighlight').hover(function () {
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('barid', $(this).data('barid'));
+            var select = alayer.getFeaturesByAttribute(
+                'barid', $(this).find('span').data('barid'));
             if (select.length > 0) {
                 noteSelectFeature.select(select[0]);
             }
         }, function () {
             //visibleNote
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('barid', $(this).data('barid'))[0];
+            var select = alayer.getFeaturesByAttribute(
+                'barid', $(this).find('span').data('barid'))[0];
             select.renderIntent = "visibleNote";
             alayer.redraw();
         });
 
         $('.noteRegionHighlight').hover(function () {
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('noteid', $(this).data('noteid'));
+            var select = alayer.getFeaturesByAttribute(
+                'noteid', $(this).data('noteid'));
             if (select.length > 0) {
                 noteSelectFeature.select(select[0]);
             }
         }, function () {
             noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute('noteid', $(this).data('noteid'));
+            var select = alayer.getFeaturesByAttribute(
+                'noteid', $(this).data('noteid'));
             if (select.length > 0) {
                 select[0].renderIntent = "visibleNote";
                 alayer.redraw();
@@ -243,18 +247,20 @@ $(document).ready(function () {
         //Update/Delete controls for any notes on page created by current user
         $('a.updateNote').click(function () {
             var noteid = $(this).data('noteid');
+            nTest=noteid;
             var oldText = $('#comment-' + noteid + ' div.annotation p').html();
-
             $('#id_notetext').val(oldText);
             $('#annotation_id').val(noteid);
-
             //Select current notes/regions
-            var curFeatures = alayer.getFeaturesByAttribute('noteid', noteid);
-            for (var c in curFeatures) {
+            curFeatures = alayer.getFeaturesByAttribute('noteid', noteid);
+            for (var c=0; c< curFeatures.length;c++) {
+                console.log(curFeatures[c].layer);
+                curFeatures[c].renderIntent = 'visibleNote' ;
                 noteSelectFeature.select(curFeatures[c]);
             }
-
+            alayer.redraw();
             showNewAnnotationWindow();
+
         });
 
         $('a.deleteNote').click(function() {

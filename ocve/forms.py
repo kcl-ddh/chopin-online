@@ -24,7 +24,7 @@ class SourceForm(ModelForm):
 class SourceComponentForm(ModelForm):
     class Meta:
         model = SourceComponent
-        exclude = ()
+        exclude = ('overridelabel',)
 
 class WorkInformationForm(ModelForm):
 

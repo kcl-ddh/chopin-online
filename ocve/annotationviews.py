@@ -2,7 +2,6 @@ __author__ = 'Elliot'
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -10,8 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from bartools import toGeos
 from ocve.forms import AnnotationForm
-from ocve.models import (Annotation, Annotation_BarRegion, Bar, BarRegion,
-                         PageImage)
+from ocve.models import Annotation, Annotation_BarRegion, Bar, BarRegion
 from ocve.models_generic import AnnotationType
 
 
@@ -76,6 +74,8 @@ def saveNote(request):
     form.type = annotation_type
 
     new_annotation = form.save()
+    new_annotation.notetext = new_annotation.notetext.strip()
+    new_annotation.save()
 
     # Transform POLYGON feature def for later GeoJSON export
     # POLYGON((1426 2368,1170 2036,1358 1824,1350 2084,1526 2152,1426 2368))
@@ -89,7 +89,7 @@ def saveNote(request):
     # Recalculate which bar regions intersect with this note
     try:
         bars = request.POST['noteBars']
-        labels = notebars.split(',')
+        labels = bars.split(',')
 
         for label in labels:
             bar = Bar.objects.filter(barlabel=label)

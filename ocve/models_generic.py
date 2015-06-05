@@ -652,6 +652,7 @@ class AcCode(models.Model):
     class Meta:
         verbose_name = 'AcCode'
         verbose_name_plural = 'AcCodes'
+        ordering = ["accode"]
 
     table_group = ''
 

@@ -1,60 +1,78 @@
 {% if comments.count > 0 or notes.count > 0 %}
+
+{% if not without_wrapper %}
 <div id="annotations">
-                    {% if comments.count > 0 %}
-                        <div class="page-comments">
-                            <div id="commentary">
-                                <h4>Commentary <span class="label radius secondary">{{ comments.count }}</span></h4>
-                                <div class="collapseme">
-                                {% for c in comments %}
-                                    <div id="comment-{{ c.id }}" class="annotation-box">
-                                        <p class="annotation-details">{% for br in c.getBarRegions %}
-                                            {% for b in br.bar.all %}
-                                                <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}">
-                                            Bar <strong>{{ b.barlabel }}</strong></span> {% endfor %}{% endfor %}
-                                        </p>
+    <div class="page-comments">
+{% endif %}
 
-                                        <p class="annotation-posted">By OCVE, {{ c.timestamp }}</p>
+        {% if comments.count > 0 %}
+        <div id="commentary">
+            <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+            <div class="collapseme">
+                {% for c in comments %}
+                <div id="comment-{{ c.id }}" class="annotation-box noteBarHighlight">
+                    <p class="annotation-details">
+                    {% for br in c.getBarRegions %}
+                    {% for b in br.bar.all %}
+                    <span class="label radius secondary" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
+                    {% endfor %}
+                    {% endfor %}
+                    </p>
 
-                                        <div class="annotation">
-                                            <p>{{ c.notetext }} </p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                {% endfor %}
-                                </div>
-                            </div>
-                    {% endif %}
-                    {% if notes.count > 0 %}
-                            <div id="notes">
-                                <h4>Notes <span class="label radius secondary">{{ notes.count }}</span></h4>
-                                <div class="collapseme">
-                                {% for c in notes %}
-                                    <div id="comment-{{ c.id }}" class="annotation-box">
-                                        <p class="annotation-details">{% for br in c.getBarRegions %}
-                                            {% for b in br.bar.all %}
-                                                <span class="label radius secondary noteBarHighlight"
-                                                      data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong>
-                                        </span> {% endfor %}{% endfor %}
-                                            {% if c.noteregions|length > 0 %}
-                                                <span class="noteRegionHighlight" data-noteid="{{ c.id }}">Region</span>
-                                            {% endif %}
-                                        </p>
+                    <p class="annotation-posted">By OCVE, {{ c.timestamp }}</p>
 
-                                        <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
-                                            {% if c.user.id == request.user.id %}
-                                                <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
-                                                <a href="#" class="deleteNote"
-                                                   data-noteid="{{ c.id }}">Delete</a>{% endif %}</p>
-
-                                        <div class="annotation">
-                                            <p>{{ c.notetext }} </p>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                        </div>
+                    <div class="annotation">
+                        <p>{{ c.notetext }}</p>
                     </div>
+                </div>
+                <hr />
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if notes.count > 0 %}
+        <div id="notes">
+            <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+            <div class="collapseme">
+                {% for c in notes %}
+                <div id="comment-{{ c.id }}" class="annotation-box">
+                    <p class="annotation-details {% if c.noteregions|length > 0 %}noteRegionHighlight{% else %}noteBarHighlight{% endif %}" data-noteid="{{ c.id }}">
+                    {% for br in c.getBarRegions %}
+                    {% for b in br.bar.all %}
+                    <span class="label radius secondary" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
+                    {% endfor %}
+                    {% endfor %}
+                    </p>
+
+                    {% if c.noteregions|length > 0 %}
+                    <div class="annotation noteRegionHighlight"  data-noteid="{{ c.id }}">
+                        <p>{{ c.notetext }}</p>
+                    </div>
+                    {% endif %}
+
+                    <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
+                    {% if c.user.id == request.user.id %}
+                    <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
+                    <a href="#" class="deleteNote" data-noteid="{{ c.id }}">Delete</a>
+                    {% endif %}
+                    </p>
+
+                    {% if not c.noteregions %}
+                    <div class="annotation">
+                        <p>{{ c.notetext }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <hr />
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+{% if not without_wrapper %}
+    </div>
+</div>
+{% endif %}
+
 {% endif %}

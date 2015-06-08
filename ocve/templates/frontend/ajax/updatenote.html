@@ -2,28 +2,33 @@
 {
     {% if note %}
     "noteid": {{ note.id }},
-    "notehtml": "{% spaceless %}<div id='comment-{{ note.id }}' class='annotation-box'>
+    "notehtml": "{% spaceless %}<div id='comment-{{ note.id }}' class='annotation-box {% if note.noteregions|length > 0 %}noteRegionHighlight{% else %}noteBarHighlight{% endif %}'>
     <p class='annotation-details'>
         {% for br in note.getBarRegions %}
         {% for b in br.bar.all %}
-        <span class='noteBarHighlight' data-barid='{{ b.barlabel }}'>{{ b.barlabel }}</span>
+        <span data-barid='{{ b.barlabel }}'>{{ b.barlabel }}</span>
         {% endfor %}
         {% if forloop.last == False %},{% endif %}
         {% endfor %}
-        {% if note.noteregions|length > 0 %}
-        <span class='noteRegionHighlight' data-noteid='{{ note.id }}'>Region</span>
-        {% endif %}
     </p>
+    {% if note.noteregions|length > 0 %}
+    <div class='annotation' data-noteid='{{ note.id }}'>
+        <p>{{ note.notetext }}</p>
+    </div>
+    {% endif %}
     <p class='annotation-posted'>
         <span>By {{ note.user.id }}, {{ note.timestamp }}</span>
         {% if note.user.id == request.user.id %}
         <a href='#' class='updateNote' data-noteid='{{ note.id }}'>Update</a>
+        <span>&#160;</span>
         <a href='#' class='deleteNote' data-noteid='{{ note.id }}'>Delete</a>
         {% endif %}
     </p>
+    {% if not note.noteregions %}
     <div class='annotation'>
         <p>{{ note.notetext }}</p>
     </div>
+    {% endif %}
     </div>{% endspaceless %}",
     {% endif %}
     "messages": "{% spaceless %}{{ messages|safe }}{% endspaceless %}"

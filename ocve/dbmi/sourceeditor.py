@@ -639,3 +639,95 @@ def deletesource(request,id):
             #28-1-W_USCu_b1_p20_no14
    #return HttpResponseRedirect('/ocve/dbmi/')
     return render_to_response('dbmi/sourcedelete.html',{'log':log})
+
+
+#Clone a source
+@csrf_exempt
+def clonesource(request,id):
+    source=Source.objects.get(id=int(id))
+    newSourceComponents={}
+    newPageImages={}
+    pageimages=PageImage.objects.filter(page__sourcecomponent__source=source)
+    for pi in pageimages:
+        try:
+            #Already cloned
+            pi=newPageImages[str(pi.id)]
+        except KeyError:
+            newPageImages[str(pi.id)]=pi
+            legacy=PageLegacy.objects.filter(pageimage=pi)
+            originalpageimageid=pi.id
+            pl=None
+            if legacy.count() > 0:
+                pl=legacy[0]
+            pi.pk=None
+            pi.save()
+            if pl is not None:
+                #Clone page legacy and link
+                pl.pk=None
+                pl.save()
+                pl.pageimage=pi
+                pl.save()
+            p=pi.page
+            #Get source components
+            comp=None
+            comps=SourceComponent.objects.filter(page=p)
+            for c in comps:
+                try:
+                    comp=newSourceComponents[str(c.id)]
+                except KeyError:
+                    newSourceComponents[str(c.id)]=c
+                    #New Source component
+                    c.pk=None
+                    c.save()
+                    #Clone intersection links to work
+                    scwc=SourceComponent_WorkComponent.objects.filter(sourcecomponent=c)
+                    for link in scwc:
+                        SourceComponent_WorkComponent(sourcecomponent=c,workcomponent=link.workcomponent).save()
+                    comp=c
+            #clone pages
+            p.pk=None
+            if comp is not None:
+                p.sourcecomponent=comp
+            p.save()
+            pi.page=p
+            pi.save()
+
+
+        #Link new pi to region
+        regions=BarRegion.objects.filter(pageimage_id=originalpageimageid)
+        if regions.count() > 0:
+            for r in regions:
+                #Original region id
+                rid=r.id
+                #For each region
+                r.pk = None
+                r.save()
+                #Clone bars
+                bars=Bar.objects.filter(bar_barregion__barregion_id=rid)
+                for b in bars:
+                    b.pk = None
+                    b.save()
+                    Bar_BarRegion(bar=b,barregion=r).save()
+                r.pageimage=pi
+                r.save()
+
+    #Clones source information
+    try:
+        info=SourceInformation.objects.get(source=source)
+        info.pk=None
+        info.save()
+    except ObjectDoesNotExist:
+        info=SourceInformation()
+    #New source, link to top of chain
+    source.pk=None
+    source.save()
+    info.source=source
+    #Reset accode
+    info.accode=AcCode.objects.get(id=1)
+    info.save()
+    for sc in newSourceComponents:
+        newSourceComponents[sc].source=source
+        newSourceComponents[sc].save()
+
+    return HttpResponseRedirect('/ocve/sourceeditor/' + str(source.id))
+

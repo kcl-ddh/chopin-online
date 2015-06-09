@@ -2,26 +2,26 @@ __author__ = 'Elliot'
  # coding=utf8
 
 #Views for the user interface
+import re
+
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from bartools import *
 from uitools import *
 from dbmi.spine import getSpinesByWork,spinesToRegionThumbs
-from dbmi.sourceeditor import cleanHTML,cleanSourceInformationHTML
+from dbmi.sourceeditor import cleanSourceInformationHTML
+
 
 #Takes pageimageid
 from models import keyPitch
 from models_generic import BarCollection, OCVEUser
 import json
 import hashlib
-from django.db import connection, connections, transaction
+from django.db import connections
 from forms import AnnotationForm
-import os
 from dbmi.datatools import convertEntities
 from imagetools import verifyImageDimensions
 
@@ -167,13 +167,11 @@ def fixsourceinformation(request):
 
 
 def browse(request,mode="OCVE",defaultFilters=None):
+
     #Filter Items
     for si in SourceInformation.objects.filter(contentssummary__startswith='<p></p>'):
         si.contentssummary=si.contentssummary.replace('<p></p>','')
         si.save()
-    #    si=cleanSourceInformationHTML(si)
-    #    si.save()
-    #fixsourceinformation(request)
     try:
         if defaultFilters is None and request.session[mode+'_current_filters']:
             filterJSON=request.session[mode+'_current_filters']
@@ -232,6 +230,20 @@ def getNextPrevPages(p,pi):
         if ppi.count() > 0:
             prev=ppi[0]
     return [next,prev]
+
+#Get relevant work for a pageimage object
+def getPageImageWork(pi,source):
+    work=None
+    works = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()
+    if works.count() ==0:
+        #This is Front Matter, use the work from the whole source
+        works = Work.objects.filter(
+        workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()
+    if works.count() >0:
+        work=works[0]
+    return work
+
 #Annotation.objects.filter(type_id=1).delete()
 @csrf_exempt
 def ocvePageImageview(request, id):
@@ -275,8 +287,10 @@ def ocvePageImageview(request, id):
     notes = Annotation.objects.filter(pageimage_id=id, type_id=1)
     comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
     [next_page, prev_page] = getNextPrevPages(p, pi)
-    work = Work.objects.filter(
-        workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
+    work=getPageImageWork(pi,source)
+    if pi.width == 0:
+        #Resolution not set, add
+        addImageDimensions(pi)
     zoomifyURL = pi.getZoomifyPath()
 
     request.session['page_image'] = id
@@ -324,7 +338,7 @@ def cfeoPageImageview(request,id):
     ac=source.getAcCode()
     achash=hashlib.md5(ac.encode('UTF-8')).hexdigest()
     [next,prev]=getNextPrevPages(p,pageimages)
-    work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source=source).distinct()[0]
+    work=getPageImageWork(pi,source)
     seaDragonURL=pi.getZoomifyPath()
     return render_to_response('frontend/cfeopageview.html', {'achash':achash,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'seaDragonURL':seaDragonURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
 
@@ -337,8 +351,6 @@ def comparePageImageview(request,compareleft=0,compareright=0):
 
     if compareright == 0:
         compareright = request.COOKIES.get('cfeo_compare_right')
-
-
 
     try:
         pi_left=PageImage.objects.get(id=compareleft)
@@ -618,4 +630,6 @@ def ajaxDeleteCollection(request):
         else:
                 status = 0
         return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+
+
 

@@ -27,9 +27,6 @@ urlpatterns = patterns('',
                        #Ajax url for annotation fetch
                        (r'^browse/getAnnotations/(?P<id>\d+)/$', getAnnotations),
 
-                       #User account management
-                       #(r'^accounts/', include('registration.backends.default.urls')),
-
 
 
                        (r'^data/verifyImages/', verifyImages),
@@ -61,7 +58,7 @@ urlpatterns = patterns('',
                        (r'^ajax/delete-image-from-collection/$', ajaxDeleteImageFromCollection),
                        (r'^ajax/delete-collection/$', ajaxDeleteCollection),
 
-                         #User account management - required for OCVE UI
+                       #User account management - required for OCVE UI
                        (r'^accounts/profile/$', user_profile),
                        (r'^accounts/', include('registration.backends.default.urls')),
 )

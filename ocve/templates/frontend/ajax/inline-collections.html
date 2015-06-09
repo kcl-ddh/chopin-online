@@ -51,11 +51,11 @@
                         <a href="/ocve/barview?workid={{region.pageimage.page.sourcecomponent.source.getWork.id}}&barid={{region.bar.all.0.id}}">
                             <span class="fa fa-th"></span>
                         </a>
-                        <a href="/ocve/ui/pageview/{{thumbnail.pi.id}}/{{region.id}}/">
+                        <a href="/ocve/browse/pageview/{{thumbnail.pi.id}}/{{region.id}}/">
                             <span class="fa fa-file-text"></span>
                         </a>
                         {% for fif in thumbnail.getLargeURL %}
-                        <a href="{{ IIP_URL }}?FIF={{ fif }}">
+                        <a href="{{ IIP_URL }}?FIF={{ fif }}" title="Download image">
                             <span class="fa fa-download"></span>
                         </a>
                         {% endfor %}

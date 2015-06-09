@@ -676,11 +676,12 @@ def clonesource(request,id):
                     comp=newSourceComponents[str(c.id)]
                 except KeyError:
                     newSourceComponents[str(c.id)]=c
+                    cid=c.id
                     #New Source component
                     c.pk=None
                     c.save()
                     #Clone intersection links to work
-                    scwc=SourceComponent_WorkComponent.objects.filter(sourcecomponent=c)
+                    scwc=SourceComponent_WorkComponent.objects.filter(sourcecomponent_id=cid)
                     for link in scwc:
                         SourceComponent_WorkComponent(sourcecomponent=c,workcomponent=link.workcomponent).save()
                     comp=c

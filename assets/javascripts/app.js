@@ -284,6 +284,10 @@ function initBarView()
  */
  function initCFEOComparison()
  {
+     if (document.cookie.indexOf('cfeo_compare')<0) {
+         //No pages selected yet, hide comparison link
+         $('li.cfeo-compare').hide();
+     }
         $("body").on("click", ".cfeo-add-to-compare", function(event)
         {
                 event.preventDefault();
@@ -294,6 +298,7 @@ function initBarView()
                 $(".add-to-compare-bar").fadeIn();
         });
 
+
         $("body").on("click", ".add-to-compare-bar a", function(event)
         {
                 event.preventDefault();
@@ -303,8 +308,9 @@ function initBarView()
                 cookie_set("cfeo_compare_" + $(this).attr("data-cookie"), $(this).attr("data-page-id"), 365);
                 $(".add-to-compare-bar").hide();
                 $(".add-to-compare-notification").fadeIn();
-
+            $('li.cfeo-compare').fadeIn();
         });
+
  }
 
 

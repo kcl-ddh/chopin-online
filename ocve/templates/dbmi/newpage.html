@@ -4,8 +4,7 @@
 <head>
     <title>Uploaded Page</title>
 
-    <script type="text/javascript"
-            src="/static/assets/bower_components/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}vendor/jquery/dist/jquery.min.js"></script>
 
     <script src="{{ STATIC_URL }}assets/s/jquery.dimensions.min.js"></script>
 
@@ -23,8 +22,8 @@
         });
     </script>
     <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.tmpl.js"></script>
-    <script src="{{ STATIC_URL }}assets/js/openseadragon/openseadragon.js"></script>
-    <script src="{{ STATIC_URL }}assets/js/osd-iip-connector.js"></script>
+    <script src="{{ STATIC_URL }}vendor/openseadragon/openseadragon.js"></script>
+    <script src="{{ STATIC_URL }}javascripts/osd-iip-connector.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.mousewheel.js"></script>
 
 </head>

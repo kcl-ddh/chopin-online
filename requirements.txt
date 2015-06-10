@@ -1,4 +1,4 @@
-django
+django<1.8
 -r ddhldap/requirements.txt
 django-compressor
 django-grappelli
@@ -15,4 +15,4 @@ parsley
 --allow-unverified git+ssh://git@github.com/euske/pdfminer.git
 psycopg2
 pyparsing
-wagtail
+wagtail<1

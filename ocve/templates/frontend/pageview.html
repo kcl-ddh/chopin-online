@@ -1,9 +1,9 @@
 {% extends "base.html" %}
+{% load catalogue_tags %}
 
 {% block custom_stylesheets %}
 {{ block.super }}
-<link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css"
-type="text/css">
+<link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css" type="text/css">
 <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
 {% endblock custom_stylesheets %}
 
@@ -15,25 +15,26 @@ type="text/css">
     <div class="row">
         <div class="large-12 columns">
             <div id="messages">
-            {% include 'frontend/messages.html' %}
+                {% include 'frontend/messages.html' %}
             </div>
 
             <nav class="tab-bar">
                 <section class=" tab-bar-section">
                     <ul class="left inline-list contextual-menu">
-
                         <li>
                             <div class="menu-item">
                                 <a href="{% url 'ocve_browse' %}"><i class="fa fa-arrow-circle-left"></i> Back to results</a>
                             </div>
                         </li>
+
                         <li>
-                            <div class="menu-item opus-title"><a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/" data-reveal-id="opus-info" title="Work overview">{{ work }}</a>, <a
-                                href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/" title="Witness overview">{{ source.getAcCode }}</a>, {{ pageimage.textlabel }}
+                            <div class="menu-item opus-title">
+                                <a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/" data-reveal-id="opus-info" title="Work overview">{{ work }}</a>,
+                                <a href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/" title="Witness overview">{{ source.getAcCode }}</a>,
+                                {{ pageimage.textlabel }}
                             </div>
                         </li>
 
-                        {% load catalogue_tags %}
                         {% get_impression_exists achash as impression_exists %}
                         {% if  impression_exists %}
                         <li>
@@ -43,7 +44,6 @@ type="text/css">
                         </li>
                         {% endif %}
 
-
                         {% if prev %}
                         <li>
                             <div class="menu-item">
@@ -51,14 +51,15 @@ type="text/css">
                             </div>
                         </li>
                         {% endif %}
+
                         {% if next %}
                         <li>
-                            <div class="menu-item"><a
-                                href="/{{ mode|lower }}/browse/pageview/{{ next.id }}/"
-                                class="ctrl next"><span class="fa fa-caret-right"></span></a>
+                            <div class="menu-item">
+                                <a href="/{{ mode|lower }}/browse/pageview/{{ next.id }}/" class="ctrl next"><span class="fa fa-caret-right"></span></a>
                             </div>
                         </li>
                         {% endif %}
+
                         <li>
                             <div class="menu-item">
                                 <a href="#" data-dropdown="available-pages">Jump to page</a>
@@ -106,68 +107,15 @@ type="text/css">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
                             <li><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
-                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
-                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
+                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new square annotation</a></li>
+                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new circle annotation</a></li>
                         </ul>
                     </div>
                     {% endif %}
 
-                    {% if comments.count > 0 %}
                     <div class="page-comments">
-                        <div id="commentary">
-                            <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+                        {% include 'frontend/ajax/annotations.html' with without_wrapper=True %}
 
-                            <div class="collapseme">
-                                {% for c in comments %}
-                                <div id="comment-{{ c.id }}" class="annotation-box">
-                                    <p class="annotation-details">
-                                        {% for br in c.getBarRegions %}
-                                        {% for b in br.bar.all %}
-                                        <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}"> Bar <strong>{{ b.barlabel }}</strong></span>
-                                        {% endfor %}
-                                        {% endfor %}
-                                    </p>
-
-                                    <div class="annotation"><p>{{ c.notetext }} </p></div>
-                                </div>
-                                <hr>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if notes.count > 0 %}
-                        <div id="notes">
-                            <h4 class="comm">Notes <span class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
-
-                            <div class="collapseme">
-                                {% for c in notes %}
-                                <div id="comment-{{ c.id }}" class="annotation-box">
-                                    <p class="annotation-details">
-                                        {% for br in c.getBarRegions %}
-                                        {% for b in br.bar.all %}
-                                        <span class="label radius secondary noteBarHighlight" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
-                                        {% endfor %}
-                                        {% endfor %}
-                                        {% if c.noteregions|length > 0 %}
-                                        <span class="noteRegionHighlight" data-noteid="{{ c.id }}">Region</span>
-                                        {% endif %}
-                                    </p>
-
-                                    <p class="annotation-posted">By {{ c.user }}, {{ c.timestamp }}
-                                        {% if c.user.id == request.user.id %}
-                                        <a href="#" class="updateNote" data-noteid="{{ c.id }}">Update</a>
-                                        <a href="#" class="deleteNote" data-noteid="{{ c.id }}">Delete</a>{% endif %}
-                                    </p>
-
-                                    <div class="annotation">
-                                        <p>{{ c.notetext }} </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endif %}
                         <div id="newNote">
                             <form id="newNoteForm" method="POST" action="/ocve/saveNote/">
                                 <table>
@@ -177,7 +125,7 @@ type="text/css">
                                         <td>
                                             <select id="type" name="type_id">
                                                 <option value="3" selected="selected">Private</option>
-                                                <option value="4" selected="selected">Public</option>
+                                                <option value="4">Public</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -204,18 +152,19 @@ type="text/css">
                     <div class="carousel-image">
                         <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
                             <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/></a>
-                            <span class="page-label">{{ p.textlabel }}</span>
-                        </div>
+                        <span class="page-label">{{ p.textlabel }}</span>
                     </div>
-                    {% endfor %}
                 </div>
+                {% endfor %}
             </div>
         </div>
-    </section>
-    {% endblock %}
+    </div>
+</section>
+{% endblock %}
 
 {% block footer %}
 {{ block.super }}
+
 <div id="witness-info" class="reveal-modal" data-reveal>
 
 </div>
@@ -230,30 +179,30 @@ type="text/css">
 <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}vendor/OpenLayers/OpenLayers.js"></script>
 <script type="text/javascript">
-    var map, zoomify;
-    var alayer, vlayer;
+var map, zoomify;
+var alayer, vlayer;
 
-    var zoomify_width = {{ pageimage.width }};
-    var zoomify_height = {{ pageimage.height }};
+var zoomify_width = {{ pageimage.width }};
+var zoomify_height = {{ pageimage.height }};
 
-    var pageID = {{ pageimage.id }};
-    var zoomify_url = "{{ zoomifyURL }}";
+var pageID = {{ pageimage.id }};
+var zoomify_url = "{{ zoomifyURL }}";
 
-    var regionURL = "{{ regionURL }}";
-    var noteURL = "{{ noteURL }}";
+var regionURL = "{{ regionURL }}";
+var noteURL = "{{ noteURL }}";
 
-    var workid = {{ work.id }};
+var workid = {{ work.id }};
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview_functions.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview_ol.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        {% if view == 'annotations' %}
-        showAnnotationTools();
-        {% else %}
-        hideAnnotationTools();
-        {% endif %}
-    });
+$(document).ready(function () {
+    {% if view == 'annotations' %}
+    showAnnotationTools();
+    {% else %}
+    hideAnnotationTools();
+    {% endif %}
+});
 </script>
 {% endblock %}

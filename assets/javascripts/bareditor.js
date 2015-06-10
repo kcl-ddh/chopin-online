@@ -537,7 +537,7 @@ $(document).ready(function () {
      Jack Moore's Colorbox
      http://www.jacklmoore.com/colorbox
      */
-    $("a[rel='lightbox']").colorbox({transition:"fade", width:"75%", height:"75%"});
+    //$("a[rel='lightbox']").colorbox({transition:"fade", width:"75%", height:"75%"});
 
     $('#smoothTest').click(function () {
         var selected = vlayer.selectedFeatures.slice(0);

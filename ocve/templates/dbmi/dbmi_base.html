@@ -1,11 +1,16 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Title{% endblock %} </title>
+    <title>{% block title %}Title{% endblock %}</title>
     {% block default_includes %}
         <script type="text/javascript" src="{{ STATIC_URL }}vendor/jquery/dist/jquery.min.js"></script>
     {% endblock %}
+    
+    {% compress css %}
+    {# SCSS compilation relies on django compressor #}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}" />
+    {% endcompress %}
+
     {% block other_includes %}
 
     {% endblock %}

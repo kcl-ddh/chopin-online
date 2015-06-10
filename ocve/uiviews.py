@@ -290,6 +290,9 @@ def ocvePageImageview(request, id):
     comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
     [next_page, prev_page] = getNextPrevPages(p, pi)
     work=getPageImageWork(pi,source)
+    if pi.width == 0:
+        #Resolution not set, add
+        addImageDimensions(pi)
     zoomifyURL = pi.getZoomifyPath()
 
     request.session['page_image'] = id
@@ -629,4 +632,6 @@ def ajaxDeleteCollection(request):
         else:
                 status = 0
         return render_to_response('frontend/ajax/ajax-status.html', {"status" : status,}, context_instance=RequestContext(request))
+
+
 

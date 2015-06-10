@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from bareditor import editBarsURL
 from django.db.models import *
 from sourceeditor import *
+from ocve.uitools import generateThumbnails
 import shutil
 
 from django import template
@@ -498,5 +499,11 @@ def saveworkcomponents(request,id):
     compFormset=WorkComponentFormset(request.POST)
     compFormset.save()
     return HttpResponseRedirect("/ocve/workadmin/"+str(id)+"/")
+
+#Serialize all deepzoom previews as thumbnail images for browsing
+def generateAllThumbnails(request):
+    log=generateThumbnails(Source.objects.filter(Q(ocve=1)|Q(cfeo=1)))
+    return HttpResponse(log)
+
 
 

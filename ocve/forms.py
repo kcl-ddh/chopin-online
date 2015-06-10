@@ -38,7 +38,7 @@ class WorkComponentForm(ModelForm):
         model = WorkComponent
         exclude = ('',)
 
-WorkComponentFormset=modelformset_factory(WorkComponent)
+WorkComponentFormset=modelformset_factory(WorkComponent,exclude=())
 
 class SourceInformationForm(ModelForm):
 

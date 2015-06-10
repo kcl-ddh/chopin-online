@@ -23,6 +23,14 @@ $secondary-color: #e7e7e7;
 	display: none;
 }
 
+/* Fix image so annotations can scroll on the side */
+
+#pageimage-sticky-wrapper {
+    width: 66.6667%;
+    background: #fff;
+    float: left;
+}
+
 /* Annotations panel */
 
 p.annotation-details,

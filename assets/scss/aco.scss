@@ -15,19 +15,19 @@ ul.search-results {
 /*** Tables ***/
 
 .aco-page table {
+    word-wrap: break-word;
     th:nth-child(1),
     td:nth-child(1) {
         width: 10%;
+        max-width: 97px;
     }
-    th:nth-child(2),
-    td:nth-child(2),
     th:nth-child(3),
     td:nth-child(3) {
         width: 35%;
     }
     th:nth-child(4),
     td:nth-child(4) {
-        width: 30%;
+        width: 20%;
     }
 }
 

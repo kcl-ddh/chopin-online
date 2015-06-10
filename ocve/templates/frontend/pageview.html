@@ -8,6 +8,12 @@
 {% endblock custom_stylesheets %}
 
 {% block header_scripts %}
+<script type="text/javascript" src="{{ STATIC_URL }}vendor/garand-sticky/jquery.sticky.js"></script>
+<script>
+$(window).load(function(){
+  $(".fixed-image").sticky({ topSpacing: 0 });
+});
+</script>
 {% endblock header_scripts %}
 
 {% block content %}
@@ -95,7 +101,7 @@
             </nav>
 
             <div class="row">
-                <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns">
+                <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns {% if view == 'annotations' %}fixed-image{% endif %}">
                     <div id="map"></div>
                     <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
                 </div>
@@ -107,8 +113,8 @@
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
                             <li><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
-                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new square annotation</a></li>
-                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-pencil"></i> Create new circle annotation</a></li>
+                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
+                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
                         </ul>
                     </div>
                     {% endif %}
@@ -151,7 +157,8 @@
                 <div>
                     <div class="carousel-image">
                         <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
-                            <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/></a>
+                            <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/>
+                        </a>
                         <span class="page-label">{{ p.textlabel }}</span>
                     </div>
                 </div>

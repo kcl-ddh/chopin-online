@@ -19,7 +19,7 @@ class SourceForm(ModelForm):
 
     class Meta:
         model = Source
-        exclude = ()
+        exclude = ('',)
 
 class SourceComponentForm(ModelForm):
     class Meta:
@@ -30,13 +30,13 @@ class WorkInformationForm(ModelForm):
 
     class Meta:
         model = WorkInformation
-        exclude = ()
+        exclude = ('',)
 
 class WorkComponentForm(ModelForm):
 
     class Meta:
         model = WorkComponent
-        exclude = ()
+        exclude = ('',)
 
 WorkComponentFormset=modelformset_factory(WorkComponent)
 

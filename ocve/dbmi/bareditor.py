@@ -144,7 +144,9 @@ def reorderBarNumbers(request):
             for l in links:
                 l.delete()
             try:
-                b = Bar.objects.get(barnumber=barNum, barlabel__iexact=str(barLabel))
+                bars = Bar.objects.filter(barnumber=barNum, barlabel__iexact=str(barLabel))
+                if bars.count() > 0:
+                    b=bars[0]
             except ObjectDoesNotExist:
                 b=Bar(barnumber=barNum, barlabel=barLabel)
                 b.save()

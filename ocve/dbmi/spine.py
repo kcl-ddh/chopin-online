@@ -152,7 +152,9 @@ def importXLS(request):
                                         value=value.replace('(I)','')
                                         implied=1
                                     try:
-                                        bar=Bar.objects.get(barlabel__iexact=value)
+                                        bars=Bar.objects.filter(barlabel__iexact=value)
+                                        if bars.count() > 0:
+                                            bar=bars[0]
                                         bs=BarSpine()
                                         bs.bar=bar
                                         bs.implied=implied
@@ -168,7 +170,7 @@ def importXLS(request):
                                             #Bar actually belongs to earlier component.
                                             #Try Previous component
                                             prev=BarRegion.objects.filter(bar=bar,pageimage__page__sourcecomponent__orderno=sc.orderno-1,pageimage__page__sourcecomponent__source=sources[col])
-                                            if prev.count >0:
+                                            if prev.count() > 0:
                                                 bs.sourcecomponent=prev[0].pageimage.page.sourcecomponent
                                         bs.save()
                                     except IndexError:

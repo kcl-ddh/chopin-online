@@ -6,25 +6,24 @@
 
     <title></title>
 
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery-1.6.1.min.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}assets/c/colorbox.css"/>
-    <script src="{{ STATIC_URL }}assets/s/jquery.colorbox-min.js"></script>
-    {#    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers.js"></script>#}
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/BaseTypes/Class.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Util.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Events.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Tween.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Console.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Lang.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Layer/Grid.js"></script>
-    <script src="{{ STATIC_URL }}assets/s/OpenLayers/lib/OpenLayers/Layer/Zoomify.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}vendor/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/colorbox.css"/>
+    <script src="{{ STATIC_URL }}javascripts/jquery.colorbox-min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/BaseTypes/Class.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Util.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Events.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Tween.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Console.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Lang.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Layer/Grid.js"></script>
+    <script src="{{ STATIC_URL }}vendor/OpenLayers/lib/OpenLayers/Layer/Zoomify.js"></script>
 
     <!-- Irregular transform from Miguel Vieria's image annnotator https://github.com/kcl-ddh/openlayers-image-annotation/ -->
     <script type="text/javascript" src="{{ STATIC_URL }}assets/s/annotator-helper.js"></script>
 
-    <link rel="stylesheet" href="{{ STATIC_URL }}assets/s/OpenLayers/theme/default/style.css" type="text/css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}assets/c/bareditor.css" type="text/css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/OpenLayers/theme/default/style.css" type="text/css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
     {% if mode == 1 %}
         <!-- crop correct mode-->
         <script src="{{ STATIC_URL }}assets/s/cropcorrect.js"></script>
@@ -89,7 +88,7 @@
 
         <p>Click on the orange bars (one click will select them all.) You must click first to initialize the tool. Then
             click the 'drag' control button (<img
-                    src="{{ STATIC_URL }}assets/s/OpenLayers/theme/default/img/pan_off.png"/>) Move the grouped bars so
+                    src="{{ STATIC_URL }}vendor/OpenLayers/theme/default/img/pan_off.png"/>) Move the grouped bars so
             that they line up with the uncropped image, then press save. The change
             will be applied to all bar regions</p>
         <p><a href="/ocve/editbars/{{ pageimage.id }}/">Edit individual bars</a></p>

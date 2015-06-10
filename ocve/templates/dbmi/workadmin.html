@@ -2,10 +2,6 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <link href="/static/grappelli/jquery/ui/css/custom-theme/jquery-ui-1.10.3.custom.min.css" rel="stylesheet"
-          type="text/css" media="screen"/>
-    <link href="/static/grappelli/stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen"/>
-
     <style>
         textarea {
             width: 100%;
@@ -27,19 +23,12 @@
     <title>{{ work }}</title>
 </head>
 <body>
-
 <article id="grp-content" class="content-grid">
-
     <!-- MESSAGES -->
-
 
     <!-- CONTENT TITLE -->
     <header id="grp-content-title">
-
-
         <header><h1>{{ work }}</h1></header>
-
-
     </header>
 
     <!-- CONTENT-CONTAINER -->
@@ -60,7 +49,7 @@
                 <table>
                     {{ workform }}
                 </table>
-                <input type="submit" value="Save"/>
+                <input type="submit" value="Save">
                 {% csrf_token %}
             </form>
         </div>
@@ -71,7 +60,7 @@
                 <table>
                     {{ workinformationform }}
                 </table>
-                <input type="submit" value="Save"/>
+                <input type="submit" value="Save">
                 {% csrf_token %}
             </form>
         </div>
@@ -83,16 +72,11 @@
                 <table>
                 {{ form }}
                 </table>
-                <br/>
+                <br>
             {% endfor %}
-        <input type="submit" value="Save All"/>
-
+        <input type="submit" value="Save All">
         </form>
-
-
     </div>
-
 </article>
-
 </body>
 </html>

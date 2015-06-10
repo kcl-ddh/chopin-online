@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <title>Spine Editor (Test mode)</title>
@@ -24,11 +23,11 @@
 <h1>{% if work != None %}{{ work.label }}{% else %}Posthumous{% endif %}</h1>
 <ul class="barList">
     {% if prev > 0 %}
-    <li><a href="spine?work_id={% if work != None %}{{ work.id }}{% else %}posthumous{% endif %}&orderNo={{ prev }}">{{ prev }} </a></li>
+    <li><a href="spine?work_id={% if work != None %}{{ work.id }}{% else %}posthumous{% endif %}&orderNo={{ prev }}">{{ prev }}</a></li>
     {% endif %}
     <li>Spine {{ orderNo}}</li>
     {% if next > 0 %}
-        <li><a href="spine?work_id={% if work != None %}{{ work.id }}{% else %}posthumous{% endif %}&orderNo={{ next }}">{{ next }} </a></li>
+        <li><a href="spine?work_id={% if work != None %}{{ work.id }}{% else %}posthumous{% endif %}&orderNo={{ next }}">{{ next }}</a></li>
     {% endif %}
 </ul>
 <a href="/ocve/editspine/{% if work != None %}{{ work.id }}{% else %}posthumousspine{% endif %}/">Return to Spine overview </a>

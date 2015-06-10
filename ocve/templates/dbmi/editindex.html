@@ -1,16 +1,11 @@
 {% extends "dbmi/dbmi_base.html" %}
 
-
 {% block title %}OCVE DBMI version 0.7 {% endblock %}
 {% block other_includes %}
-    <link href="/static/assets/css/base.css" rel="stylesheet" type="text/css"/>
-
-    <link href="/static/assets/css/jquery-ui-1.8.custom.css" rel="stylesheet" type="text/css"
-          media="screen" title="no title" charset="utf-8"/>
-    <link href="/static/assets/css/jquery-ui-grappelli-extensions.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ STATIC_URL }}vendor/jquery-ui/themes/base/base.css" rel="stylesheet" type="text/css" media="screen" title="no title" charset="utf-8"/>
 {% endblock %}
 
-{% block header_title %}OCVE DBMI version 0.6 {% endblock %}
+{% block header_title %}OCVE DBMI version 0.7{% endblock %}
 {% block main_content %}
     <ul>
         <li><a href="/ocve/newsourcefiles/"> New image upload</a></li>

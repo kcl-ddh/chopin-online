@@ -174,6 +174,8 @@ $(document).ready(function () {
 
             if ($('#comment-' + noteid).length > 0) {
                 $('#comment-' + noteid).replaceWith(data.notehtml);
+                //Attach events
+
             } else {
                 // update user notes
                 $('#notes div.collapseme').append(data.notehtml);

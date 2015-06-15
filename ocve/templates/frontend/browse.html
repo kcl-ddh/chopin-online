@@ -274,8 +274,9 @@
                 } else {
                     output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page\">";
                 }
+            //{{ IIP_URL }}?DeepZoom=" + sourcePages[x].thumbnail_url + "_files/0/0_0.jpg\
                 output += "<a class=\"pageView th\" data-sourcekey=\"" + sourcePages[x].id + "\" href=\"" + pageviewURL + "/" + sourcePages[x].id + "/\"> <img"
-                        + " class=\"lazy\" data-original=\"{{ IIP_URL }}?DeepZoom=" + sourcePages[x].thumbnail_url + "_files/0/0_0.jpg\" /></a>";
+                        + " class=\"lazy\" data-original=\"/thumbnails/"+sourcePages[x].id+".jpg\" /></a>";
                 output += "<span class=\"page-label\" title=\"" + sourcePages[x].label + "\">" + (sourcePages[x].label.length > 30 ? sourcePages[x].label.substring(0, 27) + "..." : sourcePages[x].label) + "</span>";
                 output += "</li>"
             //}

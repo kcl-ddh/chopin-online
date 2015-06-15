@@ -4,18 +4,6 @@
 
 {% block header_scripts %}
 <script src="{{ STATIC_URL }}vendor/jquery-ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-    <!-- Note RE Jquery. I have added another version of jquery UI since
-         I did not want to interfere with versions currently in use. We can
-         tidy this later - BM -->
-    {% comment %}
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery-1.6.1.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.core.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.widget.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.position.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.draggable.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}assets/s/jquery.ui.droppable.js"></script>
-    {% endcomment %}
-
 {% endblock header_scripts %}
 
 {% block content %}

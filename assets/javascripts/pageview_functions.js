@@ -92,9 +92,10 @@ $(document).ready(function () {
         /*circleFeature.deactivate();
         squareFeature.deactivate();
         noteSelectFeature.deactivate();*/
-        barSelectFeature.deactivate();
+        // barSelectFeature.deactivate();
+        hideBarBoxes();
         deleteOrphanAnnotations();
-        //hideAnnotationTools();
+        // hideAnnotationTools();
         hideNewAnnotationWindow();
     }
 
@@ -372,6 +373,11 @@ $(document).ready(function () {
         } else {
             vlayer.setVisibility(true)
         }
+        vlayer.redraw();
+    }
+
+    hideBarBoxes = function() {
+        vlayer.setVisibility(false);
         vlayer.redraw();
     }
 

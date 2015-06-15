@@ -89,14 +89,6 @@ $(window).load(function(){
                                 {% endif %}
                             </div>
                         </li>
-
-                        {% if view == 'annotations' %}
-                        <li>
-                            <div class="menu-item">
-                                <a id="bars" href="#" onclick="toggleBarview(); return false;">Bars <span data-tooltip aria-haspopup="true" class="has-tip" data-options="disable_for_touch:true" title="Show/Hide bars"><i class="fa fa-question-circle gray"></i></span></a>
-                            </div>
-                        </li>
-                        {% endif %}
                     </ul>
                 </section>
             </nav>
@@ -105,7 +97,7 @@ $(window).load(function(){
                 {% if view != 'annotations' %}
                 <div class="large-12 columns">
                     <div data-alert class="alert-box radius secondary">
-                        <i class="fa fa-info-circle"></i> <strong>User tip:</strong> Hover over the image to see the bar number.
+                        <i class="fa fa-info-circle"></i> <strong>User tip:</strong> Hover over the image to see bar numbers.
                         <a href="#" class="close">&times;</a>
                     </div>
                 </div>

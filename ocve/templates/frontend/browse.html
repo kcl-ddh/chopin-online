@@ -1,15 +1,19 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block header_scripts %}
     <!--PourOver from http://nytimes.github.io/pourover/ -->
 
-    <script type="text/javascript" src="{{ STATIC_URL }}javascripts/underscore-min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pourover.js"></script>
+    <script type="text/javascript" src="{% static 'javascripts/underscore-min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'javascripts/pourover.js' %}"></script>
     {% if mode == "OCVE" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}javascripts/OCVEsourceJSON.js"></script>
+        <script type="text/javascript" src="{% static 'javascripts/OCVEsourceJSON.js' %}"></script>
     {% else %}
-        <script type="text/javascript" src="{{ STATIC_URL }}javascripts/CFEOsourceJSON.js"></script>
+        <script type="text/javascript" src="{% static 'javascripts/CFEOsourceJSON.js' %}"></script>
     {% endif %}
+
+
+
     <script type="text/javascript">
     //Variables for switching between OCVE/CFEO mode
     {% if mode == "OCVE" %}
@@ -274,7 +278,7 @@
                 } else {
                     output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page\">";
                 }
-            //{{ IIP_URL }}?DeepZoom=" + sourcePages[x].thumbnail_url + "_files/0/0_0.jpg\
+
                 output += "<a class=\"pageView th\" data-sourcekey=\"" + sourcePages[x].id + "\" href=\"" + pageviewURL + "/" + sourcePages[x].id + "/\"> <img"
                         + " class=\"lazy\" data-original=\"/thumbnails/"+sourcePages[x].id+".jpg\" /></a>";
                 output += "<span class=\"page-label\" title=\"" + sourcePages[x].label + "\">" + (sourcePages[x].label.length > 30 ? sourcePages[x].label.substring(0, 27) + "..." : sourcePages[x].label) + "</span>";

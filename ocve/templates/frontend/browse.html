@@ -54,131 +54,6 @@
 
 
 
-
-
-    filterSelections = function (selections, validSelections, selectionSelector) {
-        for (var i in selections) {
-            if (!validSelections.hasOwnProperty(selections[i])) {
-                $(selectionSelector + '[data-key=' + selections[i] + ']').parent('li').hide();
-            } else {
-                $(selectionSelector + '[data-key=' + selections[i] + ']').parent('li').show();
-            }
-        }
-    }
-
-    outputWorkGroup = function (sourceList, opusOutput, opusid) {
-        var output = "<div id=\"opus" + opusid + "\" class=\"opus\">";
-        output += "<h2> " + workLabels[opusid] +
-                " <span class=\"contextual-info\">";
-                if (workinfos.indexOf(opusid) > -1){
-                    output +="<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/{{ mode|lower }}/browse/workinformation/" + opusid + "/\" title=\"Work overview\" data-reveal-id=\"opus-info\"><span class=\"fa fa-book\"></span></a></span>" ;
-                }
-                output+="</h2>";
-        output += opusOutput;
-        return output;
-    }
-
-    outputSources = function (sources) {
-        var output = "";
-        var opusOutput = "";
-        var sourceList = "";
-        var opusid = 0;
-        availInstruments = {"0": 1};
-        //Filter matching opus quickjump
-        for (var x = 0; x < sources.length; x++) {
-            if (opusid == 0) {
-                opusid = sources[x].Work;
-            }
-            if (sources[x].Work != opusid) {
-                if (opusid != 0) {
-                    output += "</div>";
-                }
-                output += outputWorkGroup(sourceList, opusOutput, opusid)
-                opusid = sources[x].Work;
-                opusOutput = "";
-                sourceList = "";
-            }
-            //Write source in quick list for opus
-            sourceList += "<li><a href=\"#source" + sources[x].id + "\" class=\"sourceLink\" data-sourcekey=\"" + sources[x].id + "\">" + sources[x].label + "</a>";
-            //Collect all the sources in the opus
-            opusOutput += "<div id=\"source" + sources[x].id + "\" class=\"source\">";
-            //Edit link to source editor, for stage only.
-            opusOutput += "<span class=\"contextual-info right\">"
-                    if (sources[x].achash.length > 0){
-                        opusOutput +="<a class=\"ctrl more\" data-tooltip=\"\"  title=\"View in Annotated Catalogue\" href=\"/aco/catalogue/impression/"+sources[x].achash+"/\"><i class=\"fa fa-link\"></i></a>&nbsp;";
-                    }
-            opusOutput += "<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/{{ mode|lower }}/browse/sourceinformation/" + sources[x].id + "/\"  title=\"Witness overview\" data-reveal-id=\"witness-info\"><i class=\"fa fa-info-circle fa-lg\"></i></a></span>";
-            opusOutput +="<h5><a href=\"#\" class=\"expandme\"><i class=\"expandd fa fa-caret-right\"></i> " + sources[x].label + "</a></h5>";
-            opusOutput +="<ul id=\"sourcePages" + sources[x].id + "\" class=\"pageList movement\">";
-            //Output pages
-            opusOutput += outputPages(sources[x]);
-            opusOutput += "</ul>";
-            opusOutput += "</div>";
-        }
-        //Output last group
-        output += outputWorkGroup(sourceList, opusOutput, opusid)
-        //Show available instruments
-        var avail = 0;
-        //Show Instrument filters
-        $('li.instrumentFilter').each(function (index) {
-            if (availInstruments['' + $(this).data('instrument_id') + ''] == 1 && $(this).data('instrument_id') != 2) {
-                avail += 1;
-                $(this).show();
-            } else if ($(this).data('instrument_id') != '0') {
-                $(this).hide();
-            }
-        });
-        if (avail > 2) {
-            $('#instrumentFilterControl').show();
-        } else {
-            $('#instrumentFilterControl').hide();
-            $('#instrumentToggle').html('Filter by instrument');
-        }
-
-        return output;
-    }
-
-    //Output the determined number of preview pages for each source with further links
-    outputPages = function (source) {
-        var output = "";
-        var sourcePages = source.Pages;
-        var scid = 0;
-        var workid=0;
-        for (var i = 0; i < filters.length; i++) {
-            if (filters[i].type == 'Work'){
-                workid=filters[i].id
-            }
-        }
-        scid=0;
-        for (var x = 0; x < sourcePages.length; x++) {
-            //if (workid ==0 || (workid > 0 && sourcePages[x].Work == workid)) {
-                //sourcePages[x].sourcecomponent_id);
-                if (sourcePages[x].sourcecomponent_id != scid) {
-                    var scInstruments = sourcecomponentsById[sourcePages[x].sourcecomponent_id].instruments;
-                    if (scInstruments) {
-                        for (var i = 0; i < scInstruments.length; i++) {
-                            availInstruments['' + scInstruments] = 1;
-                        }
-                    } else {
-                        scInstruments = [];
-                    }
-                    //console.log(sourcecomponentsById[sourcePages[x].sourcecomponent_id].label);
-                    output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page flag\"><p>" + sourcecomponentsById[sourcePages[x].sourcecomponent_id].label + "</p>";
-                    scid = sourcePages[x].sourcecomponent_id;
-                } else {
-                    output += " <li data-instruments=\"" + scInstruments.toString() + "\" id=\"page" + sourcePages[x].id + "\" class=\"page\">";
-                }
-
-                output += "<a class=\"pageView th\" data-sourcekey=\"" + sourcePages[x].id + "\" href=\"" + pageviewURL + "/" + sourcePages[x].id + "/\"> <img"
-                        + " class=\"lazy\" data-original=\"/thumbnails/"+sourcePages[x].id+".jpg\" /></a>";
-                output += "<span class=\"page-label\" title=\"" + sourcePages[x].label + "\">" + (sourcePages[x].label.length > 30 ? sourcePages[x].label.substring(0, 27) + "..." : sourcePages[x].label) + "</span>";
-                output += "</li>"
-            //}
-        }
-        return output;
-    }
-
-
     var sourceSort = PourOver.Sort.extend({
         attr: "orderno",
         fn: function (a, b) {
@@ -260,6 +135,7 @@
         //    return false;
         // });
         $("body").on("click", ".instrumentFilter", function (event) {
+            console.log(event);
             var iid = $(this).data("instrument_id");
             $('#instrumentToggle').html($(this).children('a').html());
             if (iid != 0) {

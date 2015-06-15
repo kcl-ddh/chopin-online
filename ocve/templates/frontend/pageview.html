@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load catalogue_tags %}
+{% load catalogue_tags staticfiles %}
 
 {% block custom_stylesheets %}
 {{ block.super }}
@@ -157,8 +157,10 @@ $(window).load(function(){
                 {% for p in pageimages %}
                 <div>
                     <div class="carousel-image">
-                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
-                            <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/>
+                        {% with image_id=p.id %}
+                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
+                            <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
+                        {% endwith %}
                         </a>
                         <span class="page-label">{{ p.textlabel }}</span>
                     </div>

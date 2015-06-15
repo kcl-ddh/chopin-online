@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% load i18n bartooltags %}
+
+{% block header_scripts %}
+<script src="{{ STATIC_URL }}vendor/jquery-ui/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+{% endblock header_scripts %}
+
 {% block title %}Your Profile{% endblock %}
 {% block content %}
 <section class="main content-section">

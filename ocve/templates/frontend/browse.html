@@ -12,6 +12,13 @@
         <script type="text/javascript" src="{% static 'javascripts/CFEOsourceJSON.js' %}"></script>
     {% endif %}
 
+    <script type="text/javascript">
+    var config = {
+        //Displaying OCVE or CFEO?
+        'mode': '{{ mode }}'
+    }
+    </script>
+
     <script type="text/javascript" src="{% static 'javascripts/browse.js' %}"></script>
 
     <script type="text/javascript">
@@ -32,8 +39,7 @@
     sourceFilterIDs = [];
     //Number of page images to show in initial display
     numPagesDisplay = 4;
-    //Displaying OCVE or CFEO?
-    mode = '{{ mode }}';
+
 
     for (var i = 0, len = sources.length; i < len; i++) {
         sourceByID[sources[i].id] = sources[i];
@@ -46,36 +52,6 @@
         sourcecomponentsById[sourcecomponents[i].id] = sourcecomponents[i];
     }
 
-    //Display work information / source information
-    addOverview = function (url, selector) {
-        $.get(url, function (data) {
-            $(selector).html(data);
-            $(selector).foundation('reveal', 'open')
-        });
-        //Stop jumping when modal clicked on
-        return false;
-    }
-
-    removeSelectedFilter = function (type) {
-        sourceCollection.filters[type].clearQuery();
-        $('dl.selected-filter.' + type).remove();
-        filterFacets(sourceview.getCurrentItems(), type);
-        removeFromFilterArray(type)
-        serializeFilters();
-    }
-
-    removeFromFilterArray = function (type) {
-        for (var f in filters) {
-            if (filters[f].type == type) {
-                //filters.pop(filters[f]);
-                filters.splice(f, 1);
-            }
-        }
-    }
-    serializeFilters = function () {
-        $.post("/ocve/browse/serializeFilter/", { {{ mode  }}_current_filters: JSON.stringify(filters)});
-        //localStorage.setItem("current_filters", filters);
-    }
 
     addSelectedFilter = function (type, selection) {
         var filterHTML = "<dl class=\"selected-filter " + type + "\">"

@@ -398,7 +398,7 @@ $(document).ready(function () {
 
         $('#barAttachToggle').click(function () {
             toggleBarBoxes();
-            hideExistingNotes();
+            // hideExistingNotes();
             barSelectFeature.activate();
 
             return false;

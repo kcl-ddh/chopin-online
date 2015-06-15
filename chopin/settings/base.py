@@ -227,9 +227,8 @@ if not os.path.exists(STATIC_ROOT):
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'assets'),)
 
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
-
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
 )
 
@@ -315,7 +314,7 @@ FABRIC_USER = getpass.getuser()
 # -----------------------------------------------------------------------------
 
 IIP_URL = '/iip/iipsrv.fcgi'
-IMAGE_SERVER_URL = 'https://ocve3-stg.dighum.kcl.ac.uk/iip/iipsrv.fcgi'
+IMAGE_SERVER_URL = 'https://ocve3-images.dighum.kcl.ac.uk/iip/iipsrv.fcgi'
 #Absolute server path to physical repository of jp2 images
 IMAGEFOLDER = '/vol/ocve3/images/'
 

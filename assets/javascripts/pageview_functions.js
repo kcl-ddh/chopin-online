@@ -58,12 +58,51 @@ $(document).ready(function () {
         newNotes += "<p class=\"annotation-details\">";
     }
 
+    //select feature in alayer when mouseover selector, hide on mouseout
+    noteBarHighlight = function (selector) {
+        //Connect bar labels to features with hover highlight
+        $(selector).hover(function () {
+            noteSelectFeature.unselectAll();
+            var select = alayer.getFeaturesByAttribute(
+                'barid', $(this).find('span').data('barid'));
+            if (select.length > 0) {
+                noteSelectFeature.select(select[0]);
+            }
+        }, function () {
+            //visibleNote
+            noteSelectFeature.unselectAll();
+            var select = alayer.getFeaturesByAttribute(
+                'barid', $(this).find('span').data('barid'))[0];
+            select.renderIntent = "visibleNote";
+            alayer.redraw();
+        });
+    }
+
+    noteRegionHighlight = function (selector) {
+        $(selector).hover(function () {
+            noteSelectFeature.unselectAll();
+            var select = alayer.getFeaturesByAttribute(
+                'noteid', $(this).data('noteid'));
+            if (select.length > 0) {
+                noteSelectFeature.select(select[0]);
+            }
+        }, function () {
+            noteSelectFeature.unselectAll();
+            var select = alayer.getFeaturesByAttribute(
+                'noteid', $(this).data('noteid'));
+            if (select.length > 0) {
+                select[0].renderIntent = "visibleNote";
+                alayer.redraw();
+            }
+        });
+    }
+
     //Change the user annotation count by inc
-    incrementNoteCount=function(inc){
-        var count=parseInt($('#note_count').html())
-        count+=inc;
+    incrementNoteCount = function (inc) {
+        var count = parseInt($('#note_count').html())
+        count += inc;
         $('#note_count').html(count)
-        if (count == 0){
+        if (count == 0) {
             //No more notes, hide dropdown
             $('#notes').hide();
         }
@@ -82,11 +121,11 @@ $(document).ready(function () {
     //Deactivate all annotation functions
     resetPage = function () {
         selectControl.unselectAll()
-        var features=alayer.selectedFeatures;
+        var features = alayer.selectedFeatures;
         for (var a in features) {
-           var f=features[a]
-           noteSelectFeature.unselect(f);
-           f.renderIntent="visibleNote";
+            var f = features[a]
+            noteSelectFeature.unselect(f);
+            f.renderIntent = "visibleNote";
         }
         alayer.redraw();
         /*circleFeature.deactivate();
@@ -119,21 +158,21 @@ $(document).ready(function () {
 
         if (alayer.selectedFeatures.length > 0) {
             for (var a in alayer.selectedFeatures) {
-                var feature=alayer.selectedFeatures[a];
+                var feature = alayer.selectedFeatures[a];
                 if (alayer.selectedFeatures[a].attributes.barid != undefined) {
                     //Serialize
                     if (barString.length > 0) {
                         barString += ",";
                     }
                     barString += alayer.selectedFeatures[a].attributes.barid;
-                }else{
-                    var geoString=alayer.selectedFeatures[a].geometry.toString();
-                    if (geoString.length>0){
+                } else {
+                    var geoString = alayer.selectedFeatures[a].geometry.toString();
+                    if (geoString.length > 0) {
                         $('#id_noteregions').val(geoString);
                     }
                 }
                 noteSelectFeature.unselect(alayer.selectedFeatures[a]);
-                feature.renderIntent="visibleNote";
+                feature.renderIntent = "visibleNote";
             }
         }
 
@@ -158,7 +197,7 @@ $(document).ready(function () {
         //Submit the lot
         var noteData = $("#newNoteForm").serialize();
 
-        $.post('/ocve/saveNote/', noteData, function(data) {
+        $.post('/ocve/saveNote/', noteData, function (data) {
             //Add/update with new note
             var noteid = data.noteid;
             // update alayer
@@ -175,18 +214,19 @@ $(document).ready(function () {
 
             if ($('#comment-' + noteid).length > 0) {
                 $('#comment-' + noteid).replaceWith(data.notehtml);
-                //Attach events
-
             } else {
                 // update user notes
                 $('#notes div.collapseme').append(data.notehtml);
+                //Attach events
+                noteRegionHighlight('#comment-' + noteid+' .noteRegionHighlight');
+
             }
 
             // Clear and hide new note form
             hideNewAnnotationWindow();
 
             //Increment note count
-            if ($('#annotation_id').val() == '0'){
+            if ($('#annotation_id').val() == '0') {
                 incrementNoteCount(1);
             }
 
@@ -203,7 +243,7 @@ $(document).ready(function () {
             alayer, OpenLayers.Handler.RegularPolygon,
             {displayClass: "olControlDrawFeaturePolygon",
                 title: "Draw Custom Annotation",
-                handlerOptions:{sides:4, irregular:true},
+                handlerOptions: {sides: 4, irregular: true},
                 featureAdded: newDrawnAnnotation
             });
 
@@ -214,7 +254,7 @@ $(document).ready(function () {
                 title: "Draw Custom Annotation",
                 featureAdded: newDrawnAnnotation
             });
-            circleFeature.handler.sides = 40;
+        circleFeature.handler.sides = 40;
 
         barSelectFeature = new OpenLayers.Control.SelectFeature(
             vlayer,
@@ -245,54 +285,25 @@ $(document).ready(function () {
         var panelControls = [barSelectFeature, squareFeature, circleFeature, noteSelectFeature];
         toolbarPanel = new OpenLayers.Control.Panel(
             {displayClass: "olControlEditingToolbar"});
-            toolbarPanel.addControls(panelControls);
+        toolbarPanel.addControls(panelControls);
 
-        //Connect bar labels to features with hover highlight
-        $('.noteBarHighlight').hover(function () {
-            noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute(
-                'barid', $(this).find('span').data('barid'));
-            if (select.length > 0) {
-                noteSelectFeature.select(select[0]);
-            }
-        }, function () {
-            //visibleNote
-            noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute(
-                'barid', $(this).find('span').data('barid'))[0];
-            select.renderIntent = "visibleNote";
-            alayer.redraw();
-        });
 
-        $('.noteRegionHighlight').hover(function () {
-            noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute(
-                'noteid', $(this).data('noteid'));
-            if (select.length > 0) {
-                noteSelectFeature.select(select[0]);
-            }
-        }, function () {
-            noteSelectFeature.unselectAll();
-            var select = alayer.getFeaturesByAttribute(
-                'noteid', $(this).data('noteid'));
-            if (select.length > 0) {
-                select[0].renderIntent = "visibleNote";
-                alayer.redraw();
-            }
-        });
+        noteBarHighlight('.noteBarHighlight');
+        noteRegionHighlight('.noteRegionHighlight');
+
 
         //Update/Delete controls for any notes on page created by current user
         $('a.updateNote').click(function () {
             var noteid = $(this).data('noteid');
-            nTest=noteid;
+            nTest = noteid;
             var oldText = $('#comment-' + noteid + ' div.annotation p').html();
             $('#id_notetext').val(oldText);
             $('#annotation_id').val(noteid);
             //Select current notes/regions
             curFeatures = alayer.getFeaturesByAttribute('noteid', noteid);
-            for (var c=0; c< curFeatures.length;c++) {
+            for (var c = 0; c < curFeatures.length; c++) {
                 console.log(curFeatures[c].layer);
-                curFeatures[c].renderIntent = 'visibleNote' ;
+                curFeatures[c].renderIntent = 'visibleNote';
                 noteSelectFeature.select(curFeatures[c]);
             }
             alayer.redraw();
@@ -300,12 +311,12 @@ $(document).ready(function () {
 
         });
 
-        $('a.deleteNote').click(function() {
+        $('a.deleteNote').click(function () {
             var sure = confirm('Delete This Note?');
 
             if (sure == true) {
                 var noteid = $(this).data('noteid');
-                $.post('/ocve/deleteNote/' + noteid, function(data) {
+                $.post('/ocve/deleteNote/' + noteid, function (data) {
                     $('#comment-' + noteid).fadeOut();
                     $('#messages').html(data.messages);
                     noteFeatures = alayer.getFeaturesByAttribute('noteid', noteid);
@@ -330,7 +341,7 @@ $(document).ready(function () {
     toggleExistingNotes = function (noteType) {
         for (var f in alayer.features) {
             if (alayer.features[f].attributes.noteid > 0) {
-                if (noteType=='all'
+                if (noteType == 'all'
                     || (noteType == 'notes'
                         && alayer.features[f].data.noteType != 2)
                     || (noteType == 'commentary'
@@ -338,10 +349,10 @@ $(document).ready(function () {
                     if (alayer.features[f].renderIntent == "default") {
                         allNotesVisible = true;
                         alayer.features[f].renderIntent = "visibleNote";
-                } else {
-                    allNotesVisible = false;
-                    alayer.features[f].renderIntent = "default";
-                }
+                    } else {
+                        allNotesVisible = false;
+                        alayer.features[f].renderIntent = "default";
+                    }
             }
         }
         alayer.redraw();
@@ -373,11 +384,6 @@ $(document).ready(function () {
         } else {
             vlayer.setVisibility(true)
         }
-        vlayer.redraw();
-    }
-
-    hideBarBoxes = function() {
-        vlayer.setVisibility(false);
         vlayer.redraw();
     }
 

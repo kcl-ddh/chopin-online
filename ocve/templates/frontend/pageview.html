@@ -163,8 +163,8 @@ $(window).load(function(){
                         {% with image_id=p.id %}
                         <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
                             <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
-                        {% endwith %}
                         </a>
+                        {% endwith %}
                         <span class="page-label">{{ p.textlabel }}</span>
                     </div>
                 </div>

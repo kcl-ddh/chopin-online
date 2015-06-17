@@ -16,7 +16,9 @@ def invalidate_duplicate_ac_codes(apps, schema_editor):
         if not Source.objects.filter(sourceinformation__accode=ac).filter(
             Q(ocve=1) | Q(cfeo=1)):
             ac.accode = str(random.uniform(0, 9)) + SEPARATOR + ac.accode
-            ac.save()
+
+        # Updates the AC code hash
+        ac.save()
 
 
 def restore_duplicate_ac_codes(apps, schema_editor):

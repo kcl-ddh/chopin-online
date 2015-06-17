@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load staticfiles %}
+{% load staticfiles ocve_tags %}
 
 {% block header_scripts %}
     <!--PourOver from http://nytimes.github.io/pourover/ -->
@@ -61,19 +61,17 @@
     /*
      Authority List arrays for filters
      */
-    works = [0, {% for w in works %}{{ w.id }}{% if forloop.last != True %}, {% endif %}{% endfor %}];
-    workinfos = [0, {% for wi in workinfos %}{{ wi }}{% if forloop.last != True %}, {% endif %}{% endfor %}];
-    workLabels = [];
-    {% for w in works %}
-        workLabels['{{ w.id }}'] = '{{ w }}';
-    {% endfor %}
-    genres = [{% for g in genres %}{{ g.id }} {% if forloop.last != True %}, {% endif %}{% endfor %} ];
-    publishers = [{% for p in publishers %}{{ p.id }}{% if forloop.last != True %}, {% endif %}{% endfor %} ];
-    dedicatees = [{% for d in dedicatees %}{{ d.id }}{% if forloop.last != True %}, {% endif %}{% endfor %} ];
-    years = [{% for y in years %}{{ y }}{% if forloop.last != True %}, {% endif %}{% endfor %} ];
-    sourceType = [{% for st in sourceTypes %}{{ st.id }}{% if forloop.last != True %}, {% endif %}{% endfor %}];
-    keyPitches = [{% for kp in keypitches %}{{ kp.id }}{% if forloop.last != True %}, {% endif %}{% endfor %}];
+    works = [0, {{ works|pick:'id'|join:',' }}];
+    workinfos = [0, {{ workinfos|join:',' }}];
+    work_names = [0, {{ works|join_and_quote:',' }}];
+    workLabels = _.indexBy(_.zip(works, work_names), 0)
 
+
+    genres = [ {{ genres|pick:'id'|join:',' }} ];
+    publishers = [ {{ publishers|pick:'id'|join:',' }} ];
+    years = [ {{ years|join:',' }} ];
+
+    sourceType = [ {{ sourceTypes|pick:'id'|join:',' }} ];
 
     keyModes = [1, 3];
 
@@ -94,14 +92,21 @@
         var genre_filter = PourOver.makeInclusionFilter("Genre", genres);
         var year_filter = PourOver.makeInclusionFilter("Year", years);
         var publisher_filter = PourOver.makeExactFilter("Publisher", publishers);
-        var dedicatee_filter = PourOver.makeExactFilter("Dedicatee", dedicatees);
+        // var dedicatee_filter = PourOver.makeExactFilter("Dedicatee", dedicatees);
         var sourcetype_filter = PourOver.makeExactFilter("Type", sourceType);
-        var KeyPitch_filter = PourOver.makeExactFilter("KeyPitch", keyPitches);
+        // var KeyPitch_filter = PourOver.makeExactFilter("KeyPitch", keyPitches);
         var KeyMode_filter = PourOver.makeExactFilter("KeyMode", keyModes);
 
         //Create collections based on pre-exported JSON
         sourceCollection = new PourOver.Collection(sources);
-        sourceCollection.addFilters([work_filter, genre_filter, publisher_filter, dedicatee_filter, year_filter, sourcetype_filter, KeyPitch_filter, KeyMode_filter]);
+        sourceCollection.addFilters([work_filter,
+            genre_filter,
+            publisher_filter,
+            // dedicatee_filter,
+            year_filter,
+            sourcetype_filter,
+            // KeyPitch_filter,
+            KeyMode_filter]);
         var order_sort = new sourceSort("orderno");
         sourceCollection.addSorts([order_sort]);
 

@@ -75,7 +75,7 @@ var filterFacets = function(filteredPages, exclude) {
   var filteredWorks = {},
     filteredGenres = {},
     filteredPublishers = {},
-    filteredDedicatees = {},
+    // filteredDedicatees = {},
     filteredYears = {};
 
   for (var x = 0; x < filteredPages.length; x++) {
@@ -86,9 +86,9 @@ var filterFacets = function(filteredPages, exclude) {
       if (!filteredPublishers.hasOwnProperty(filteredPages[x].Publisher)) {
         filteredPublishers[filteredPages[x].Publisher] = 1;
       }
-      if (!filteredDedicatees.hasOwnProperty(filteredPages[x].Dedicatee)) {
-        filteredDedicatees[filteredPages[x].Dedicatee] = 1;
-      }
+      // if (!filteredDedicatees.hasOwnProperty(filteredPages[x].Dedicatee)) {
+      //   filteredDedicatees[filteredPages[x].Dedicatee] = 1;
+      // }
       if (filteredPages[x] && filteredPages[x].Year) {
         for (var i = 0; i < filteredPages[x].Year.length; i++) {
           if (!filteredYears.hasOwnProperty(filteredPages[x].Year[i])) {
@@ -114,9 +114,9 @@ var filterFacets = function(filteredPages, exclude) {
   if (exclude != 'Work') {
     filterSelections(works, filteredWorks, 'a.filterCtrl[data-criteria=\"Work\"]');
   }
-  if (exclude != 'Dedicatee') {
-    filterSelections(dedicatees, filteredDedicatees, 'a.filterCtrl[data-criteria=\"Dedicatee\"]');
-  }
+  // if (exclude != 'Dedicatee') {
+  //   filterSelections(dedicatees, filteredDedicatees, 'a.filterCtrl[data-criteria=\"Dedicatee\"]');
+  // }
   if (exclude != 'Genre') {
     filterSelections(genres, filteredGenres, 'a.filterCtrl[data-criteria=\"Genre\"]');
   }

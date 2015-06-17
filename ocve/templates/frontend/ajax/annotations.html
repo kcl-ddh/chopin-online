@@ -7,7 +7,7 @@
 
         {% if comments.count > 0 %}
         <div id="commentary">
-            <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+            <h4 class="comm">Commentary <span class="label radius secondary">{{ comments.count }}</span> <i class="fa fa-caret-down right"></i></h4>
             <div class="collapseme">
                 {% for c in comments %}
                 <div id="comment-{{ c.id }}" class="annotation-box noteBarHighlight">
@@ -33,7 +33,7 @@
 
 
         <div id="notes" {% if notes.count == 0 %}class="hidden"{% endif %}>
-            <h4 class="comm">Notes <span id="note_count" class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-plus-circle right"></i></h4>
+            <h4 class="comm">Notes <span id="note_count" class="label radius secondary">{{ notes.count }}</span> <i class="fa fa-caret-down right"></i></h4>
             <div class="collapseme">
                 {% for c in notes %}
                 <div id="comment-{{ c.id }}" class="annotation-box">

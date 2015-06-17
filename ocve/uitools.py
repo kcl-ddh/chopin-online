@@ -112,10 +112,12 @@ class SourceSearchItem:
         self.orderno = orderno
         self.id = row[0]
         self.mode=mode
+        self.accode = _n(norm, row[9])
+
         if mode == 'OCVE':
-            self.label = row[2]+" "+row[9]
+            self.label = row[2]
         else:
-            self.label = row[3]+" "+row[9]
+            self.label = row[3]
         self.label=_n(norm, self.label)
         #Anything not a manuscript is a printed edition
         #Set first edition type to printed edition
@@ -152,7 +154,8 @@ class SourceSearchItem:
 
     def toJson(self):
         sourcejson =  "{'id': " + str(self.id) + ", 'label': " + json.dumps(self.label) + ", "+" 'achash': " + json.dumps(self.achash) + ", "
-        sourcejson +=  "'Genre': ["
+        sourcejson += "'accode': " + json.dumps(self.accode) + ", "
+        sourcejson += "'Genre': ["
         x = 1
         for g in self.genres:
             sourcejson +=  str(g)

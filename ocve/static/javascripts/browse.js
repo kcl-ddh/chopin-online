@@ -405,5 +405,32 @@ $(document).ready(function() {
     return false;
   });
 
+  $(clearFiltersSelector).on('click', function() {
+    //Clear Queries
+    for (var i in sourceCollection.filters) {
+      sourceCollection.filters[i].clearQuery();
+    }
+    //Remove filters from session
+    $.ajax('/ocve/browse/resetFilter/');
+    filters = [];
+    //Restore all filter choices
+    $('a.ctrl:hidden').parent('li').show();
+
+  });
+
+  //Generic filter control for the sidebar
+  $('.filterCtrl').on('click', function(e) {
+    var $this = $(this),
+      type = $this.data('criteria'),
+      id = $this.data('key'),
+      selection = $this.attr('title');
+
+    applyFilter(type, id, selection);
+    filterFacets(sourceview.getCurrentItems(), type);
+    return false;
+  });
+
+
+
 });
 // })(jQuery, JSON, PourOver, config);

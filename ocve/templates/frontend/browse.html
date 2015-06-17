@@ -63,8 +63,8 @@
      */
     works = [0, {{ works|pick:'id'|join:',' }}];
     workinfos = [0, {{ workinfos|join:',' }}];
-    work_names = [0, {{ works|join_and_quote:',' }}];
-    workLabels = _.indexBy(_.zip(works, work_names), 0)
+    work_names = [{{ works|join_and_quote:',' }}];
+    workLabels = _.indexBy(_.zip(_.rest(works), work_names), 0)
 
 
     genres = [ {{ genres|pick:'id'|join:',' }} ];
@@ -116,28 +116,7 @@
             sourceview.render();
         });
 
-        //Generic filter control for the sidebar
-        $('.filterCtrl').click(function (e) {
-            var type = $(this).data('criteria');
-            var id = $(this).data('key');
-            var selection = $(this).attr('title');
-            applyFilter(type, id, selection);
-            filterFacets(sourceview.getCurrentItems(), type);
-            return false;
-        });
 
-        $(clearFiltersSelector).click(function () {
-            //Clear Queries
-            for (var i in sourceCollection.filters) {
-                sourceCollection.filters[i].clearQuery();
-            }
-            //Remove filters from session
-            $.ajax('/ocve/browse/resetFilter/');
-            filters = [];
-            //Restore all filter choices
-            $('a.ctrl:hidden').parent('li').show();
-
-        });
 
         {% if defaultFilters != None %}
             {%  for f in defaultFilters%}

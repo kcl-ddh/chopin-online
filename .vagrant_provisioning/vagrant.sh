@@ -73,6 +73,7 @@ virtualenv /home/vagrant/venv
 source /home/vagrant/venv/bin/activate
 pip install -r /vagrant/requirements-dev.txt
 python /vagrant/manage.py makemigrations --noinput
+python /vagrant/manage.py migrate ocve --database=ocve_db --noinput
 python /vagrant/manage.py migrate --noinput
 python /vagrant/manage.py update_index
 

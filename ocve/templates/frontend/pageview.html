@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load catalogue_tags %}
+{% load catalogue_tags staticfiles %}
 
 {% block custom_stylesheets %}
 {{ block.super }}
@@ -15,6 +15,9 @@ $(window).load(function(){
   $(".fixed-image").sticky({ bottomSpacing: 360 });
 });
 </script>
+
+<!-- Set cookie for Joyride (has to load before foundation.min.js) -->
+<script src="{{ STATIC_URL }}vendor/foundation/js/vendor/jquery.cookie.js"></script>
 {% endblock header_scripts %}
 
 {% block content %}
@@ -35,7 +38,7 @@ $(window).load(function(){
                         </li>
 
                         <li>
-                            <div class="menu-item opus-title">
+                            <div class="menu-item opus-title" id="zero">
                                 <a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/" data-reveal-id="opus-info" title="Work overview">{{ work }}</a>,
                                 <a href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/" title="Witness overview">{{ source.getAcCode }}</a>,
                                 {{ pageimage.textlabel }}
@@ -52,7 +55,7 @@ $(window).load(function(){
                         {% endif %}
 
                         {% if prev %}
-                        <li>
+                        <li id="uno">
                             <div class="menu-item">
                                 <a href="/{{ mode|lower }}/browse/pageview/{{ prev.id }}/" class="ctrl prev"><span class="fa fa-caret-left"></span></a>
                             </div>
@@ -60,14 +63,14 @@ $(window).load(function(){
                         {% endif %}
 
                         {% if next %}
-                        <li>
+                        <li id="due">
                             <div class="menu-item">
                                 <a href="/{{ mode|lower }}/browse/pageview/{{ next.id }}/" class="ctrl next"><span class="fa fa-caret-right"></span></a>
                             </div>
                         </li>
                         {% endif %}
 
-                        <li>
+                        <li id="tre">
                             <div class="menu-item">
                                 <a href="#" data-dropdown="available-pages">Jump to page <i class="fa fa-caret-down"></i></a>
                                 <ul id="available-pages" class="f-dropdown" data-dropdown-content="">
@@ -80,7 +83,7 @@ $(window).load(function(){
                             </div>
                         </li>
 
-                        <li>
+                        <li id="quattro">
                             <div class="menu-item">
                                 {% if view == 'annotations' %}
                                 <a href="?view=full">Hide annotations</a>
@@ -89,14 +92,6 @@ $(window).load(function(){
                                 {% endif %}
                             </div>
                         </li>
-
-                        {% if view == 'annotations' %}
-                        <li>
-                            <div class="menu-item">
-                                <a id="bars" href="#" onclick="toggleBarview(); return false;">Bars <span data-tooltip aria-haspopup="true" class="has-tip" data-options="disable_for_touch:true" title="Show/Hide bars"><i class="fa fa-question-circle gray"></i></span></a>
-                            </div>
-                        </li>
-                        {% endif %}
                     </ul>
                 </section>
             </nav>
@@ -105,7 +100,7 @@ $(window).load(function(){
                 {% if view != 'annotations' %}
                 <div class="large-12 columns">
                     <div data-alert class="alert-box radius secondary">
-                        <i class="fa fa-info-circle"></i> <strong>User tip:</strong> Hover over the image to see the bar number.
+                        <i class="fa fa-info-circle"></i> <strong>User tip:</strong> Hover over the image to see bar numbers.
                         <a href="#" class="close">&times;</a>
                     </div>
                 </div>
@@ -121,9 +116,9 @@ $(window).load(function(){
                     <div id="annotationTools">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
-                            <li><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
-                            <li><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
-                            <li><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
+                            <li id="cinque"><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
+                            <li id="sei"><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
+                            <li id="sette"><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
                         </ul>
                     </div>
                     {% endif %}
@@ -147,6 +142,7 @@ $(window).load(function(){
                                 </table>
                                 <button id="createNote" type="submit" class="tiny radius">Save</button>
                                 <input type="hidden" id="annotation_id" name="annotation_id" value="0"/>
+                                <input type="hidden" id="featureid" name="featureid" value="0"/>
                                 <input type="hidden" id="noteBars" name="noteBars" value=""/>
                                 <button id="cancelNote" type="submit" class="tiny radius">Cancel</button>
                             </form>
@@ -165,8 +161,10 @@ $(window).load(function(){
                 {% for p in pageimages %}
                 <div>
                     <div class="carousel-image">
-                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}/">
-                            <img border align="0" src="{{ IIP_URL }}?DeepZoom={{ p.getJP2Path }}_files/0/0_0.jpg" class="lazy thumbnail"/>
+                        {% with image_id=p.id %}
+                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
+                            <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
+                        {% endwith %}
                         </a>
                         <span class="page-label">{{ p.textlabel }}</span>
                     </div>
@@ -188,6 +186,43 @@ $(window).load(function(){
 <div id="opus-info" class="reveal-modal" data-reveal>
 
 </div>
+
+<!-- Joyride -->
+<ol class="joyride-list" data-joyride>
+  <li data-id="zero" data-text="Next" data-options="tip_location: top; prev_button: false">
+    <p>Click here to see more information about the work.</p>
+  </li>
+  <li data-id="uno" data-text="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <p>Navigate to the previous page.</p>
+  </li>
+  <li data-id="due" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <p>Navigate to the next page.</p>
+  </li>
+  <li data-id="tre" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <p>You might already know what page you're looking for. This dropdown will let you choose a specific page.</p>
+  </li>  <li data-id="quattro" {% if view == 'annotations' %}data-button="Next"{% else %} data-button="Start exploring!"{% endif %} data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <p>Show / Hide the annotation tools.</p>
+  </li>
+  {% if view == 'annotations' %}
+    {% if user.is_authenticated %}
+    <li data-id="cinque" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+        <p>Show / Hide bars and click on one to attach an annotation.</p>
+    </li>
+    <li data-id="sei" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+        <p>Draw a square shaped annotation on the image.</p>
+    </li>
+    <li data-id="sette" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+        <p>Or a circle one.</p>
+    </li>
+    <li data-id="otto" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+        <p>Show / Hide commentary on the image.</p>
+    </li>
+    <li data-id="nove" data-button="Start exploring!" data-options="tip_location:top; tip_animation:fade">
+        <p>Show / Hide notes on the image.</p>
+    </li>
+    {% endif %}
+  {% endif %}
+</ol>
 {% endblock %}
 
 {% block footer_scripts %}
@@ -221,5 +256,22 @@ $(document).ready(function () {
     {% endif %}
 });
 </script>
+
+<!-- Start Joyride -->
+<script>
+    $(document).foundation('joyride', 'start');
+</script>
+
+<script type="text/javascript">
+/* $(document).foundation({
+    joyride: {
+        cookieMonster: true,
+        cookieName: 'joyride',
+        cookieDomain: true,
+        cookieExpires: 0,
+    };
+}); */
+</script>
+
 {% endblock %}
 

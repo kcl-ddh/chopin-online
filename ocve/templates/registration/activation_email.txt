@@ -1,6 +1,0 @@
-{% load i18n %}
-Thank you for registering an account with OCVE! To activate your account, please use the following link. If the link does not work, please copy and paste it into your browser.
-
-http://{{ site.domain }}/accounts/activate/{{activation_key }}/
-
-{% blocktrans %}This link is valid for {{ expiration_days }} days.{% endblocktrans %}

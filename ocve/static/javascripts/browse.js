@@ -76,7 +76,8 @@ var filterFacets = function(filteredPages, exclude) {
     filteredGenres = {},
     filteredPublishers = {},
     filteredDedicatees = {},
-    filteredYears = {};
+    filteredYears = {},
+    filteredSourceTypes = {};
 
   for (var x = 0; x < filteredPages.length; x++) {
     try {
@@ -105,12 +106,17 @@ var filterFacets = function(filteredPages, exclude) {
         }
       }
 
+      if (!filteredSourceTypes.hasOwnProperty(filteredPages[x].Type)) {
+          filteredSourceTypes[filteredPages[x].Type] = 1;
+      }
+
     } catch (TypeError) {
       console.log(TypeError);
       console.log(x);
     }
 
   }
+
   if (exclude != 'Work') {
     filterSelections(works, filteredWorks, 'a.filterCtrl[data-criteria=\"Work\"]');
   }
@@ -125,6 +131,9 @@ var filterFacets = function(filteredPages, exclude) {
   }
   if (exclude != 'Publisher') {
     filterSelections(publishers, filteredPublishers, 'a.filterCtrl[data-criteria=\"Publisher\"]');
+  }
+  if (exclude != 'Type') {
+    filterSelections(sourceType, filteredSourceTypes, 'a.filterCtrl[data-criteria=\"Type\"]');
   }
 };
 

@@ -1,8 +1,13 @@
+from __future__ import unicode_literals
+
 from django import template
+
+from django.utils.safestring import mark_safe
 
 import re
 
 register = template.Library()
+
 
 @register.filter
 def clean_si(html):
@@ -11,6 +16,7 @@ def clean_si(html):
 
     return html
 
+
 @register.assignment_tag()
 def has_printing_method(source_information):
     for pm in source_information.printingmethod.all():
@@ -18,3 +24,28 @@ def has_printing_method(source_information):
             return True
 
     return False
+
+
+@register.filter
+def pick(a_list, attribute):
+    return [getattr(i, attribute) for i in a_list]
+
+
+@register.filter
+def index_by(a_list, attribute):
+    """ this tag creates an index of a list of objects
+        by a specific attribute
+
+        e.g.
+        a_list = [{'id': 1, 'value': 'a'}, {'id': 2, 'value': 'b'}]
+
+        index_by(a_list, 'value') => {'a': {'id': 1, 'value': 'a'},
+                                      'b': {'id': 2, 'value': 'b'}}
+
+    """
+    return dict([(unicode(getattr(i, attribute)), i) for i in a_list])
+
+
+@register.filter
+def join_and_quote(a_list, separator=','):
+    return mark_safe(separator.join(['"{}"'.format(i) for i in a_list]))

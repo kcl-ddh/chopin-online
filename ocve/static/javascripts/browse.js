@@ -1,9 +1,39 @@
 // (function($, config){
 
+
+// options extends the base config file; options sets up object properties for browsing
+var options = _.extend(config);
+options.workLabels = _.object(_.rest(config.works), config.work_names);
+options.filters = [];
+options.pageviewURL = '/' + options.mode.toLowerCase() + config.browse_pageview_url;
+
+options.sourcecomponentsById = {};
+
+// TODO: are these being used??? delete if not!!!
+options.pageByID = {};
+options.sourceByID = {};
+options.sourceFilterIDs = [];
+
+for (var i = 0, len = sources.length; i < len; i++) {
+    options.sourceByID[sources[i].id] = sources[i];
+    options.sourceFilterIDs.push(sources[i].id);
+    for (var p in sources[i].Pages) {
+        options.pageByID[sources[i].Pages[p].id] = sources[i].Pages[p];
+    }
+}
+for (i = 0, len = sourcecomponents.length; i < len; i++) {
+    options.sourcecomponentsById[sourcecomponents[i].id] = sourcecomponents[i];
+}
+
+// // //
+
+
+
+
 var addSelectedFilter = function(type, selection) {
-  var $selected_filters_for_type = $(selectedFilterSelector + '.' + type),
+  var $selected_filters_for_type = $(options.selectedFilterSelector + '.' + type),
     $selected_filters = $('#selectedFilters'),
-    $no_filters_el = $(noFiltersSelector),
+    $no_filters_el = $(options.noFiltersSelector),
     filterHTML = ["<dl class=\"selected-filter ", type, "\">",
       "<dt class=\"filter\">", type, ":</dt>",
       "<dd><span>", selection, "</span>",
@@ -33,7 +63,7 @@ var applyFilter = function(type, id, selection) {
   addSelectedFilter(type, selection);
   //Remove existing filter type
   removeFromFilterArray(type);
-  filters.push({
+  options.filters.push({
     "type": type,
     "id": id,
     "selection": selection
@@ -45,17 +75,17 @@ var applyFilter = function(type, id, selection) {
 var serializeFilters = function() {
   // this function sends the current set of filters to
   // the server
-  var current_filter_prefixed = config.mode + '_current_filters';
+  var current_filter_prefixed = options.mode + '_current_filters';
   $.post("/ocve/browse/serializeFilter/", {
-    current_filter_prefixed: JSON.stringify(filters)
+    current_filter_prefixed: JSON.stringify(options.filters)
   });
 };
 
 var removeFromFilterArray = function(type) {
   // removes a filter from the filters array
-  for (var f in filters) {
-    if (filters[f].type == type) {
-      filters.splice(f, 1);
+  for (var f in options.filters) {
+    if (options.filters[f].type == type) {
+      options.filters.splice(f, 1);
     }
   }
 };
@@ -72,10 +102,12 @@ var removeSelectedFilter = function(type) {
 };
 
 var filterFacets = function(filteredPages, exclude) {
+  console.log("FilterFacets called");
+  console.log("exclude >> ", exclude);
+
   var filteredWorks = {},
     filteredGenres = {},
     filteredPublishers = {},
-    filteredDedicatees = {},
     filteredYears = {},
     filteredSourceTypes = {};
 
@@ -87,9 +119,7 @@ var filterFacets = function(filteredPages, exclude) {
       if (!filteredPublishers.hasOwnProperty(filteredPages[x].Publisher)) {
         filteredPublishers[filteredPages[x].Publisher] = 1;
       }
-      if (!filteredDedicatees.hasOwnProperty(filteredPages[x].Dedicatee)) {
-        filteredDedicatees[filteredPages[x].Dedicatee] = 1;
-      }
+
       if (filteredPages[x] && filteredPages[x].Year) {
         for (var i = 0; i < filteredPages[x].Year.length; i++) {
           if (!filteredYears.hasOwnProperty(filteredPages[x].Year[i])) {
@@ -118,22 +148,19 @@ var filterFacets = function(filteredPages, exclude) {
   }
 
   if (exclude != 'Work') {
-    filterSelections(works, filteredWorks, 'a.filterCtrl[data-criteria=\"Work\"]');
-  }
-  if (exclude != 'Dedicatee') {
-    filterSelections(dedicatees, filteredDedicatees, 'a.filterCtrl[data-criteria=\"Dedicatee\"]');
+    filterSelections(options.works, filteredWorks, 'a.filterCtrl[data-criteria=\"Work\"]');
   }
   if (exclude != 'Genre') {
-    filterSelections(genres, filteredGenres, 'a.filterCtrl[data-criteria=\"Genre\"]');
+    filterSelections(options.genres, filteredGenres, 'a.filterCtrl[data-criteria=\"Genre\"]');
   }
   if (exclude != 'Year') {
-    filterSelections(years, filteredYears, 'a.filterCtrl[data-criteria=\"Year\"]');
+    filterSelections(options.years, filteredYears, 'a.filterCtrl[data-criteria=\"Year\"]');
   }
   if (exclude != 'Publisher') {
-    filterSelections(publishers, filteredPublishers, 'a.filterCtrl[data-criteria=\"Publisher\"]');
+    filterSelections(options.publishers, filteredPublishers, 'a.filterCtrl[data-criteria=\"Publisher\"]');
   }
   if (exclude != 'Type') {
-    filterSelections(sourceType, filteredSourceTypes, 'a.filterCtrl[data-criteria=\"Type\"]');
+    filterSelections(options.sourceType, filteredSourceTypes, 'a.filterCtrl[data-criteria=\"Type\"]');
   }
 };
 
@@ -153,11 +180,11 @@ var filterSelections = function(selections, validSelections, selectionSelector) 
 
 var outputWorkGroup = function(sourceList, opusOutput, opusid) {
   var output = ["<div id=\"opus", opusid, "\" class=\"opus\">",
-    "<h2> ", workLabels[opusid],
+    "<h2> ", options.workLabels[opusid],
     " <span class=\"contextual-info\">"
   ];
 
-  if (workinfos.indexOf(opusid) > -1) {
+  if (options.workinfos.indexOf(opusid) > -1) {
     output = output.concat(["<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\" data-reveal-ajax=\"/",
       config.mode.toLowerCase(),
       "/browse/workinformation/",
@@ -178,9 +205,9 @@ var outputPages = function(source, availInstruments) {
     scid = 0,
     workid = 0;
 
-  for (var i = 0; i < filters.length; i++) {
-    if (filters[i].type == 'Work') {
-      workid = filters[i].id
+  for (var i = 0; i < options.filters.length; i++) {
+    if (options.filters[i].type == 'Work') {
+      workid = options.filters[i].id
     }
   }
 
@@ -188,7 +215,7 @@ var outputPages = function(source, availInstruments) {
     var scInstruments;
     if (sourcePages[x].sourcecomponent_id != scid) {
 
-      scInstruments = sourcecomponentsById[sourcePages[x].sourcecomponent_id].instruments;
+      scInstruments = options.sourcecomponentsById[sourcePages[x].sourcecomponent_id].instruments;
 
       if (scInstruments) {
         for (var i = 0; i < scInstruments.length; i++) {
@@ -201,7 +228,7 @@ var outputPages = function(source, availInstruments) {
       output = output.concat([" <li data-instruments=\"", scInstruments.toString(), "\"",
         " id=\"page", sourcePages[x].id, "\"",
         " class=\"page flag\">",
-        "<p>", sourcecomponentsById[sourcePages[x].sourcecomponent_id].label, "</p>"
+        "<p>", options.sourcecomponentsById[sourcePages[x].sourcecomponent_id].label, "</p>"
       ]);
 
       scid = sourcePages[x].sourcecomponent_id;
@@ -218,7 +245,7 @@ var outputPages = function(source, availInstruments) {
       sourcePages[x].label;
 
     output = output.concat(["<a class=\"pageView th\" data-sourcekey=\"", sourcePages[x].id, "\"",
-      " href=\"", pageviewURL, "/", sourcePages[x].id, "/\">",
+      " href=\"", options.pageviewURL, "/", sourcePages[x].id, "/\">",
       "<img", " class=\"lazy\" data-original=\"/thumbnails/", sourcePages[x].id, ".jpg\" />",
       "</a>",
       "<span class=\"page-label\" title=\"", sourcePages[x].label, "\">",
@@ -278,11 +305,15 @@ var outputSources = function(sources) {
     }
     opusOutput = opusOutput.concat([
       "<a href=\"#\" class=\"ctrl more\" data-tooltip=\"\"",
-      " data-reveal-ajax=\"/", config.mode.toLowerCase(), "/browse/sourceinformation/", sources[x].id, "/\"",
+      " data-reveal-ajax=\"/", options.mode.toLowerCase(), "/browse/sourceinformation/", sources[x].id, "/\"",
       " title=\"Witness overview\" data-reveal-id=\"witness-info\">",
       "<i class=\"fa fa-info-circle fa-lg\"></i></a>",
       "</span>",
-      "<h5><a href=\"#\" class=\"expandme\"><i class=\"expandd fa fa-caret-right\"></i> ", sources[x].label, "</a></h5>",
+      "<h5><a href=\"#\" class=\"expandme\"><i class=\"expandd fa fa-caret-right\"></i> ",
+      sources[x].label,
+      "<span class='label radius accode'>",
+      sources[x].accode,
+      "</span></a></h5>",
       "<ul id=\"sourcePages", sources[x].id, "\" class=\"pageList movement\">",
       outputPages(sources[x], availInstruments),
       "</ul>", "</div>"
@@ -405,14 +436,14 @@ $(document).ready(function() {
     return false;
   });
 
-  $(clearFiltersSelector).on('click', function() {
+  $(options.clearFiltersSelector).on('click', function() {
     //Clear Queries
     for (var i in sourceCollection.filters) {
       sourceCollection.filters[i].clearQuery();
     }
     //Remove filters from session
     $.ajax('/ocve/browse/resetFilter/');
-    filters = [];
+    options.filters = [];
     //Restore all filter choices
     $('a.ctrl:hidden').parent('li').show();
 
@@ -428,6 +459,34 @@ $(document).ready(function() {
     applyFilter(type, id, selection);
     filterFacets(sourceview.getCurrentItems(), type);
     return false;
+  });
+
+  //
+  //Instantiate PourOver filters
+
+  var work_filter = PourOver.makeExactFilter("Work", options.works);
+  var genre_filter = PourOver.makeInclusionFilter("Genre", options.genres);
+  var year_filter = PourOver.makeInclusionFilter("Year", options.years);
+  var publisher_filter = PourOver.makeExactFilter("Publisher", options.publishers);
+  var sourcetype_filter = PourOver.makeExactFilter("Type", options.sourceType);
+  var KeyMode_filter = PourOver.makeExactFilter("KeyMode", options.keyModes);
+
+  //Create collections based on pre-exported JSON
+  sourceCollection = new PourOver.Collection(sources);
+  sourceCollection.addFilters([work_filter,
+      genre_filter,
+      publisher_filter,
+      year_filter,
+      sourcetype_filter,
+      KeyMode_filter]);
+
+  var order_sort = new sourceSort("orderno");
+  sourceCollection.addSorts([order_sort]);
+
+  //views for sidebar and main
+  sourceview = new SourceView("main_collection", sourceCollection);
+  sourceview.on("update", function () {
+      sourceview.render();
   });
 
 

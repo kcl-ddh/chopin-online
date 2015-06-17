@@ -13,10 +13,11 @@ def invalidate_duplicate_ac_codes(apps, schema_editor):
     Source = apps.get_model('ocve', 'Source')
 
     for ac in AcCode.objects.all():
-        if not Source.objects.filter(
-            sourceinformation__accode=ac).filter(Q(ocve=1) | Q(cfeo=1)):
+        if not Source.objects.filter(sourceinformation__accode=ac).filter(
+            Q(ocve=1) | Q(cfeo=1)):
             ac.accode = str(random.uniform(0, 9)) + SEPARATOR + ac.accode
             ac.save()
+
 
 def restore_duplicate_ac_codes(apps, schema_editor):
     """Removes the duplicate prefix from the AC codes."""
@@ -25,12 +26,9 @@ def restore_duplicate_ac_codes(apps, schema_editor):
         ac.accode = ac.accode.split(SEPARATOR)[1]
         ac.save()
 
-class Migration(migrations.Migration):
-    dependencies = [
-        ('ocve',
-         '0006_auto_20150615_1037'),
-    ]
 
+class Migration(migrations.Migration):
+    dependencies = [('ocve', '0006_auto_20150615_1037'), ]
     operations = [
         migrations.RunPython(invalidate_duplicate_ac_codes,
                              reverse_code=restore_duplicate_ac_codes)

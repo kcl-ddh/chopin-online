@@ -4,7 +4,7 @@
     "noteid": {{ note.id }},
     "notehtml": "{% spaceless %}<div id='comment-{{ note.id }}' class='annotation-box'>
     <p class='annotation-details {% if note.noteregions|length > 0 %}noteRegionHighlight{% else %}noteBarHighlight{% endif %}'>
-        {% for br in note.getBarRegions %}{% for b in br.bar.all %}<span class='label radius secondary' data-barid='{{ b.barlabel }}'>{{ b.barlabel }}</span>{% endfor %}{% if forloop.last == False %},{% endif %}{% endfor %}
+        {% for br in note.getBarRegions %}{% for b in br.bar.all %}<span class='label radius secondary' data-barid='{{ b.barlabel }}'>Bar {{ b.barlabel }}</span>{% endfor %}{% if forloop.last == False %},{% endif %}{% endfor %}
     </p>
     {% if note.noteregions|length > 0 %}
     <div class='annotation noteRegionHighlight' data-noteid='{{ note.id }}'>

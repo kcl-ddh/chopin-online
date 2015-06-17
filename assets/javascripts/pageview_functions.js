@@ -58,7 +58,7 @@ $(document).ready(function () {
         newNotes += "<p class=\"annotation-details\">";
     }
 
-    hideBarBoxes= function(){
+    hideBarBoxes = function () {
         vlayer.setVisibility(false);
     }
     //select feature in alayer when mouseover selector, hide on mouseout
@@ -69,7 +69,7 @@ $(document).ready(function () {
             var select = alayer.getFeaturesByAttribute(
                 'barid', $(this).data('barid'));
             if (select.length > 0) {
-                for (var r=0;r< select.length; r++) {
+                for (var r = 0; r < select.length; r++) {
                     noteSelectFeature.select(select[r]);
                 }
             }
@@ -78,7 +78,11 @@ $(document).ready(function () {
             noteSelectFeature.unselectAll();
             var select = alayer.getFeaturesByAttribute(
                 'barid', $(this).data('barid'))[0];
-            select.renderIntent = "visibleNote";
+            if (allNotesVisible) {
+                select.renderIntent = 'visibleNote';
+            } else {
+                select.renderIntent = "default";
+            }
             alayer.redraw();
         });
     }
@@ -96,7 +100,11 @@ $(document).ready(function () {
             var select = alayer.getFeaturesByAttribute(
                 'noteid', $(this).data('noteid'));
             if (select.length > 0) {
-                select[0].renderIntent = "visibleNote";
+                if (allNotesVisible) {
+                    select[0].renderIntent = 'visibleNote';
+                } else {
+                    select[0].renderIntent = "default";
+                }
                 alayer.redraw();
             }
         });
@@ -121,7 +129,7 @@ $(document).ready(function () {
     }
 
     attachUpdateNote = function (selector) {
-        $(selector).click(function() {
+        $(selector).click(function () {
             var noteid = $(this).data('noteid');
             nTest = noteid;
             var oldText = $('#comment-' + noteid + ' div.annotation p').html();
@@ -171,8 +179,8 @@ $(document).ready(function () {
         }
         alayer.redraw();
         /*circleFeature.deactivate();
-        squareFeature.deactivate();
-        noteSelectFeature.deactivate();*/
+         squareFeature.deactivate();
+         noteSelectFeature.deactivate();*/
         // barSelectFeature.deactivate();
         hideBarBoxes();
         deleteOrphanAnnotations();
@@ -198,11 +206,10 @@ $(document).ready(function () {
             }
         }
 
-        updatedCustomFeatures=[];
+
         if (alayer.selectedFeatures.length > 0) {
             for (var a in alayer.selectedFeatures) {
                 var feature = alayer.selectedFeatures[a];
-                updatedCustomFeatures.push(feature);
                 if (alayer.selectedFeatures[a].attributes.barid != undefined) {
                     //Serialize
                     if (barString.length > 0) {
@@ -243,15 +250,11 @@ $(document).ready(function () {
 
         $.post('/ocve/saveNote/', noteData, function (data) {
             //Add/update with new note
-            d=data;
             var noteid = data.noteid;
             // update alayer
             var newFeatures = [];
             hideNewAnnotationWindow();
 
-            for (var f in updatedCustomFeatures) {
-                updatedCustomFeatures[f].attributes.noteid=noteid;
-            }
 
             for (var v in vlayer.selectedFeatures) {
                 //Clone bar regions with note attributes
@@ -261,9 +264,9 @@ $(document).ready(function () {
                     noteAttributes, vlayer.selectedFeatures[v].geometry);
                 newFeatures.push(newF);
             }
-            if ($('#featureid').val() != 0){
-                alayer.getFeatureById($('#featureid').val()).attributes.noteid=noteid;
-             }
+            if ($('#featureid').val() != 0) {
+                alayer.getFeatureById($('#featureid').val()).attributes.noteid = noteid;
+            }
 
             if ($('#comment-' + noteid).length > 0) {
                 $('#comment-' + noteid).replaceWith(data.notehtml);
@@ -271,18 +274,17 @@ $(document).ready(function () {
                 // update user notes
                 $('#notes div.collapseme').append(data.notehtml);
                 //Attach events
-                noteRegionHighlight('#comment-' + noteid+' div.noteRegionHighlight');
-                noteRegionHighlight('#comment-' + noteid+' div.noteBarHighlight');
-                attachUpdateNote('#comment-' + noteid+' a.updateNote');
-                attachDeleteNote('#comment-' + noteid+' .deleteNote');
+                noteRegionHighlight('#comment-' + noteid + ' div.noteRegionHighlight');
+                noteRegionHighlight('#comment-' + noteid + ' div.noteBarHighlight');
+                attachUpdateNote('#comment-' + noteid + ' a.updateNote');
+                attachDeleteNote('#comment-' + noteid + ' .deleteNote');
             }
 
             // Clear and hide new note form
             hideBarBoxes();
-            if (!$('#notes div.collapseme').is(':visible')){
-             $('#notes h4').click();
+            if (!$('#notes div.collapseme').is(':visible')) {
+                // $('#notes h4').click();
             }
-            showExistingNotes();
 
 
             //Increment note count
@@ -376,20 +378,23 @@ $(document).ready(function () {
 
     toggleExistingNotes = function (noteType) {
         for (var f in alayer.features) {
-            if (alayer.features[f].attributes.noteid > 0) {
-                if (noteType == 'all'
-                    || (noteType == 'notes'
-                        && alayer.features[f].data.noteType != 2)
-                    || (noteType == 'commentary'
-                        && alayer.features[f].data.noteType == 2))
-                    if (alayer.features[f].renderIntent == "default") {
-                        allNotesVisible = true;
-                        alayer.features[f].renderIntent = "visibleNote";
-                    } else {
-                        allNotesVisible = false;
-                        alayer.features[f].renderIntent = "default";
-                    }
-            }
+            //if (alayer.features[f].attributes.noteid > 0) {
+            if (noteType == 'all'
+                || (noteType == 'notes'
+                    && alayer.features[f].data.noteType != 2)
+                || (noteType == 'commentary'
+                    && alayer.features[f].data.noteType == 2))
+                if (!allNotesVisible) {
+                    alayer.features[f].renderIntent = "visibleNote";
+                } else {
+                    alayer.features[f].renderIntent = "default";
+                }
+            //}
+        }
+        if (!allNotesVisible) {
+            allNotesVisible = true;
+        } else {
+            allNotesVisible = false;
         }
         alayer.redraw();
     }

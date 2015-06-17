@@ -3,7 +3,11 @@
 
 {% block meta_title %}{{ self.title|add_special_characters }}{% endblock %}
 
-{% block title %}{{ self.title }}{% endblock %}
+{% block title %}
+{% if self.content or self.introduction %}
+{{ self.title }}
+{% endif %}
+{% endblock %}
 
 {% block header_scripts %}
 {{ block.super }}

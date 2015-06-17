@@ -943,14 +943,28 @@ $(document).ready( function() {
         /******************************************/
 
         $(function() {
-          $('#annotations').find('div.collapseme').hide();
-          $('h4.comm').bind("click", function() {
-            $(this).next('div').slideToggle(400);
-            $("i",this).toggleClass("fa-plus-circle fa-minus-circle");
-            return false;
-          });
-          $('#commentary h4.comm').bind("click", function() { toggleExistingNotes('commentary'); });
-      $('#notes h4.comm').bind("click", function() { toggleExistingNotes('notes'); });
+            $('#annotations').find('div.collapseme').hide();
+            $('h4.comm').bind("click", function() {
+                $(this).next('div').slideToggle(400);
+                $("i",this).toggleClass("fa-caret-up fa-caret-down");
+                return false;
+            });
+            /* $('#commentary h4.comm').bind("click", function() {
+                toggleExistingNotes('commentary');
+            });
+            $('#notes h4.comm').bind("click", function() {
+                toggleExistingNotes('notes');
+            });*/
+            $('a.com').bind("click", function() {
+                toggleExistingNotes('commentary');
+                $("i",this).toggleClass("fa-eye fa-eye-slash");
+                return false;
+            });
+            $('a.not').bind("click", function() {
+                toggleExistingNotes('notes');
+                $("i",this).toggleClass("fa-eye fa-eye-slash");
+                return false;
+            });
         });
 
 });

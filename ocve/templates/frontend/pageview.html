@@ -117,8 +117,10 @@ $(window).load(function(){
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
                             <li id="cinque"><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
-                            <li id="sei"><a id="newSquareNoteToggle" href="#"><i class="fa fa-square"></i> Create square annotation</a></li>
-                            <li id="sette"><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle"></i> Create circle annotation</a></li>
+                            <li id="sei"><a id="newSquareNoteToggle" href="#"><i class="fa fa-square-o"></i> Create square annotation</a></li>
+                            <li id="sette"><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle-thin"></i> Create circle annotation</a></li>
+                            <li id="otto"><a href="#" class="com"><i class="fa fa-eye"></i> Toggle commentary on the image</a></li>
+                            <li id="nove"><a href="#" class="not"><i class="fa fa-eye"></i> Toggle notes on the image</a></li>
                         </ul>
                     </div>
                     {% endif %}
@@ -142,6 +144,7 @@ $(window).load(function(){
                                 </table>
                                 <button id="createNote" type="submit" class="tiny radius">Save</button>
                                 <input type="hidden" id="annotation_id" name="annotation_id" value="0"/>
+                                <input type="hidden" id="featureid" name="featureid" value="0"/>
                                 <input type="hidden" id="noteBars" name="noteBars" value=""/>
                                 <button id="cancelNote" type="submit" class="tiny radius">Cancel</button>
                             </form>

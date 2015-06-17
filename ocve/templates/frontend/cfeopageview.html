@@ -133,11 +133,12 @@ $(document).ready(function () {
                     {% for p in pageimages %}
                     <div>
                         <div class="carousel-image">
-                            <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ p.id }}">
-                                <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
-                            </a>
-                            <span class="page-label">{{ p.page.label }} {% if p.startbar != '0' or p.endbar != '0' %}bs
-                                {{ p.startbar }}-{{ p.endbar }}{% endif %}</span>
+                        {% with image_id=p.id %}
+                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
+                            <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
+                        </a>
+                        {% endwith %}
+                            <span class="page-label">{{ p.page.label }}{% if p.startbar != '0' or p.endbar != '0' %}bs{{ p.startbar }}-{{ p.endbar }}{% endif %}</span>
                         </div>
                     </div>
                     {% endfor %}

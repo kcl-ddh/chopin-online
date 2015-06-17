@@ -293,7 +293,7 @@ var outputSources = function(sources) {
 
 
   return output.join("");
-}
+};
 
 var showAvailableFilters = function(availInstruments) {
   var avail = 0;
@@ -314,6 +314,65 @@ var showAvailableFilters = function(availInstruments) {
   }
 };
 
+
+// Pourover extensions
+var sourceSort = PourOver.Sort.extend({
+  attr: "orderno",
+  fn: function(a, b) {
+    if (b < a) {
+      return -1;
+    } else if (b > a) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+});
+
+SourceView = PourOver.View.extend({
+  render: function() {
+    var filtered = false;
+    for (var i in sourceCollection.filters) {
+      if (sourceCollection.filters[i].current_query) {
+        filtered = true;
+        break;
+      }
+
+    }
+
+    if (filtered) {
+      var items = this.getCurrentItems(),
+        output = outputSources(items);
+
+      $("#results").html(output);
+
+      //Instantiate events for generated content
+      $('h5').on("click", function() {
+        //Load images now that tab is being opened
+        var $this = $(this);
+
+        $this.next('ul.pageList').find('img.lazy').each(function(index) {
+          $this.attr('src', $this.attr('data-original'))
+        });
+
+        $this.next('ul.pageList').slideToggle(400);
+        $("i.expandd", $this).toggleClass("fa-caret-right fa-caret-down");
+        return false;
+      });
+
+
+      $('.opusexpand').click(function() {
+        var opuskey = $(this).data('opuskey');
+
+        $('#opusSummary' + opuskey).slideToggle();
+      });
+    } else {
+      //Clear old filter
+      $("#results").html('');
+    }
+  }
+});
+
 $(document).ready(function() {
   // setup events
 
@@ -323,5 +382,19 @@ $(document).ready(function() {
     removeSelectedFilter(type);
   });
 
+  $("body").on("click", ".instrumentFilter", function(event) {
+    // console.log(event);
+    var iid = $(this).data("instrument_id");
+    $('#instrumentToggle').html($(this).children('a').html());
+    if (iid !== 0) {
+      $("li.page[data-instruments*='" + iid + "']:hidden").fadeIn();
+      $("li.page").not("[data-instruments*='" + iid + "']").fadeOut();
+    } else {
+      $("li.page").fadeIn();
+      $('#instrumentToggle').html('Filter by instrument');
+    }
+    return false;
+  });
+
 });
-// })(jQuery, JSON, config);
+// })(jQuery, JSON, PourOver, config);

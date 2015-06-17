@@ -192,7 +192,6 @@ def browse(request,mode="OCVE",defaultFilters=None):
         #dedicatees=Dedicatee.objects.filter(sourceinformation__source__ocve=True).filter(id__gt=2).distinct()
         publishers=Publisher.objects.filter(sourceinformation__source__ocve=True).filter(id__gt=2).distinct()
         years=Year.objects.filter(sourceinformation__source__ocve=True).distinct()
-        keyPitches=keyPitch.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__ocve=True).distinct()
         genres=Genre.objects.filter(work__workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__ocve=True).filter(id__gt=2).distinct()
         instruments=Instrument.objects.filter(sourcecomponent_instrument__sourcecomponent__source__ocve=True).distinct()
     else:
@@ -206,7 +205,18 @@ def browse(request,mode="OCVE",defaultFilters=None):
         years=Year.objects.filter(sourceinformation__source__cfeo=True).distinct()
         genres=Genre.objects.filter(work__workcomponent__sourcecomponent_workcomponent__sourcecomponent__source__cfeo=True).distinct()
         instruments=Instrument.objects.filter(sourcecomponent_instrument__sourcecomponent__source__cfeo=True).distinct()
-    return render_to_response('frontend/browse.html', {'defaultFilters':defaultFilters, 'mode':mode,'workinfos':workinfos,'sourceTypes':sourceTypes,'instruments':instruments,'years':years,'publishers':publishers,'genres':genres,'works':works, 'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL}, context_instance=RequestContext(request))
+    return render_to_response('frontend/browse.html',
+        {'defaultFilters':defaultFilters,
+         'mode':mode,
+         'workinfos':workinfos,
+         'sourceTypes':sourceTypes,
+         'instruments':instruments,
+         'years':years,
+         'publishers':publishers,
+         'genres':genres,
+         'works':works,
+         'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL},
+         context_instance=RequestContext(request))
 
 
 #Optimised for OCVE

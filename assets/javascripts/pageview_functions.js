@@ -280,8 +280,9 @@ $(document).ready(function () {
             // Clear and hide new note form
             hideBarBoxes();
             if (!$('#notes div.collapseme').is(':visible')){
-             $('#notes h4').click()
+             $('#notes h4').click();
             }
+            showExistingNotes();
 
 
             //Increment note count

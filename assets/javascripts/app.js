@@ -817,8 +817,8 @@ $(document).ready( function() {
                 updateBrowseResults();
         });
         // remove facet
-        $(".selected-filter .ctrl.remove").click( function() {
-                $(this).parent().parent().remove();
+        $(".selected-filter").on('click', "a.ctrl.remove", function() {
+                // dont remove element, this is done in browse.js
                 updateBrowseResults();
         });
         // remove all facets

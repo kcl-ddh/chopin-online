@@ -14,6 +14,8 @@
   options.sourceByID = {};
   options.sourceFilterIDs = [];
 
+  // data manipulation
+
   for (var i = 0, len = sources.length; i < len; i++) {
     options.sourceByID[sources[i].id] = sources[i];
     options.sourceFilterIDs.push(sources[i].id);
@@ -102,7 +104,6 @@
     var current_filter_prefixed = options.mode + '_current_filters',
       params = {};
     params[current_filter_prefixed] = JSON.stringify(options.filters);
-    console.log(params);
     $.post("/ocve/browse/serializeFilter/", params);
   };
 
@@ -124,7 +125,7 @@
     // remove html filter control
     $('dl.selected-filter.' + type).remove();
 
-    if ($('dl.selected-filter').length){
+    if ($('dl.selected-filter').length) {
       $("#no-filters").hide();
     } else {
       $("#no-filters").show();
@@ -141,79 +142,63 @@
   };
 
   var filterFacets = function(filteredPages, exclude) {
-    console.log("FilterFacets called");
-    console.log("exclude >> ", exclude);
-
-    var filteredWorks = {},
-      filteredGenres = {},
-      filteredPublishers = {},
-      filteredYears = {},
-      filteredSourceTypes = {};
-
-    for (var x = 0; x < filteredPages.length; x++) {
-      try {
-        if (!filteredWorks.hasOwnProperty(filteredPages[x].Work)) {
-          filteredWorks[filteredPages[x].Work] = 1;
-        }
-        if (!filteredPublishers.hasOwnProperty(filteredPages[x].Publisher)) {
-          filteredPublishers[filteredPages[x].Publisher] = 1;
-        }
-
-        if (filteredPages[x] && filteredPages[x].Year) {
-          for (var i = 0; i < filteredPages[x].Year.length; i++) {
-            if (!filteredYears.hasOwnProperty(filteredPages[x].Year[i])) {
-              filteredYears[filteredPages[x].Year[i]] = 1;
-            }
-          }
-        }
-
-        if (filteredPages[x] && filteredPages[x].Genre) {
-          for (var i = 0; i < filteredPages[x].Genre.length; i++) {
-            if (!filteredGenres.hasOwnProperty(filteredPages[x].Genre[i])) {
-              filteredGenres[filteredPages[x].Genre[i]] = 1;
-            }
-          }
-        }
-
-        if (!filteredSourceTypes.hasOwnProperty(filteredPages[x].Type)) {
-          filteredSourceTypes[filteredPages[x].Type] = 1;
-        }
-
-      } catch (TypeError) {
-        console.log(TypeError);
-        console.log(x);
-      }
-
-    }
-
     if (exclude != 'Work') {
+      var filteredWorks = _.chain(filteredPages) // chain following operations
+        .pluck('Work')  // select Work property from all objects
+        .uniq()         // produce a unique list
+        .value();       // return list from chain
+
+      // run filtersection for this set
       filterSelections(options.works, filteredWorks, 'a.filterCtrl[data-criteria=\"Work\"]');
     }
-    if (exclude != 'Genre') {
-      filterSelections(options.genres, filteredGenres, 'a.filterCtrl[data-criteria=\"Genre\"]');
-    }
-    if (exclude != 'Year') {
-      filterSelections(options.years, filteredYears, 'a.filterCtrl[data-criteria=\"Year\"]');
-    }
+
     if (exclude != 'Publisher') {
+      var filteredPublishers = _.chain(filteredPages)
+        .pluck('Publisher')
+        .uniq()
+        .value();
       filterSelections(options.publishers, filteredPublishers, 'a.filterCtrl[data-criteria=\"Publisher\"]');
     }
+
     if (exclude != 'Type') {
+      var filteredSourceTypes = _.chain(filteredPages)
+        .pluck('Type')
+        .uniq()
+        .value();
       filterSelections(options.sourceType, filteredSourceTypes, 'a.filterCtrl[data-criteria=\"Type\"]');
+    }
+
+    if (exclude != 'Genre') {
+      var filteredGenres = _.chain(filteredPages)
+        .pluck('Genre') // select Genre property from all objects (usually a list of genres)
+        .flatten()      // flatten into single list
+        .uniq()
+        .value();
+      filterSelections(options.genres, filteredGenres, 'a.filterCtrl[data-criteria=\"Genre\"]');
+    }
+
+    if (exclude != 'Year') {
+      var filteredYears = _.chain(filteredPages)
+        .pluck('Year')
+        .flatten()
+        .uniq()
+        .value();
+      filterSelections(options.years, filteredYears, 'a.filterCtrl[data-criteria=\"Year\"]');
     }
   };
 
 
   var filterSelections = function(selections, validSelections, selectionSelector) {
-    var $selectionSelector = $(selectionSelector);
+    var $filterCtrls = $(selectionSelector);
+    // hide all filter controls
+    $filterCtrls.parent('li').hide();
 
-    for (var i in selections) {
-      if (!validSelections.hasOwnProperty(selections[i])) {
-        $selectionSelector.find('[data-key=' + selections[i] + ']').parent('li').hide();
-      } else {
-        $selectionSelector.find('[data-key=' + selections[i] + ']').parent('li').show();
-      }
-    }
+    // show only ones that are still valid selections
+    $filterCtrls.filter(function(index, filterControl) {
+      return _.contains(validSelections,
+        $(filterControl).data('key'));
+    }).parent('li').show();
+
   };
 
 
@@ -454,8 +439,6 @@
 
   $(document).ready(function() {
     // setup events
-    console.log('#selectedFilters a.ctrl.remove', $('#selectedFilters a.ctrl.remove'));
-
 
     $('body').on('click', '#selectedFilters a.ctrl.remove', function(e) {
       e.preventDefault();
@@ -464,7 +447,6 @@
     });
 
     $("body").on("click", ".instrumentFilter", function(event) {
-      // console.log(event);
       var iid = $(this).data("instrument_id");
       $('#instrumentToggle').html($(this).children('a').html());
       if (iid !== 0) {
@@ -534,9 +516,6 @@
 
     //apply default filters ffrom session
     apply_default_filters(options.defaultFilters);
-
-    console.log('#selectedFilters a.ctrl.remove', $('#selectedFilters a.ctrl.remove'));
-
 
   });
 })(jQuery, JSON, PourOver, config, sources, sourcecomponents);

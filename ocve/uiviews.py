@@ -345,7 +345,7 @@ def cfeoPageImageview(request,id):
     return render_to_response('frontend/cfeopageview.html', {'achash':achash,'work':work,'source':source,'prev':prev,'next':next,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'seaDragonURL':seaDragonURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
 
 @csrf_exempt
-def comparePageImageview(request,compareleft=0,compareright=0):
+def comparePageImageview(request, compareleft=0, compareright=0):
     mode="CFEO"
 
     if compareleft == 0:
@@ -355,7 +355,7 @@ def comparePageImageview(request,compareleft=0,compareright=0):
         compareright = request.COOKIES.get('cfeo_compare_right')
 
     try:
-        pi_left=PageImage.objects.get(id=compareleft)
+        pi_left = PageImage.objects.get(id=compareleft)
     except:
         pi_left = None
 
@@ -364,25 +364,11 @@ def comparePageImageview(request,compareleft=0,compareright=0):
     except:
         pi_right = None
 
-
-    print "left"
-    print pi_left
-    print "right:"
-    print pi_right
-    #p=pi.page
-    #comparepi=PageImage.objects.get(id=compareid)
-    #comparep=comparepi.page
-    #pageimages=PageImage.objects.filter(page__sourcecomponent__source=pi.page.sourcecomponent.source)
-    #source=pi.page.sourcecomponent.source
-    #[next,prev]=getNextPrevPages(p,pageimages)
-
-    #cpageimages=PageImage.objects.filter(page__sourcecomponent__source=pi.page.sourcecomponent.source)
-    #compareSource=comparep.sourcecomponent.source
-    #[comparenext,compareprev]=getNextPrevPages(comparep,cpageimages)
-    #opus=Opus.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
-    #work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
-    #settings.IMAGE_SERVER_URL
-    return render_to_response('frontend/comparepageview.html', {'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'mode':mode, 'pi_left' : pi_left, 'pi_right': pi_right,}, context_instance=RequestContext(request))
+    return render_to_response(
+        'frontend/comparepageview.html',
+        {'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL, 'mode': mode,
+         'pi_left': pi_left, 'pi_right': pi_right},
+        context_instance=RequestContext(request))
 
 
 @csrf_exempt

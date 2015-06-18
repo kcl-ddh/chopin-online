@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django import template
 
 from django.utils.safestring import mark_safe
-
+from json import dumps
 import re
 
 register = template.Library()
@@ -49,3 +49,11 @@ def index_by(a_list, attribute):
 @register.filter
 def join_and_quote(a_list, separator=','):
     return mark_safe(separator.join(['"{}"'.format(i) for i in a_list]))
+
+
+@register.filter
+def to_json(an_object):
+    """ this tag turns a simple object into json
+    Note that it does not work with complex django models, querysets etc.
+    """
+    return mark_safe(dumps(an_object))

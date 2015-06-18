@@ -1,5 +1,5 @@
 (function($, JSON, PourOver, config, sources, sourcecomponents) {
-
+  'use strict';
 
   // options extends the base config file; options sets up object properties for browsing
   var options = _.extend(config);
@@ -63,7 +63,7 @@
     }
 
     // apply filter to pourover
-    sourceCollection.filters[type].query(id);
+    options.sourceCollection.filters[type].query(id);
 
     // add selected html filter control
     addSelectedFilter(type, selection);
@@ -101,8 +101,8 @@
     // the server
     var current_filter_prefixed = options.mode + '_current_filters',
       params = {};
-
     params[current_filter_prefixed] = JSON.stringify(options.filters);
+    console.log(params);
     $.post("/ocve/browse/serializeFilter/", params);
   };
 
@@ -118,11 +118,25 @@
   var removeSelectedFilter = function(type) {
     // This function gets called when a filter is added
     // or removed brom the browser
+    // clear pourover query
+    options.sourceCollection.filters[type].clearQuery();
 
-    sourceCollection.filters[type].clearQuery();
+    // remove html filter control
     $('dl.selected-filter.' + type).remove();
-    filterFacets(sourceview.getCurrentItems(), type);
+
+    if ($('dl.selected-filter').length){
+      $("#no-filters").hide();
+    } else {
+      $("#no-filters").show();
+    }
+
+    // update facents
+    filterFacets(options.sourceview.getCurrentItems(), type);
+
+    // remove filter from array
     removeFromFilterArray(type);
+
+    // save current filters to session
     serializeFilters();
   };
 
@@ -394,11 +408,11 @@
     }
   });
 
-  SourceView = PourOver.View.extend({
+  var SourceView = PourOver.View.extend({
     render: function() {
       var filtered = false;
-      for (var i in sourceCollection.filters) {
-        if (sourceCollection.filters[i].current_query) {
+      for (var i in options.sourceCollection.filters) {
+        if (options.sourceCollection.filters[i].current_query) {
           filtered = true;
           break;
         }
@@ -445,9 +459,7 @@
 
     $('body').on('click', '#selectedFilters a.ctrl.remove', function(e) {
       e.preventDefault();
-      console.log($(this));
       var type = $(this).data('criteria');
-      console.log(type)
       removeSelectedFilter(type);
     });
 
@@ -467,8 +479,8 @@
 
     $(options.clearFiltersSelector).on('click', function() {
       //Clear Queries
-      for (var i in sourceCollection.filters) {
-        sourceCollection.filters[i].clearQuery();
+      for (var i in options.sourceCollection.filters) {
+        options.sourceCollection.filters[i].clearQuery();
       }
       //Remove filters from session
       $.ajax('/ocve/browse/resetFilter/');
@@ -486,7 +498,7 @@
         selection = $this.attr('title');
 
       applyFilter(type, id, selection);
-      filterFacets(sourceview.getCurrentItems(), type);
+      filterFacets(options.sourceview.getCurrentItems(), type);
       return false;
     });
 
@@ -501,8 +513,8 @@
     var KeyMode_filter = PourOver.makeExactFilter("KeyMode", options.keyModes);
 
     //Create collections based on pre-exported JSON
-    sourceCollection = new PourOver.Collection(sources);
-    sourceCollection.addFilters([work_filter,
+    options.sourceCollection = new PourOver.Collection(sources);
+    options.sourceCollection.addFilters([work_filter,
       genre_filter,
       publisher_filter,
       year_filter,
@@ -511,12 +523,12 @@
     ]);
 
     var order_sort = new sourceSort("orderno");
-    sourceCollection.addSorts([order_sort]);
+    options.sourceCollection.addSorts([order_sort]);
 
     //views for sidebar and main
-    sourceview = new SourceView("main_collection", sourceCollection);
-    sourceview.on("update", function() {
-      sourceview.render();
+    options.sourceview = new SourceView("main_collection", options.sourceCollection);
+    options.sourceview.on("update", function() {
+      options.sourceview.render();
     });
 
 

@@ -740,8 +740,6 @@ function updateBrowseResults() {
     $("#results-section").removeClass("overlay-active");
     $("#loading").removeClass("spinner-active");
   }, 500);
-  $("#no-filters").css("display", "none");
-
 }
 
 $(document).ready(function() {

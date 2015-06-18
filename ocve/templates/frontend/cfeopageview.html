@@ -6,28 +6,6 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}custom_css/bareditor.css" type="text/css">
 {% endblock custom_stylesheets %} 
 
-{% block header_scripts %}
-<script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
-    //Set div width/height as proprortion of available screen
-    var zoomify_width = {{pageimage.width}};
-    var zoomify_height = {{pageimage.height}};
-    var sf=zoomify_height/zoomify_width;
-    var docWidth = parseInt($('body').width());
-    var docHeight = parseInt($(window).height());
-    var fullWidth = parseInt($('#pageimage').width());
-    var fullHeight = fullWidth*sf;
-    $("#image_one").attr('width', fullWidth).attr("height", fullHeight);
-    imgToOSD();
-});
-</script>
-
-<script src="{{ STATIC_URL }}vendor/openseadragon/openseadragon.js"></script>
-<script src="{{ STATIC_URL }}javascripts/osd-iip-connector.js"></script>
-{% endblock header_scripts %}
-
 {% block content %}
 <section class="main content-section page-view">
     <div class="row">
@@ -119,10 +97,14 @@ $(document).ready(function () {
             </div>
 
             <div class="row">
-                <div id="pageimage" class="large-10 columns">
-                    <img src="{{ IIP_URL }}?FIF={{ pageimage.getJP2Path }}&CVT=JPG" height="800" width="600" id="image_one" class="osd-iip">
+                <div class="large-12 columns">
+                    <div id="pageimage">
+                        <img src="{{ IIP_URL }}?FIF={{ pageimage.getJP2Path }}&CVT=JPG" height="800" width="600" id="image_one" class="osd-iip">
+                    </div>
+                    <div id="copyright">
+                    {{ source.getSourceInformation.copyright|safe }}
+                    </div>
                 </div>
-                <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
             </div>
         </div>
 
@@ -133,27 +115,51 @@ $(document).ready(function () {
                     {% for p in pageimages %}
                     <div>
                         <div class="carousel-image">
-                        {% with image_id=p.id %}
-                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
-                            <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
-                        </a>
-                        {% endwith %}
-                            <span class="page-label">{{ p.page.label }}{% if p.startbar != '0' or p.endbar != '0' %}bs{{ p.startbar }}-{{ p.endbar }}{% endif %}</span>
+                            {% with image_id=p.id %}
+                            <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
+                                <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
+                            </a>
+                            {% endwith %}
+                            <span class="page-label">{{ p.page.label }}{% if p.startbar != '0' or p.endbar != '0' %}bs{{ p.startbar }}&#150;{{ p.endbar }}{% endif %}</span>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-</section>
-{% endblock %}
-{% block footer %}
-{{ block.super }}
-<div id="witness-info" class="reveal-modal" data-reveal>
+    </section>
+    {% endblock %}
 
-</div>
+    {% block footer %}
+    {{ block.super }}
+    <div id="witness-info" class="reveal-modal" data-reveal>
 
-<div id="opus-info" class="reveal-modal" data-reveal>
+    </div>
 
-</div>
-{% endblock %}
+    <div id="opus-info" class="reveal-modal" data-reveal>
+
+    </div>
+    {% endblock %}
+
+    {% block footer_scripts %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+    //Set div width/height as proprortion of available screen
+    var zoomify_width = {{pageimage.width}};
+    var zoomify_height = {{pageimage.height}};
+    var sf=zoomify_height/zoomify_width;
+    var docWidth = parseInt($('body').width());
+    var docHeight = parseInt($(window).height());
+    var fullWidth = parseInt($('#pageimage').width());
+    var fullHeight = fullWidth*sf;
+    $("#image_one").attr('width', fullWidth).attr("height", fullHeight);
+    imgToOSD();
+});
+    </script>
+
+    <script src="{{ STATIC_URL }}vendor/openseadragon/openseadragon.js"></script>
+    <script src="{{ STATIC_URL }}javascripts/osd-iip-connector.js"></script>
+    {% endblock  %}

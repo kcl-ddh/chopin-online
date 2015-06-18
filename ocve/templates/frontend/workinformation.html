@@ -1,22 +1,47 @@
-<div>
-    <h1>{{ work.label }}</h1>
+<div class="contextual">
+    <div class="row">
+        <div class="large-12 columns">
+            <h1>{{ work.label }}</h1>
+        </div>
+    </div>
+
     {% autoescape off %}
-        {% if mode == "OCVE" %}
+    {% if mode == "OCVE" %}
+    <div class="row">
+        <div class="large-12 columns">
             {{ workinformation.OCVE }}
-        {% else %}
-            <div class="row">
-                <div class="contextual-label"><p>General information </p></div>
-                <div class="contextual-value"><p>{{ workinformation.generalinfo }}</p></div>
-            </div>
-            <div class="row">
-                <div class="contextual-label"><p>Relevant manuscripts </p></div>
-                <div class="contextual-value"><p>{{ workinformation.relevantmanuscripts }}</p></div>
-            </div>
-            <div class="row">
-                <div class="contextual-label"><p>Analysis</p></div>
-                <div class="contextual-value"><p>{{ workinformation.analysis }}</p></div>
-            </div>
-        {% endif %}
+        </div>
+    </div>
+    {% else %}
+    
+    {% with info=workinformation.generalinfo %}
+    {% if info and info|lower != 'none' %}
+    <div class="row">
+        <div class="contextual-label large-3 small-12 columns">General information</div>
+        <div class="contextual-value large-9 small-12 columns">{{ info }}</div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% with ms=workinformation.relevantmanuscripts %}
+    {% if ms and ms|lower != 'none' %}
+    <div class="row">
+        <div class="contextual-label large-3 small-12 columns">Relevant manuscripts</div>
+        <div class="contextual-value large-9 small-12 columns">{{ ms }}</div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% with analysis=workinformation.analysis %}
+    {% if analysis and analysis|lower != 'none' %}
+    <div class="row">
+        <div class="contextual-label large-3 small-12 columns">Analysis</div>
+        <div class="contextual-value large-9 small-12 columns">{{ analysis }}</div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% endif %}
     {% endautoescape %}
 </div>
 <a class="close-reveal-modal" aria-label="Close">&#215;</a>

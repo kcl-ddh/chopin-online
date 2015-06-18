@@ -18,17 +18,22 @@ ul.search-results {
     word-wrap: break-word;
     th:nth-child(1),
     td:nth-child(1) {
-        width: 10%;
-        max-width: 97px;
+        width: 12.3711340%;
+        max-width: 120px;
     }
     th:nth-child(3),
     td:nth-child(3) {
-        width: 35%;
+        width: 34%;
     }
     th:nth-child(4),
     td:nth-child(4) {
         width: 20%;
     }
+}
+
+.aco-page table div.rich-text,
+.aco-page table div.rich-text:last-child {
+    margin-bottom: 0 !important;
 }
 
 /*** Results ***/

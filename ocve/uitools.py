@@ -192,9 +192,9 @@ class SourceSearchItem:
             nonmusic=SourceComponentType.objects.get(type="Non-music")
             #.exclude(page__sourcecomponent__sourcecomponenttype=blank)
             #.exclude(page__sourcecomponent__sourcecomponenttype=nonmusic)
-            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).order_by("page")
+            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).order_by("page__sourcecomponent","page")
         else:
-            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).order_by("page")
+            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).order_by("page__sourcecomponent","page")
         for pi in pages:
             if pi != pages[0]:
                 sourcejson +=  ','

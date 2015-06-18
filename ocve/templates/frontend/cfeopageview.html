@@ -101,7 +101,9 @@
                     <div id="pageimage">
                         <img src="{{ IIP_URL }}?FIF={{ pageimage.getJP2Path }}&CVT=JPG" height="800" width="600" id="image_one" class="osd-iip">
                     </div>
-                    <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
+                    <div id="copyright">
+                    {{ source.getSourceInformation.copyright|safe }}
+                    </div>
                 </div>
             </div>
         </div>

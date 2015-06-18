@@ -107,7 +107,9 @@ $(window).load(function(){
                 {% endif %}
                 <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns {% if view == 'annotations' %}fixed-image{% endif %}">
                     <div id="map"></div>
-                    <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
+                    <div id="copyright">
+                    {{ source.getSourceInformation.copyright|safe }}
+                    </div>
                 </div>
 
                 {% if view == 'annotations' %}

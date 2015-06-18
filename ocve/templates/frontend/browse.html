@@ -36,57 +36,14 @@
         'clearFiltersSelector': "#filters-refresh",
 
         //Number of page images to show in initial display
-        'numPagesDisplay': 4
+        'numPagesDisplay': 4,
+
+        // default filters to apply (session or link)
+        'defaultFilters': {{defaultFilters | to_json }}
     }
     </script>
 
     <script type="text/javascript" src="{% static 'javascripts/browse.js' %}"></script>
-
-    <script type="text/javascript">
-
-
-
-
-
-
-
-
-
-    $(document).ready(function () {
-        //Instrument Controls
-
-        // No need for this, I'm using Foundation default - GF
-        // $('#instrumentToggle').click(function () {
-        //    $('#instrumentFilters').slideToggle();
-        //    return false;
-        // });
-
-
-
-
-
-        {% if defaultFilters != None %}
-            {%  for f in defaultFilters %}
-                {% if f.type == "Source" %}
-                    $('#source{{ f.id }} h5').click();
-                    $('#source{{ f.id }} h5 a').focus();
-                {% else %}
-                    filters.push({"type": '{{ f.type }}', "id":{{ f.id }}, "selection": '{{ f.selection }}'})
-                    //applyFilter(, {{ f.id }}, '{{ f.selection }}');
-                    addSelectedFilter('{{ f.type }}', '{{ f.selection }}')
-                    //if (type != 'KeyPitch') {
-                     sourceCollection.filters['{{ f.type }}'].query({{ f.id }});
-                    //}
-                    filterFacets(sourceview.getCurrentItems(), '{{ f.type }}');
-                {% endif %}
-
-            {% endfor %}
-        {% endif %}
-        //Off for debugging
-        //view.render();
-
-    });
-    </script>
 {% endblock header_scripts %}
 
 {% block content %}

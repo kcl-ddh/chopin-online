@@ -15,18 +15,17 @@ options.sourceByID = {};
 options.sourceFilterIDs = [];
 
 for (var i = 0, len = sources.length; i < len; i++) {
-    options.sourceByID[sources[i].id] = sources[i];
-    options.sourceFilterIDs.push(sources[i].id);
-    for (var p in sources[i].Pages) {
-        options.pageByID[sources[i].Pages[p].id] = sources[i].Pages[p];
-    }
+  options.sourceByID[sources[i].id] = sources[i];
+  options.sourceFilterIDs.push(sources[i].id);
+  for (var p in sources[i].Pages) {
+    options.pageByID[sources[i].Pages[p].id] = sources[i].Pages[p];
+  }
 }
 for (i = 0, len = sourcecomponents.length; i < len; i++) {
-    options.sourcecomponentsById[sourcecomponents[i].id] = sourcecomponents[i];
+  options.sourcecomponentsById[sourcecomponents[i].id] = sourcecomponents[i];
 }
 
 // // //
-
 
 
 
@@ -75,10 +74,12 @@ var applyFilter = function(type, id, selection) {
 var serializeFilters = function() {
   // this function sends the current set of filters to
   // the server
-  var current_filter_prefixed = options.mode + '_current_filters';
-  $.post("/ocve/browse/serializeFilter/", {
-    current_filter_prefixed: JSON.stringify(options.filters)
-  });
+  var current_filter_prefixed = options.mode + '_current_filters',
+    params = {};
+
+  params[current_filter_prefixed] = JSON.stringify(options.filters);
+  console.log(params);
+  $.post("/ocve/browse/serializeFilter/", params);
 };
 
 var removeFromFilterArray = function(type) {
@@ -137,7 +138,7 @@ var filterFacets = function(filteredPages, exclude) {
       }
 
       if (!filteredSourceTypes.hasOwnProperty(filteredPages[x].Type)) {
-          filteredSourceTypes[filteredPages[x].Type] = 1;
+        filteredSourceTypes[filteredPages[x].Type] = 1;
       }
 
     } catch (TypeError) {
@@ -207,7 +208,7 @@ var outputPages = function(source, availInstruments) {
 
   for (var i = 0; i < options.filters.length; i++) {
     if (options.filters[i].type == 'Work') {
-      workid = options.filters[i].id
+      workid = options.filters[i].id;
     }
   }
 
@@ -354,6 +355,20 @@ var showAvailableFilters = function(availInstruments) {
   }
 };
 
+var apply_default_filters = function(defaultFilters) {
+  _.each(defaultFilters, function(filter, index) {
+    var $source_title = $('#source' + filter.id + ' h5');
+    if (filter.type === 'Source') {
+      $source_title.trigger('click');
+      $source_title.find('a').trigger('focus');
+    } else {
+      options.filters.push(filter);
+      sourceCollection.filters[filter.type].query(filter.id);
+      filterFacets(sourceview.getCurrentItems(), filter.type);
+    }
+  });
+};
+
 
 // Pourover extensions
 var sourceSort = PourOver.Sort.extend({
@@ -401,7 +416,7 @@ SourceView = PourOver.View.extend({
       });
 
 
-      $('.opusexpand').click(function() {
+      $('.opusexpand').on('click', function() {
         var opuskey = $(this).data('opuskey');
 
         $('#opusSummary' + opuskey).slideToggle();
@@ -474,21 +489,25 @@ $(document).ready(function() {
   //Create collections based on pre-exported JSON
   sourceCollection = new PourOver.Collection(sources);
   sourceCollection.addFilters([work_filter,
-      genre_filter,
-      publisher_filter,
-      year_filter,
-      sourcetype_filter,
-      KeyMode_filter]);
+    genre_filter,
+    publisher_filter,
+    year_filter,
+    sourcetype_filter,
+    KeyMode_filter
+  ]);
 
   var order_sort = new sourceSort("orderno");
   sourceCollection.addSorts([order_sort]);
 
   //views for sidebar and main
   sourceview = new SourceView("main_collection", sourceCollection);
-  sourceview.on("update", function () {
-      sourceview.render();
+  sourceview.on("update", function() {
+    sourceview.render();
   });
 
+
+  //apply default filters ffrom session
+  apply_default_filters(options.defaultFilters);
 
 
 });

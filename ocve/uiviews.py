@@ -405,10 +405,13 @@ def sourceinformation(request, id,mode="OCVE"):
     return render_to_response('frontend/sourceinformation.html', {'pageimages':pageimages,'mode':mode,'work':work,'source':source,'si': si, 'IMAGE_SERVER_URL':IMAGE_SERVER_URL,}, context_instance=RequestContext(request))
 
 @csrf_exempt
-def workinformation(request,id,mode="OCVE"):
-    work=Work.objects.get(id=id)
-    workinformation=work.workinformation
-    return render_to_response('frontend/workinformation.html', {'workinformation':workinformation,'work':work,'mode':mode}, context_instance=RequestContext(request))
+def workinformation(request, id, mode='OCVE'):
+    work = Work.objects.get(id=id)
+    workinformation = work.workinformation
+    return render_to_response(
+        'frontend/workinformation.html',
+        {'workinformation': workinformation, 'work': work, 'mode':mode},
+        context_instance=RequestContext(request))
 
 @csrf_exempt
 def barview(request):

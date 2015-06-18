@@ -81,21 +81,23 @@ def cfeoBrowse(request):
 
 @csrf_exempt
 def serializeFilter(request):
-    try:
-        filters=request.POST['OCVE_current_filters']
-        request.session['OCVE_current_filters'] = filters
-    except MultiValueDictKeyError:
-        pass
-    except KeyError:
-        pass
-    try:
-        filters=request.POST['CFEO_current_filters']
-        request.session['CFEO_current_filters'] = filters
-    except MultiValueDictKeyError:
-        pass
-    except KeyError:
-        pass
-    return HttpResponse()
+
+    print request.POST
+
+    ocve_filters = request.POST.get('OCVE_current_filters', [])
+    if ocve_filters:
+        request.session['OCVE_current_filters'] = ocve_filters
+
+    cfeo_filters = request.POST.get('CFEO_current_filters', [])
+    if cfeo_filters:
+        request.session['CFEO_current_filters'] = cfeo_filters
+
+    return HttpResponse(json.dumps(
+        {'status': 'ok',
+         'filters': {'ocve_filters': ocve_filters,
+                     'cfeo_filters': cfeo_filters}
+         }),
+        content_type='application/json')
 
 
 def resetFilter(request):

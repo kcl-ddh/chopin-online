@@ -81,9 +81,6 @@ def cfeoBrowse(request):
 
 @csrf_exempt
 def serializeFilter(request):
-
-    print request.POST
-
     ocve_filters = request.POST.get('OCVE_current_filters', [])
     if ocve_filters:
         request.session['OCVE_current_filters'] = ocve_filters
@@ -94,8 +91,9 @@ def serializeFilter(request):
 
     return HttpResponse(json.dumps(
         {'status': 'ok',
-         'filters': {'ocve_filters': ocve_filters,
-                     'cfeo_filters': cfeo_filters}
+         # for debug return filters
+         # 'filters': {'ocve_filters': ocve_filters,
+         #             'cfeo_filters': cfeo_filters}
          }),
         content_type='application/json')
 

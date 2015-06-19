@@ -73,7 +73,7 @@ def setPageImageTextLabel(source):
                     if pi.endbar != '0':
                         textlabel=textlabel+', '
         if pi.endbar != '0':
-            textlabel=textlabel+" bs "+pi.startbar+"-"+pi.endbar
+            textlabel=textlabel+" bs "+pi.startbar+u'\u2013'+pi.endbar
           #if len(pi.textlabel) == 0:
         pi.textlabel=textlabel
         pi.save()

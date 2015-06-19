@@ -238,12 +238,12 @@ def spinesToRegionThumbs(spines,range=1):
     for spine in spines:
         barregions = BarRegion.objects.filter(bar=spine.bar,pageimage__page__sourcecomponent=spine.sourcecomponent).distinct()
         for r in barregions:
+            rangespines=None
             if range > 1:
                 extent=spine.orderNo+range-1
                 rangespines=BarRegion.objects.filter(bar__barspine__orderNo__range=(spine.orderNo,extent),bar__barspine__source=spine.source,pageimage__page__sourcecomponent=spine.sourcecomponent).order_by('bar__barspine__orderNo').distinct()
-                b = BarRegionThumbnail(r, r.pageimage.page, r.pageimage,rangespines)
-            else:
-                b = BarRegionThumbnail(r, r.pageimage.page, r.pageimage)
+                #b = BarRegionThumbnail(r, r.pageimage.page, r.pageimage,rangespines)
+            b = BarRegionThumbnail(r, r.pageimage.page, r.pageimage,rangespines)
             regions.append(b)
     return regions
 

@@ -73,7 +73,7 @@ def setPageImageTextLabel(source):
                     if pi.endbar != '0':
                         textlabel=textlabel+', '
         if pi.endbar != '0':
-            textlabel=textlabel+" bs "+pi.startbar+"-"+pi.endbar
+            textlabel=textlabel+" bs "+pi.startbar+u'\u2013'+pi.endbar
           #if len(pi.textlabel) == 0:
         pi.textlabel=textlabel
         pi.save()
@@ -112,10 +112,12 @@ class SourceSearchItem:
         self.orderno = orderno
         self.id = row[0]
         self.mode=mode
+        self.accode = _n(norm, row[9])
+
         if mode == 'OCVE':
-            self.label = row[2]+" "+row[9]
+            self.label = row[2]
         else:
-            self.label = row[3]+" "+row[9]
+            self.label = row[3]
         self.label=_n(norm, self.label)
         #Anything not a manuscript is a printed edition
         #Set first edition type to printed edition
@@ -152,7 +154,8 @@ class SourceSearchItem:
 
     def toJson(self):
         sourcejson =  "{'id': " + str(self.id) + ", 'label': " + json.dumps(self.label) + ", "+" 'achash': " + json.dumps(self.achash) + ", "
-        sourcejson +=  "'Genre': ["
+        sourcejson += "'accode': " + json.dumps(self.accode) + ", "
+        sourcejson += "'Genre': ["
         x = 1
         for g in self.genres:
             sourcejson +=  str(g)
@@ -189,9 +192,9 @@ class SourceSearchItem:
             nonmusic=SourceComponentType.objects.get(type="Non-music")
             #.exclude(page__sourcecomponent__sourcecomponenttype=blank)
             #.exclude(page__sourcecomponent__sourcecomponenttype=nonmusic)
-            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).order_by("page")
+            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).order_by("page__sourcecomponent","page")
         else:
-            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).order_by("page")
+            pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).order_by("page__sourcecomponent","page")
         for pi in pages:
             if pi != pages[0]:
                 sourcejson +=  ','

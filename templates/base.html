@@ -60,9 +60,9 @@
 
     {% include 'includes/navigation.html' %}
 
-    {% if BASE_URL == 'aco' %}
+    {% if BASE_URL == 'aco' or self %}
     <section class="main content-section">
-        <div class="row">
+        <div class="row clear">
             <div class="large-12 columns">
     {% endif %}
     
@@ -89,7 +89,7 @@
     </div>
     {% endblock %}
 
-    {% if BASE_URL == 'aco' %}
+    {% if BASE_URL == 'aco' or self %}
             </div>
         </div>
     </section>

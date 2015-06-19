@@ -107,7 +107,9 @@ $(window).load(function(){
                 {% endif %}
                 <div id="pageimage" class="large-{% if view == 'annotations' %}8{% else %}12{% endif %} columns {% if view == 'annotations' %}fixed-image{% endif %}">
                     <div id="map"></div>
-                    <div id="copyright">{{ source.getSourceInformation.copyright|safe }}</div>
+                    <div id="copyright">
+                    {{ source.getSourceInformation.copyright|safe }}
+                    </div>
                 </div>
 
                 {% if view == 'annotations' %}
@@ -166,8 +168,8 @@ $(window).load(function(){
                         {% with image_id=p.id %}
                         <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
                             <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
-                        {% endwith %}
                         </a>
+                        {% endwith %}
                         <span class="page-label">{{ p.textlabel }}</span>
                     </div>
                 </div>
@@ -192,7 +194,7 @@ $(window).load(function(){
 <!-- Joyride -->
 <ol class="joyride-list" data-joyride>
   <li data-id="zero" data-text="Next" data-options="tip_location: top; prev_button: false">
-    <p>Click here to see more information about the work.</p>
+    <p>See more information about the work.</p>
   </li>
   <li data-id="uno" data-text="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
     <p>Navigate to the previous page.</p>

@@ -403,57 +403,76 @@ def workinformation(request, id, mode='OCVE'):
 def barview(request):
     opuses = Opus.objects.filter(opusno__gt=0)
     #The position in the work spine
-    orderno=0
-    workid=int(request.GET['workid'])
-    work=Work.objects.get(id=workid)
+    orderno = 0
+    workid = int(request.GET['workid'])
+    work = Work.objects.get(id=workid)
     regionThumbs = []
     sources = []
+
     try:
-        range=int(request.GET['range'])
+        range = int(request.GET['range'])
     except MultiValueDictKeyError:
-        range=1
+        range = 1
+
     try:
-        orderno=int(request.GET['orderNo'])
-        spine=BarSpine.objects.filter(source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work,orderNo=orderno)
+        pageimageid = int(request.GET['pageimageid'])
+    except:
+        pageimageid = 1
+
+    try:
+        orderno = int(request.GET['orderNo'])
+        spine = BarSpine.objects.filter(
+            source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work,
+            orderNo=orderno)
         if spine.count() > 0:
-            bar=spine[0].bar
+            bar = spine[0].bar
     except MultiValueDictKeyError:
         #Coming from page, find spine point with bar,pageimage
-        barid=int(request.GET['barid'])
-        pageimageid=int(request.GET['pageimageid'])
-        bar=Bar.objects.get(id=barid)
-        pageimage=PageImage.objects.get(id=pageimageid)
+        barid = int(request.GET['barid'])
+        bar = Bar.objects.get(id=barid)
+        pageimage = PageImage.objects.get(id=pageimageid)
         #source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work
-        spine=BarSpine.objects.filter(sourcecomponent__page__pageimage=pageimage,bar=bar)
+        spine = BarSpine.objects.filter(
+            sourcecomponent__page__pageimage=pageimage, bar=bar)
         if spine.count() > 0:
-            orderno=spine[0].orderNo
+            orderno = spine[0].orderNo
+
     if orderno > 0:
-        barSpines=getSpinesByWork(work, orderno,range)
+        barSpines = getSpinesByWork(work, orderno,range)
+
         #Arrange bar spines into groups based on source
-        barSpines=sorted(barSpines, key=lambda sp: sp.source.orderno)
+        barSpines = sorted(barSpines, key=lambda sp: sp.source.orderno)
         for sp in barSpines:
             if sources.__contains__(sp.source) is False:
                 sources.append(sp.source)
+
         regionThumbs=spinesToRegionThumbs(barSpines,range)
-    sortedsources=sorted(sources, key=lambda source: source.orderno)
-    sources=sortedsources
+
+    sortedsources = sorted(sources, key=lambda source: source.orderno)
+    sources = sortedsources
     mode = "OCVE"
     #barregions=getRegionsByBarOpus(bar,opus)
     # get next and previous, if available
     next = False
     prev = False
+
     if orderno > 0:
         try:
-            nextOrder=orderno+1
-            nextSpine=BarSpine.objects.filter(orderNo=nextOrder,source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work).distinct()
-            if nextSpine.count() >0:
+            nextOrder = orderno+1
+            nextSpine = BarSpine.objects.filter(
+                orderNo=nextOrder,
+                source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work).distinct()
+            if nextSpine.count() > 0:
                 next = nextSpine[0]
         except:
             next = False
+
         try:
-            prevOrder=orderno-1
-            prevSpine=BarSpine.objects.filter(orderNo=prevOrder,source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work).distinct()
-            if prevSpine.count() >0:
+            prevOrder = orderno - 1
+            prevSpine = BarSpine.objects.filter(
+                orderNo=prevOrder,
+                source__sourcecomponent__sourcecomponent_workcomponent__workcomponent__work=work).distinct()
+            if prevSpine.count() > 0:
                 prev = prevSpine[0]
         except:
             prev = False
@@ -461,9 +480,17 @@ def barview(request):
     # Quick and dirty way of setting a test template mode
     try:
         request.GET['template']
-        return render_to_response('frontend/bar-view-html-design.html', {}, context_instance=RequestContext(request))
+        return render_to_response('frontend/bar-view-html-design.html', {},
+                                  context_instance=RequestContext(request))
     except:
-            return render_to_response('frontend/bar-view.html', {'mode' : mode, 'next':next,'range':range,'prev':prev, 'opuses': opuses,'orderNo':orderno,'bar':bar,'barregions':regionThumbs,'sources': sources, 'work': work, 'IMAGE_SERVER_URL': IMAGE_SERVER_URL, }, context_instance=RequestContext(request))
+        return render_to_response(
+            'frontend/bar-view.html', {
+                'mode': mode, 'next': next, 'range': range, 'prev': prev,
+                'opuses': opuses, 'orderNo': orderno, 'bar': bar,
+                'barregions': regionThumbs, 'sources': sources, 'work': work,
+                'pageimageid': pageimageid,
+                'IMAGE_SERVER_URL': IMAGE_SERVER_URL
+            }, context_instance=RequestContext(request))
 
 
 # Ajax call for inline collections display

@@ -603,6 +603,17 @@ a:focus {
     font-size: 12pt;
 }
 
+.thumbnail-carousel .carousel-image,
+.carousel-image a {
+    padding: 0 !important;
+}
+
+.carousel-image span.page-label {
+    display: block;
+    font-size: 12px;
+    padding-top: 10px;
+}
+
 /* Generic */
 
 .errorlist {

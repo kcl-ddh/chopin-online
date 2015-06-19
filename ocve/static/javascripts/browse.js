@@ -335,7 +335,7 @@
         "</span>",
         "<h5><a href=\"#\" class=\"expandme\"><i class=\"expandd fa fa-caret-right\"></i> ",
         sources[x].label,
-        "&#160;<span class='label radius accode'>",
+        "&#160;<span class='label radius accode secondary'>",
         sources[x].accode,
         "</span></a></h5>",
         "<ul id=\"sourcePages", sources[x].id, "\" class=\"pageList movement\">",

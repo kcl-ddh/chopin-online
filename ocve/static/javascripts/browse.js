@@ -270,7 +270,7 @@
 
       output = output.concat(["<a class=\"pageView th\" data-sourcekey=\"", sourcePages[x].id, "\"",
         " href=\"", options.pageviewURL, "/", sourcePages[x].id, "/\">",
-        "<img", " class=\"lazy\" data-original=\"/thumbnails/", sourcePages[x].id, ".jpg\" />",
+        "<img", " class=\"lazy\" data-original=\"", options.thumbnails_url,  sourcePages[x].id, ".jpg\" />",
         "</a>",
         "<span class=\"page-label\" title=\"", sourcePages[x].label, "\">",
         source_pages_label_display,

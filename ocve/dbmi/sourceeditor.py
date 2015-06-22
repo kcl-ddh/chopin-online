@@ -354,6 +354,9 @@ def saveSourceInformation(request,id):
             for changed in sinfo.changed_data:
                 if changed == 'printingmethod':
                     methods=sinfo.cleaned_data['printingmethod']
+                    if methods.count() > 0:
+                        #Remove existing methods, replace with changed set
+                        SourceInformation_PrintingMethod.objects.filter(sourceinformation=sourceInformation).delete()
                     for m in methods:
                         SourceInformation_PrintingMethod(sourceinformation=sourceInformation,printingmethod=m).save()
         except MultiValueDictKeyError:

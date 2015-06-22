@@ -44,7 +44,7 @@ class SourceInformationForm(ModelForm):
 
     class Meta:
         model = SourceInformation
-        exclude = ()
+        exclude = ('',)
 
 class AnnotationForm(ModelForm):
 

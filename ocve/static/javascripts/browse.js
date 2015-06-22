@@ -413,13 +413,19 @@
         //Instantiate events for generated content
         $('h5').on("click", function() {
           //Load images now that tab is being opened
-          var $this = $(this);
+          var $this = $(this),
+           $pagelist = $this.next('ul.pageList');
 
-          $this.next('ul.pageList').find('img.lazy').each(function(index) {
-            $this.attr('src', $this.attr('data-original'))
+          // lazily fill img src attributes to be loaded
+          $pagelist.find('img.lazy').each(function(index, img_el) {
+            var $img_el = $(img_el);
+            $img_el.attr('src', $img_el.data('original'))
           });
 
-          $this.next('ul.pageList').slideToggle(400);
+          // toggle list
+          $pagelist.slideToggle(400);
+
+          // switch caret
           $("i.expandd", $this).toggleClass("fa-caret-right fa-caret-down");
           return false;
         });

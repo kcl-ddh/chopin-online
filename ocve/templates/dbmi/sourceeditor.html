@@ -493,7 +493,7 @@ $(".fancybox")
                             {% if p.page.sourcecomponent.id == sc.id %}
 
                                 <li data-pageimage_id="{{ p.id }}">
-                                    <a class="fancybox" href="{{ IMAGE_SERVER_URL }}?FIF={{ p.getJP2Path }}&cnt=1&QLT=100&HEI=800&CVT=JPG">
+                                    <a class="fancybox" href="/ocve/upload/page/{{p.id}}/">
                                         <img height="100" border align="0"
                                              src="{{ IMAGE_SERVER_URL }}?FIF={{ p.getJP2Path }}&cnt=1&QLT=70&HEI=100&CVT=JPG"/></a>
                                 <p><a  href="/ocve/editbars/{{ p.id }}/">Edit bars</a></p>

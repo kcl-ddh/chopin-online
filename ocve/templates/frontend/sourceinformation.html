@@ -97,15 +97,7 @@
     </div>
     {% endif %}
 
-    {% if mode == "CFEO" %}
-    {% if si.locationsimilarcopies %}
-    <div class="row">
-        <div class="contextual-label large-3 small-12 columns">Location of similar copies</div>
-        <div class="contextual-value large-9 small-12 columns">{{ si.locationsimilarcopies|clean_si }}</div>
-    </div>
-    {% endif %}
-
-    {% endif %}
+    
 
     {% endautoescape %}
 </div>

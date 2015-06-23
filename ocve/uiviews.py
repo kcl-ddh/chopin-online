@@ -281,6 +281,7 @@ def ocvePageImageview(request, id,selectedregionid=0):
     accode = source.getAcCodeObject()
     achash = None
 
+
     if accode:
         achash = accode.accode_hash
 
@@ -300,6 +301,11 @@ def ocvePageImageview(request, id,selectedregionid=0):
     comments = Annotation.objects.filter(pageimage_id=id, type_id=2)
     [next_page, prev_page] = getNextPrevPages(p, pi)
     work=getPageImageWork(pi,source)
+    #Check if work has information so we don't display dead link
+    if len(work.workinformation.OCVE)> 0 :
+        workinfoexists=True
+    else:
+        workinfoexists=False
     if pi.width == 0:
         #Resolution not set, add
         addImageDimensions(pi)
@@ -308,6 +314,7 @@ def ocvePageImageview(request, id,selectedregionid=0):
     request.session['page_image'] = id
 
     return render_to_response('frontend/pageview.html', {
+        'workinfoexists':workinfoexists,
         'selectedregionid':selectedregionid,
         'achash': achash, 'annotationForm': annotationForm, 'notes': notes,
         'comments': comments, 'allBars': cursor, 'work': work,

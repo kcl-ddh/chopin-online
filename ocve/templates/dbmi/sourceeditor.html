@@ -493,9 +493,10 @@ $(".fancybox")
                             {% if p.page.sourcecomponent.id == sc.id %}
 
                                 <li data-pageimage_id="{{ p.id }}">
-                                    <a href="/ocve/editbars/{{ p.id }}/">
+                                    <a class="fancybox" href="{{ IMAGE_SERVER_URL }}?FIF={{ p.getJP2Path }}&cnt=1&QLT=100&HEI=800&CVT=JPG">
                                         <img height="100" border align="0"
-                                             src="/iip/iipsrv.fcgi?FIF={{ p.getJP2Path }}&cnt=1&QLT=70&HEI=100&CVT=JPG"/></a>
+                                             src="{{ IMAGE_SERVER_URL }}?FIF={{ p.getJP2Path }}&cnt=1&QLT=70&HEI=100&CVT=JPG"/></a>
+                                <p><a  href="/ocve/editbars/{{ p.id }}/">Edit bars</a></p>
                                     <p class="editable_textarea existing_page" id="{{ p.id }}">p. {{ p.page.label }} {{ sc.label }}, bs {{ p.startbar }}-{{ p.endbar }} ({{ p.page.orderno }})</p>
                                     <p>Text Label</p>
                                     <p class="editable_textarea textlabel" id="{{ p.id }}">{{ p.textlabel }}</p>

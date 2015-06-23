@@ -258,7 +258,7 @@ def getPageImageWork(pi,source):
 
 #Annotation.objects.filter(type_id=1).delete()
 @csrf_exempt
-def ocvePageImageview(request, id):
+def ocvePageImageview(request, id,selectedregionid=0):
     mode = "OCVE"
     noteURL = "/ocve/getAnnotationRegions/" + id + "/"
     regionURL = "/ocve/getBarRegions/" + id + "/"
@@ -308,6 +308,7 @@ def ocvePageImageview(request, id):
     request.session['page_image'] = id
 
     return render_to_response('frontend/pageview.html', {
+        'selectedregionid':selectedregionid,
         'achash': achash, 'annotationForm': annotationForm, 'notes': notes,
         'comments': comments, 'allBars': cursor, 'work': work,
         'source': source, 'prev': prev_page, 'next': next_page,
@@ -337,7 +338,7 @@ def ocveViewInPage(request,id,barid):
     work=Work.objects.filter(workcomponent__sourcecomponent_workcomponent__sourcecomponent__page__pageimage=pi).distinct()[0]
     zoomifyURL=pi.getZoomifyPath()
     mode="OCVE"
-    return render_to_response('frontend/viewinpage.html', {'work':work,'source':source,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'opus':opus,'zoomifyURL':zoomifyURL,'regionURL':regionURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
+    return render_to_response('frontend/pageview.html', {'work':work,'source':source,'IMAGE_SERVER_URL': settings.IMAGE_SERVER_URL,'pageimages':pageimages,'mode':mode,'opus':opus,'zoomifyURL':zoomifyURL,'regionURL':regionURL,'page': p, 'pageimage': pi}, context_instance=RequestContext(request))
 
 def cfeoPageImageview(request,id):
     mode="CFEO"

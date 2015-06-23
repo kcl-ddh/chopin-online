@@ -247,12 +247,15 @@ var regionURL = "{{ regionURL }}";
 var noteURL = "{{ noteURL }}";
 
 var workid = {{ work.id }};
+{% if selectedregionid > 0 %}selectedregionid={{ selectedregionid }};
+    {% else %}selectedregionid=0; {% endif %}
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview_functions.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview_ol.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
+
     {% if view == 'annotations' %}
     showAnnotationTools();
     {% else %}

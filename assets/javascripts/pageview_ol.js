@@ -130,6 +130,7 @@ $(document).ready(function () {
         })
     });
 
+
     noteStyles = new OpenLayers.StyleMap({
         "default": new OpenLayers.Style({
             strokeOpacity: 1,
@@ -195,7 +196,10 @@ $(document).ready(function () {
     map.addControl(mouse);
     map.zoomToMaxExtent();
 
+
+    vlayer.events.register("loadend",vlayer,loadselectedregion);
     highlightCtrl.activate();
     selectControl.activate();
     annotationEvents();
+
 });

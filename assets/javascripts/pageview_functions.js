@@ -428,6 +428,16 @@ $(document).ready(function () {
         vlayer.redraw();
     }
 
+    //Start the page with a particular region highlighted
+    loadselectedregion=function(){
+        if (selectedregionid > 0) {
+            console.log(selectedregionid);
+            var f = vlayer.getFeaturesByAttribute('id', selectedregionid);
+            if (f.length > 0) {
+                highlightCtrl.select(f[0]);
+            }
+        }
+    }
     toggleBarNumbers = function () {
         if (vlayer.styleMap.styles.default.defaultStyle.label.length > 0) {
             vlayer.styleMap.styles.default.defaultStyle.label = '';
@@ -438,6 +448,7 @@ $(document).ready(function () {
     }
 
     //To run in doc ready to init all annotation events
+
 
     annotationEvents = function () {
         //Init state

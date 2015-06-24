@@ -87,7 +87,7 @@ def convertimage(request):
         folderName=None
     except MultiValueDictKeyError:
         folderName=request.POST['folderName']
-        imageNames=os.listdir(settings.CONVERTED_UPLOAD_PATH+'/'+folderName)
+        imageNames=os.listdir(settings.CONVERTED_UPLOAD_PATH+'/'+folderName.encode('UTF-8'))
     s=None
     if source_key > 0:
         s=Source.objects.get(id=source_key)
@@ -110,7 +110,7 @@ def convertimage(request):
 
 @csrf_exempt
 def copytonewpageimage(newS,image):
-    fullurl = settings.IMAGE_SERVER_URL + '?FIF='+settings.CONVERTED_UPLOAD_PATH+'/'+image
+    fullurl = settings.IMAGE_SERVER_URL + '?FIF='+settings.CONVERTED_UPLOAD_PATH+'/'+image.encode('UTF-8')
     dimensions = imagetools.getImageDimensions(fullurl)
     npi = NewPageImage(source=newS, filename=image, surrogate=1, versionnumber=1, permission=False,
                          permissionnote='', height=dimensions['height'], width=dimensions['width'], startbar=0, endbar=0, corrected=0)

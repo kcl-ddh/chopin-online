@@ -302,7 +302,7 @@ def ocvePageImageview(request, id,selectedregionid=0):
     [next_page, prev_page] = getNextPrevPages(p, pi)
     work=getPageImageWork(pi,source)
     #Check if work has information so we don't display dead link
-    if len(work.workinformation.OCVE)> 0 :
+    if len(work.workinformation.OCVE)> 0:
         workinfoexists=True
     else:
         workinfoexists=False

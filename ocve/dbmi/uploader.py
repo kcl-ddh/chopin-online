@@ -104,7 +104,7 @@ def convertimage(request):
                 image=folderName.encode('UTF-8')+'/'+image.encode('UTF-8')
                 copytonewpageimage(newS,image)
         elif imageNames is not None:
-           copytonewpageimage(newS,imageNames)
+           copytonewpageimage(newS,imageNames.encode('UTF-8'))
 
     return HttpResponseRedirect('/ocve/sourceeditor/' + str(s.id))
 

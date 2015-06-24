@@ -505,5 +505,10 @@ def generateAllThumbnails(request):
     log=generateThumbnails(Source.objects.filter(Q(ocve=1)|Q(cfeo=1)))
     return HttpResponse(log)
 
+def generateSourceThumbnails(request,id):
+    sources=Source.objects.filter(id=id)
+    generateThumbnails(sources)
+
+
 
 

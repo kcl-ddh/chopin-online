@@ -10,6 +10,7 @@ from django.template.defaultfilters import register
 from ocve.forms import *
 from ocve.bartools import *
 from datatools import *
+from ocve.uitools import generateThumbnails
 
 import os
 
@@ -61,22 +62,6 @@ def newsourceeditor(request, id=0):
     if accode is not None:
         sourceInformation.accode = accode
         sourceInformation.save()
-
-        #Use the AcCode to determine Source's opus
-        #Temporarily disabled and made manual
-        # m=re.search('(\d+)',accode.accode)
-        # if m is not None:
-        #     opusNo=int(m.group(1))
-        #     try:
-        #         opus=Opus.objects.get(opusno=opusNo)
-        #         w=Work.objects.filter(workcomponent__opus=opus)[0]
-        #         if w is not None:
-        #             createDefaultComponents(source,w)
-        #             wComps=WorkComponent.objects.filter(work=w)
-        #     except ObjectDoesNotExist:
-        #         #No action for now
-        #         pass
-
     return sourceeditor(request,source,sourceInformation,newpages, wComps)
 
 #Link the new source to the relevant work, and generate source compoennts
@@ -164,7 +149,6 @@ def sourceeditor(request,source,sourceInformation,newpageimages,workcomponents):
     sourcecomponents=SourceComponent.objects.filter(source=source).order_by('orderno')
     works = Work.objects.all()
     opus = source.getOpusLabel()
-    sources=Source.objects.all()
     pagetypes=PageType.objects.all()
     return render_to_response('dbmi/sourceeditor.html',
         {'works':works,'pagetypes':pagetypes,'instruments': instruments, 'scForm': scForm, 'pageimages': pageimages,'newpageimages': newpageimages,'workcomponents':workcomponents,'sourcecomponents': sourcecomponents ,'sourceForm': sourceForm,
@@ -608,15 +592,7 @@ def deletepage(request,id):
         for np in NewPageImage.objects.filter(linked=id):
             np.linked=0
             np.save()
-        # for pl in PageLegacy.objects.filter(pageimage=pi):
-        #     #Clone pagelegacy
-        #     newpl=PageLegacy()
-        #     newpl.cfeoKey=pl.cfeokey
-        #     newpl.ocveKey=pl.ocvekey
-        #     newpl.jp2=pl.jp2
-        #     newpl.filename=pl.filename
-        #     newpl.storageStructure=pl.storageStructure
-        #     pl.save()
+
         pi.delete()
         return existingsourceeditor(request, sourceid)
     except ObjectDoesNotExist:
@@ -628,16 +604,17 @@ def deletesource(request,id):
     s=Source.objects.get(id=int(id))
     log=''
     #delete any attached jp2s
-    for pi in PageImage.objects.filter(page__sourcecomponent__source=s,versionnumber=1).order_by("page"):
-        jp2=pi.getJP2Path()
-        if re.search('UNVERIFIED',jp2) is None:
-            try:
-                log+='<br/> Attempting to delete jp2 '+str(settings.IMAGEFOLDER+jp2)
-                os.remove(settings.IMAGEFOLDER+jp2)
-            except (IOError, OSError), e:
-                 log+=('<br/> Error removing TIFF [%s], Reason: %s' % (jp2, e))
-        else:
-            log+='<br/> Unverified image skipped'
+    #Temporarily disabled because of source cloning
+    #for pi in PageImage.objects.filter(page__sourcecomponent__source=s,versionnumber=1).order_by("page"):
+        #jp2=pi.getJP2Path()
+        #if re.search('UNVERIFIED',jp2) is None:
+        #    try:
+        #        log+='<br/> Attempting to delete jp2 '+str(settings.IMAGEFOLDER+jp2)
+        #        os.remove(settings.IMAGEFOLDER+jp2)
+        #    except (IOError, OSError), e:
+        #         log+=('<br/> Error removing TIFF [%s], Reason: %s' % (jp2, e))
+        #else:
+        #    log+='<br/> Unverified image skipped'
     s.delete()
             #28-1-W_USCu_b1_p20_no14
    #return HttpResponseRedirect('/ocve/dbmi/')
@@ -696,7 +673,6 @@ def clonesource(request,id):
             pi.page=p
             pi.save()
 
-
         #Link new pi to region
         regions=BarRegion.objects.filter(pageimage_id=originalpageimageid)
         if regions.count() > 0:
@@ -725,6 +701,7 @@ def clonesource(request,id):
     #New source, link to top of chain
     source.pk=None
     source.save()
+    generateThumbnails([source])
     info.source=source
     #Reset accode
     info.accode=AcCode.objects.get(id=1)

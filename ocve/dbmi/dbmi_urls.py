@@ -18,6 +18,7 @@ urlpatterns = patterns('', (r'^source/(?P<id>\d+)/$', source),
                        (r'^saveSource/(?P<id>\d+)/$', saveSource),
                        (r'^saveSourceInformation/(?P<id>\d+)/$', saveSourceInformation),
                        (r'^clonesource/(?P<id>\d+)/$', clonesource),
+                       (r'^generatesourcethumbnails/(?P<id>\d+)/$', generateSourceThumbnails),
 
                        #Source/work components
                        #(r'^sourcecomp/(?P<id>\d+)/$', sourceComp),

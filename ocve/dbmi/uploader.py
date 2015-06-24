@@ -101,7 +101,7 @@ def convertimage(request):
             newS.save()
         if folderName is not None:
             for image in imageNames:
-                image=folderName.encode('UTF-8')+'/'+image
+                image=folderName.encode('UTF-8')+'/'+image.encode('UTF-8')
                 copytonewpageimage(newS,image)
         elif imageNames is not None:
            copytonewpageimage(newS,imageNames)
@@ -110,7 +110,7 @@ def convertimage(request):
 
 @csrf_exempt
 def copytonewpageimage(newS,image):
-    fullurl = settings.IMAGE_SERVER_URL + '?FIF='+settings.CONVERTED_UPLOAD_PATH+'/'+image.encode('UTF-8')
+    fullurl = settings.IMAGE_SERVER_URL + '?FIF='+settings.CONVERTED_UPLOAD_PATH+'/'+image
     dimensions = imagetools.getImageDimensions(fullurl)
     npi = NewPageImage(source=newS, filename=image, surrogate=1, versionnumber=1, permission=False,
                          permissionnote='', height=dimensions['height'], width=dimensions['width'], startbar=0, endbar=0, corrected=0)

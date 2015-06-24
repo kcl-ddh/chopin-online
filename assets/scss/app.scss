@@ -434,6 +434,15 @@ a:focus {
     z-index: 9999;
 }
 
+#witness-info.reveal-modal.open li,
+.contextual {
+    font-size: 14px;
+}
+
+.rich-text ul {
+    margin-bottom: 0;
+}
+
 /* Collections */
 
 .collections-inline {

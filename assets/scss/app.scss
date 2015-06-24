@@ -434,6 +434,20 @@ a:focus {
     z-index: 9999;
 }
 
+#witness-info.reveal-modal.open li,
+#opus-info.reveal-modal.open li {
+    font-size: 14px;
+}
+
+#witness-info.reveal-modal.open ul,
+#opus-info.reveal-modal.open ul {
+    margin-bottom: 0;
+}
+
+.rich-text ul {
+    margin-bottom: 0;
+}
+
 /* Collections */
 
 .collections-inline {

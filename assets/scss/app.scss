@@ -435,8 +435,13 @@ a:focus {
 }
 
 #witness-info.reveal-modal.open li,
-.contextual {
+#opus-info.reveal-modal.open li {
     font-size: 14px;
+}
+
+#witness-info.reveal-modal.open ul,
+#opus-info.reveal-modal.open ul {
+    margin-bottom: 0;
 }
 
 .rich-text ul {

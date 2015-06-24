@@ -507,7 +507,8 @@ def generateAllThumbnails(request):
 
 def generateSourceThumbnails(request,id):
     sources=Source.objects.filter(id=id)
-    generateThumbnails(sources)
+    log=generateThumbnails(sources)
+    return HttpResponse(log)
 
 
 

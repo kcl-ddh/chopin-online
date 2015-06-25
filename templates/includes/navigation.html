@@ -3,16 +3,23 @@
     <nav class="top-bar" data-topbar id="primary-navigation">
         <ul class="title-area">
             <li class="name">
-            <!-- empty -->
+                <!-- empty -->
             </li>
             <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
         </ul>
 
         <section class="top-bar-section">
-                {% block main_menu %}
-                {% get_site_root as site_root %}
-                {% main_menu root=site_root current_page=self %}
-                {% endblock %}
+            {% block main_menu %}
+            {% get_site_root as site_root %}
+            {% main_menu root=site_root current_page=self %}
+            {% endblock %}
+            {% if BASE_URL == 'aco' %}
+            <ul class="right header-search">
+                <li class="has-form">
+                    {% include "includes/search_box.html" %}
+                </li>
+            </ul>
+            {% endif %}
         </section>
     </nav>
 </div>

@@ -51,7 +51,7 @@ def acview(request,acHash,mode="OCVE"):
                     filters.append({'type': 'Work', 'id': work.id,
                                     'selection': work.label})
                     filters.append({'type': 'Source', 'id':source.id,
-                                    'selection': source})
+                                    'selection': source.label})
     except ObjectDoesNotExist:
         pass
 

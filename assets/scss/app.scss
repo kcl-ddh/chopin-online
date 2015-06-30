@@ -973,6 +973,10 @@ b.top-spacing {
     margin-bottom: 1em;
 }
 
+.tab-bar-section{
+    width: 100%;
+}
+
 .tab-bar .f-dropdown {
     z-index: 1000;
 }
@@ -988,6 +992,10 @@ b.top-spacing {
 
 .tab-bar .f-dropdown li a {
     padding: 10px !important;
+}
+
+.help {
+    padding: 14px 5px 0;
 }
 
 .contextual-menu {

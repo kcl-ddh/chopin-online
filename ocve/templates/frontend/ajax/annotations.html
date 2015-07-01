@@ -14,7 +14,7 @@
                     <p class="annotation-details">
                     {% for br in c.getBarRegions %}
                     {% for b in br.bar.all %}
-                    <span class="label radius secondary" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span>
+                    <a href="/ocve/browse/barview?workid={{ work.id }}&pageimageid={{ pageimage.id }}&barid={{ b.id }}"><span class="label radius secondary" data-barid="{{ b.barlabel }}">Bar <strong>{{ b.barlabel }}</strong></span></a>
                     {% endfor %}
                     {% endfor %}
                     </p>
@@ -22,7 +22,7 @@
                     <p class="annotation-posted">By OCVE, {{ c.timestamp }}</p>
 
                     <div class="annotation">
-                        <p>{{ c.notetext }}</p>
+                        <p>{{ c.notetext | safe }}</p>
                     </div>
                 </div>
                 <hr />
@@ -47,7 +47,7 @@
 
                     {% if c.noteregions|length > 0 %}
                     <div class="annotation noteRegionHighlight"  data-noteid="{{ c.id }}">
-                        <p>{{ c.notetext }}</p>
+                        <p>{{ c.notetext |safe }}</p>
                     </div>
                     {% endif %}
 
@@ -60,7 +60,7 @@
 
                     {% if not c.noteregions %}
                     <div class="annotation">
-                        <p>{{ c.notetext }}</p>
+                        <p>{% autoescape off %}{{ c.notetext |safe }}{% endautoescape %}</p>
                     </div>
                     {% endif %}
                 </div>

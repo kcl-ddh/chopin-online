@@ -49,6 +49,14 @@
         <li>You haven't created any collections yet.</li>
         {% endfor %}
       </ul>
+    {% if annotations.count > 0 %}
+        <h3> Your Annotations</h3>
+        <ul>
+        {% for note in annotations %}
+            <li><a href="/ocve/browse/pageimage/{{ note.pageimage.id }}">{{ note.notetext }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
     </div>
   </div>
 </section>

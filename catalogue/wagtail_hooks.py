@@ -2,13 +2,14 @@ from django.conf import settings
 from django.utils.html import format_html, format_html_join
 
 from wagtail.wagtailcore import hooks
-from wagtail.wagtailcore.whitelist import attribute_rule, check_url
+from wagtail.wagtailcore.whitelist import attribute_rule, check_url, allow_without_attributes
 
 
 def whitelister_element_rules():
     return {
         'a': attribute_rule({'href': check_url, 'id': True}),
         'span': attribute_rule({'class': True}),
+        'i': attribute_rule({'class': True}),
     }
 
 hooks.register('construct_whitelister_element_rules',

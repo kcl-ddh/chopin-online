@@ -11,8 +11,8 @@
 <script type="text/javascript" src="{{ STATIC_URL }}vendor/garand-sticky/jquery.sticky.js"></script>
 <script>
 $(window).load(function(){
-  $(".fixed-image").sticky({ topSpacing: 0 });
-  $(".fixed-image").sticky({ bottomSpacing: 360 });
+  $(".tab-bar").sticky();
+  $(".fixed-image").sticky({ topSpacing: 50, bottomSpacing: 290 });
 });
 </script>
 
@@ -239,20 +239,20 @@ $(window).load(function(){
 <script src="{{ STATIC_URL }}javascripts/slick.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}vendor/OpenLayers/OpenLayers.js"></script>
 <script type="text/javascript">
-var map, zoomify;
-var alayer, vlayer;
+    var map, zoomify;
+    var alayer, vlayer;
 
-var zoomify_width = {{ pageimage.width }};
-var zoomify_height = {{ pageimage.height }};
+    var zoomify_width = {{ pageimage.width }};
+    var zoomify_height = {{ pageimage.height }};
 
-var pageID = {{ pageimage.id }};
-var zoomify_url = "{{ zoomifyURL }}";
+    var pageID = {{ pageimage.id }};
+    var zoomify_url = "{{ zoomifyURL }}";
 
-var regionURL = "{{ regionURL }}";
-var noteURL = "{{ noteURL }}";
+    var regionURL = "{{ regionURL }}";
+    var noteURL = "{{ noteURL }}";
 
-var workid = {{ work.id }};
-{% if selectedregionid > 0 %}selectedregionid={{ selectedregionid }};
+    var workid = {{ work.id }};
+    {% if selectedregionid > 0 %}selectedregionid={{ selectedregionid }};
     {% else %}selectedregionid=0; {% endif %}
 </script>
 <script type="text/javascript" src="{{ STATIC_URL }}javascripts/pageview.js"></script>

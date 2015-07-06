@@ -31,6 +31,20 @@ $secondary-color: #e7e7e7;
     float: left;
 }
 
+/* Sticky tab-bar needs ridiculous z-index to appear over OL image */
+.tab-bar {
+    z-index: 9998;
+}
+
+/* Likewise for the dropdown log in form */
+#login-drop {
+    z-index: 9999;
+}
+
+.sticky-wrapper {
+    margin-bottom: 1rem;
+}
+
 /* Annotations panel */
 
 p.annotation-details,

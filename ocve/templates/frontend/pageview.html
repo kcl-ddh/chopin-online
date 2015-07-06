@@ -119,18 +119,18 @@ $(window).load(function(){
 
                 {% if view == 'annotations' %}
                 <div id="annotations" class="large-4 columns">
-                    {% if user.is_authenticated %}
                     <div id="annotationTools">
                         <p><strong>Annotation tools</strong></p>
                         <ul class="no-bullet">
+                            {% if user.is_authenticated %}
                             <li id="cinque"><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
                             <li id="sei"><a id="newSquareNoteToggle" href="#"><i class="fa fa-square-o"></i> Create square annotation</a></li>
                             <li id="sette"><a id="newCircleNoteToggle" href="#"><i class="fa fa-circle-thin"></i> Create circle annotation</a></li>
-                            <li id="otto"><a href="#" class="com"><i class="fa fa-eye"></i> Toggle commentary on the image</a></li>
-                            <li id="nove"><a href="#" class="not"><i class="fa fa-eye"></i> Toggle notes on the image</a></li>
+                            {% endif %}
+                            <li id="otto"><a href="#" class="com"><i class="fa fa-eye"></i> Show/Hide commentary on the image</a></li>
+                            <li id="nove"><a href="#" class="not"><i class="fa fa-eye"></i> Show/Hide notes on the image</a></li>
                         </ul>
                     </div>
-                    {% endif %}
 
                     <div class="page-comments">
                         {% include 'frontend/ajax/annotations.html' with without_wrapper=True %}

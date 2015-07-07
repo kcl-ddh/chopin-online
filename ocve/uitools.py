@@ -186,10 +186,10 @@ class SourceSearchItem:
         sourcejson +=  "'Pages': ["
         if self.mode == 'OCVE':
             #Filter out non-musical pages like blanks, title pages etc.
-            musicpage=PageType.objects.get(type='music')
+            #musicpage=PageType.objects.get(type='music')
             blank=PageType.objects.get(type='blank')
-            tp=PageType.objects.get(type='title page')
-            nonmusic=SourceComponentType.objects.get(type="Non-music")
+            #tp=PageType.objects.get(type='title page')
+            #nonmusic=SourceComponentType.objects.get(type="Non-music")
             #.exclude(page__sourcecomponent__sourcecomponenttype=blank)
             #.exclude(page__sourcecomponent__sourcecomponenttype=nonmusic)
             pages = PageImage.objects.filter(page__sourcecomponent__source_id=self.id).exclude(page__pagetype_id__lt=2).exclude(page__pagetype=blank).order_by("page__sourcecomponent","page")

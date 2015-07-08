@@ -121,7 +121,10 @@ $(window).load(function(){
                 <div id="annotations" class="large-4 columns">
                     <div id="annotationTools">
                         <p><strong>Annotation tools</strong></p>
-                  {% if notes.count == 0 %}  <p>This image has no annotations yet.</p>{% endif %}
+                        {% if notes.count == 0 %}
+                        <p>This image has no annotations yet.</p>
+                        {% endif %}
+                        {% if notes.count != 0 %}
                         <ul class="no-bullet">
                             {% if user.is_authenticated %}
                             <li id="cinque"><a id="barAttachToggle" href="#"><i class="fa fa-link"></i> Attach Bars</a></li>
@@ -131,6 +134,7 @@ $(window).load(function(){
                             <li id="otto"><a href="#" class="com"><i class="fa fa-eye"></i> Show/Hide commentary on the image</a></li>
                             <li id="nove"><a href="#" class="not"><i class="fa fa-eye"></i> Show/Hide notes on the image</a></li>
                         </ul>
+                        {% endif %}
                     </div>
 
                     <div class="page-comments">

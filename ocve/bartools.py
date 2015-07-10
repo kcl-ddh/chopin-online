@@ -174,7 +174,7 @@ class BarRegionThumbnail:
                         curWidth+=r.width
                     else:
                         #System break, generate new url
-                        urls.append(url + self.iipParams(iipX,iipY,curWidth,curHeight))
+                        urls.append(r.pageimage.getJP2Path() + self.iipParams(iipX,iipY,curWidth,curHeight))
                         iipX = float(r.x) / self.pi.width
                         iipY = float(r.y) / self.pi.height
                         curWidth=r.width

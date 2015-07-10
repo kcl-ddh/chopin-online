@@ -223,7 +223,7 @@ def browse(request,mode="OCVE",defaultFilters=None):
 def sourcejs(request):
     #for s in Source.objects.filter(Q(ocve=1)|Q(cfeo=1)):
     #    overwritesourcecomponentlabels(s)
-    #    setPageImageTextLabel(s)
+    #setPageImageTextLabel(s)
     serializeOCVESourceJson()
     serializeCFEOSourceJson()
     serializeAcCodeConnector()

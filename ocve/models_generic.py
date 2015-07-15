@@ -463,6 +463,12 @@ class Page(models.Model):
     sourcecomponent = models.ForeignKey('SourceComponent', blank=False, null=False, default=1, )
     pagetype = models.ForeignKey('PageType', blank=False, null=False, default=1, )
 
+    def getWorkComponent(self):
+        wc=WorkComponent.objects.filter(sourcecomponent_workcomponent__sourcecomponent__page=self)
+        if wc.count() > 0:
+            return wc[0]
+        return None
+
     def getPrimaryPageImage(self):
         pi=PageImage.objects.filter(page=self,versionnumber=1)
         if pi.count() > 0:

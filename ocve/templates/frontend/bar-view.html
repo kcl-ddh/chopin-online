@@ -47,14 +47,13 @@
                                 {% endif %}
                                 <li>
                                     <div class="menu-item">
-                                        <a href="#" data-dropdown="available-sources">Select Sources</a>
+                                        <a href="#" data-dropdown="available-sources">Select sources</a>
                                         <ul id="available-sources" class="f-dropdown" data-dropdown-content="">
                                             <li>
                                                 <div class="dropdown-select toggle-all">
                                                     <input type="checkbox" checked="checked" value="all">Select all</input>
                                                 </div>
                                             </li>
-
                                             {% for s in sources %}
                                             <li>
                                                 <div class="dropdown-select toggle ">
@@ -68,12 +67,12 @@
  
                                 <li>
                                     <div class="menu-item">
-                                        <a href="#" class="bar-view-reset-btn"><span>Reset Bars</span></a>
+                                        <a href="#" class="bar-view-reset-btn"><span>Reset bars</span></a>
                                     </div>
                                 </li>
                                 <li>
                                     <div class="menu-item">
-                                        <a href="#" data-dropdown="available-ranges">Bar Range</a>
+                                        <a href="#" data-dropdown="available-ranges">Bar range</a>
                                         <ul id="available-ranges" class="f-dropdown" data-dropdown-content="">
                                             <li>
                                                 <a href="/ocve/browse/barview?workid={{ work.id }}&orderNo={{ orderNo }}">1</a>
@@ -90,12 +89,13 @@
                                         </ul>
                                     </div>
                                 </li>
-
+                            {% if user.is_authenticated %}
                                 <li>
                                     <div class="menu-item">
                                         <a href="#" class="open-collections-inline"><span>Workspace</span></a>
                                     </div>
                                 </li>
+                            {% endif %}
                             </ul>
                         </section>
                     </nav><!-- end tab-bar -->
@@ -105,13 +105,12 @@
                             {% for r in barregions %}
                             <li id="region{{ r.br.id }}" class="source{{ r.getSource.id }}">
                                 <div class="caption">
-                                    <span>{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.regionlabel }}</span>
+                                    <span>{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.pi.page.getWorkComponent }} {{ r.regionlabel }}</span>
                                 </div>
                                 <div class="image">
                                     {% for url in r.getBarImageURL %}
                                     <img src="{{ IIP_URL }}?FIF={{ url }}" alt="{{ r.getSource.getAcCode }} page {{ r.pi.page.label }}">
                                     {% endfor %}
-
                                     <div class="close">
                                         <a href="#" class="ctrl close closeSource" data-source-id="{{ r.getSource.id }}"><span class="fa fa-times-circle"></span></a>
                                     </div>
@@ -119,8 +118,7 @@
                                 <div class="controls">
                                     <ul class="inline-list">
                                         <li>
-                                            <a href="#" data-reveal-id="large-image" data-img="{{ IIP_URL }}?FIF={{ r.getLargeURL.0 }}" data-region_id="{{ r.br.id }}" data-annotation="{{ r.annotation }}" data-region-label="{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.regionlabel }}" class="ctrl enlarge large-image-button"><span
-                                                        class="fa fa-search-plus"></span></a>
+                                            <a href="#" data-reveal-id="large-image" data-img="{{ IIP_URL }}?FIF={{ r.getLargeURL.0 }}" data-region_id="{{ r.br.id }}" data-annotation="{{ r.annotation }}" data-region-label="{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.regionlabel }}" class="ctrl enlarge large-image-button"><span class="fa fa-search-plus"></span></a>
                                         </li>
                                         <li>
                                             <a href="/ocve/browse/pageview/{{ r.pi.id }}?brid={{ r.br.id }}" class="ctrl view-in-context"><span class="fa fa-file-text"></span></a>

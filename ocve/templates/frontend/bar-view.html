@@ -108,7 +108,7 @@
                                     <span>{{ r.getSource.getAcCode }} p. {{ r.pi.page }} {{ r.regionlabel }}</span>
                                 </div>
                                 <div class="image">
-                                    {% for url in r.getLargeURL %}
+                                    {% for url in r.getBarImageURL %}
                                     <img src="{{ IIP_URL }}?FIF={{ url }}" alt="{{ r.getSource.getAcCode }} page {{ r.pi.page.label }}">
                                     {% endfor %}
 

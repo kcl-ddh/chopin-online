@@ -337,7 +337,7 @@ def serializeAcCodeConnector():
 #filter(Q(page__pagetype=musicpage)|Q(page__pagetype=tp)).
 def getOCVEPageImages(source):
     try:
-        blank=PageType.objects.get(type='music')
+        blank=PageType.objects.get(type='blank')
         tp=PageType.objects.get(type='title page')
         pi=PageImage.objects.filter(page__sourcecomponent__source=source).exclude(page__pagetype_id__lt=2).exclude(page__pagetype=blank).order_by('page__orderno')
         return pi

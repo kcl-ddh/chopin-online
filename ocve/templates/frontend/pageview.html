@@ -168,25 +168,7 @@ $(window).load(function(){
         </div>
     </div>
 
-    <div class="row">
-        <div class="large-12 columns">
-            <div class="thumbnail-carousel">
-                <b class="divider"></b>
-                {% for p in pageimages %}
-                <div>
-                    <div class="carousel-image">
-                        {% with image_id=p.id %}
-                        <a class="pageView thumb" href="/{{ mode|lower }}/browse/pageview/{{ image_id }}/">
-                            <img border align="0" src="{% static 'thumbnails/' %}{{ image_id }}.jpg" class="lazy thumbnail"/>
-                        </a>
-                        {% endwith %}
-                        <span class="page-label">{{ p.textlabel }}</span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+   
 </section>
 {% endblock %}
 

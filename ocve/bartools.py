@@ -112,39 +112,31 @@ class BarRegionGeo:
 #based on coordination information
 #todo simplify
 class BarRegionThumbnail:
-    def getURL(self):
-    #todo When CFEO has bar info
-    #        if self.pl.cfeoKey > 0:
-    #            fif="cfeo"
+    # def getURL(self):
+    #     url= self.pi.getJP2Path()
+    #     iipX = float(self.br.x) / self.pi.width
+    #     iipY = float(self.br.y) / self.pi.height
+    #     #Width and height in iip are percentages of total image
+    #     iipWidth = float(self.br.width) / self.pi.width
+    #     iipHeight = float(self.br.height) / self.pi.height
+    #     params = "&cnt=1&QLT=100&WID=" + str(settings.THUMBNAIL_WIDTH)
+    #     if self.br is not None and self.pi is not None:
+    #         #todo shrink image first?
+    #         params = params + "&RGN=" + str(iipX) + "," + str(iipY) + "," + str(iipWidth) + "," + str(
+    #                 iipHeight) + "&CVT=JPG"
+    #     else:
+    #         return "Error"
+    #     return url + params
 
-
-        url= self.pi.getJP2Path()
-        #38/15/05/38-1-W_GBOb_p05.jp2
-        #opus/witkey/pageid(add0)/filename.jp2
-    #40394 u'jp2/cfeojp2-proc/_loose/32-1-Sm_FPn_p04_no1.jp2&cnt=1&QLT=100&WID=500&RGN=0.153811659193,0.137,0.295067264574,0.136&CVT=JPG'
-        #Convert coordinates to image percentages
-        iipX = float(self.br.x) / self.pi.width
-        iipY = float(self.br.y) / self.pi.height
-        #Width and height in iip are percentages of total image
-        iipWidth = float(self.br.width) / self.pi.width
-        iipHeight = float(self.br.height) / self.pi.height
-        params = "&cnt=1&QLT=100&WID=" + str(settings.THUMBNAIL_WIDTH)
-        if self.br is not None and self.pi is not None:
-            #todo shrink image first?
-            params = params + "&RGN=" + str(iipX) + "," + str(iipY) + "," + str(iipWidth) + "," + str(
-                    iipHeight) + "&CVT=JPG"
-        else:
-            return "Error"
-        return url + params
-
-    def iipParams(self,iipX,iipY,curWidth,curHeight):
+    def iipParams(self,iipX,iipY,curWidth,curHeight,initialparams):
         #Width and height in iip are percentages of total image
         iipWidth = float(curWidth) / self.pi.width
         iipHeight = float(curHeight) / self.pi.height
-        return "&cnt=1&QLT=100&RGN=" + str(iipX) + "," + str(iipY) + "," + str(iipWidth) + "," + str(
+        return initialparams+"&RGN=" + str(iipX) + "," + str(iipY) + "," + str(iipWidth) + "," + str(
                             iipHeight) + "&CVT=JPG"
 
-    def getLargeURL(self):
+
+    def getURL(self,initalparams):
             url= self.pi.getJP2Path()
             urls=[]
             #Checking for bars split across systems, add them to the range
@@ -174,7 +166,7 @@ class BarRegionThumbnail:
                         curWidth+=r.width
                     else:
                         #System break, generate new url
-                        urls.append(url + self.iipParams(iipX,iipY,curWidth,curHeight))
+                        urls.append(url + self.iipParams(iipX,iipY,curWidth,curHeight,initalparams))
                         iipX = float(r.x) / self.pi.width
                         iipY = float(r.y) / self.pi.height
                         curWidth=r.width
@@ -182,20 +174,25 @@ class BarRegionThumbnail:
                         url=r.pageimage.getJP2Path()
 
                 if curWidth > 0:
-                    urls.append(url + self.iipParams(iipX,iipY,curWidth,curHeight))
+                    urls.append(url + self.iipParams(iipX,iipY,curWidth,curHeight,initalparams))
             else:
                 #Single range
                 #Convert coordinates to image percentages
                 iipX = float(self.br.x) / self.pi.width
                 iipY = float(self.br.y) / self.pi.height
-                params = "&cnt=1&QLT=100"
                 if self.br is not None and self.pi is not None:
                     #todo shrink image first?
-                    params = self.iipParams(iipX,iipY,self.br.width,self.br.height)
+                    params = self.iipParams(iipX,iipY,self.br.width,self.br.height,initalparams)
                 else:
                     return "Error"
                 urls.append(url + params)
             return urls
+
+    def getBarImageURL(self):
+        return self.getURL("&hei="+str(settings.BAR_IMAGE_HEIGHT)+"&cnt=1&QLT=100")
+
+    def getLargeURL(self):
+        return self.getURL("&cnt=1&QLT=100")
 
     def getSource(self):
         return Source.objects.filter(sourcecomponent__page__pageimage__barregion=self.br).distinct()[0]
@@ -214,4 +211,4 @@ class BarRegionThumbnail:
         else:
             self.range=None
             self.regionlabel="b. "+str(self.br)
-        self.URL = self.getURL()
+        #self.URL = self.getURL()

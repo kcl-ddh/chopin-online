@@ -332,6 +332,9 @@ UPLOAD_EXTENSION = '.tif'
 # The width of the image when extracting bar region thumbnails in iip
 THUMBNAIL_WIDTH = 500
 
+#Height of images in bar-view template
+BAR_IMAGE_HEIGHT=200
+
 #Folder where thumbnails generated from iip reside
 THUMBNAIL_DIR ='/vol/ocve3/images/thumbnails/'
 

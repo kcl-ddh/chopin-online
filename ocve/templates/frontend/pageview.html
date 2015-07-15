@@ -45,7 +45,7 @@ $(window).load(function(){
                         <li>
                             <div class="menu-item opus-title">
                                 {% if workinfoexists %}<a href="#" data-reveal-ajax="/ocve/browse/workinformation/{{ work.id }}/" data-reveal-id="opus-info" title="Work overview" id="zero">{{ work }}</a>{% else %}{{ work }}{% endif %},
-                                <a href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/" title="Witness overview">{{ source.getAcCode }}</a>,
+                                <a href="#" data-reveal-id="witness-info" data-reveal-ajax="/ocve/browse/sourceinformation/{{ source.id }}/" title="Witness overview" id="zerob">{{ source.getAcCode }}</a>,
                                 {{ pageimage.textlabel }}
                             </div>
                         </li>
@@ -188,32 +188,36 @@ $(window).load(function(){
   <li data-id="zero" data-text="Next" data-options="tip_location: top; prev_button: false">
     <p>See more information about the work.</p>
   </li>
-  <li data-id="uno" data-text="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+  <li data-id="zerob" data-text="Next" data-prev-text="Prev" data-options="tip_location: top">
+    <p>See witness overview.</p>
+  </li>
+  <li data-id="uno" data-text="Next" data-prev-text="Prev" data-options="tip_location: top">
     <p>Navigate to the previous page.</p>
   </li>
-  <li data-id="due" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+  <li data-id="due" data-button="Next" data-prev-text="Prev" data-options="tip_location: top">
     <p>Navigate to the next page.</p>
   </li>
-  <li data-id="tre" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+  <li data-id="tre" data-button="Next" data-prev-text="Prev" data-options="tip_location: top">
     <p>You might already know what page you're looking for. This dropdown will let you choose a specific page.</p>
-  </li>  <li data-id="quattro" {% if view == 'annotations' %}data-button="Next"{% else %} data-button="Start exploring!"{% endif %} data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+  </li>
+  <li data-id="quattro" {% if view == 'annotations' %}data-button="Next"{% else %} data-button="Start exploring!"{% endif %} data-prev-text="Prev" data-options="tip_location: top">
     <p>Show / Hide the annotation tools.</p>
   </li>
   {% if view == 'annotations' %}
     {% if user.is_authenticated %}
-    <li data-id="cinque" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <li data-id="cinque" data-button="Next" data-prev-text="Prev" data-options="tip_location: top">
         <p>Show / Hide bars and click on one to attach an annotation.</p>
     </li>
-    <li data-id="sei" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <li data-id="sei" data-button="Next" data-prev-text="Prev" data-options="tip_location: top">
         <p>Draw a square shaped annotation on the image.</p>
     </li>
-    <li data-id="sette" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <li data-id="sette" data-button="Next" data-prev-text="Prev" data-options="tip_location: top">
         <p>Or a circle one.</p>
     </li>
-    <li data-id="otto" data-button="Next" data-prev-text="Prev" data-options="tip_location:top; tip_animation:fade">
+    <li data-id="otto" data-button="Next" data-prev-text="Prev" data-options="tip_location: top">
         <p>Show / Hide commentary on the image.</p>
     </li>
-    <li data-id="nove" data-button="Start exploring!" data-options="tip_location:top; tip_animation:fade">
+    <li data-id="nove" data-button="Start exploring!" data-options="tip_location: top">
         <p>Show / Hide notes on the image.</p>
     </li>
     {% endif %}

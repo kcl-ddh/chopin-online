@@ -14,8 +14,7 @@
         {% if pi_left %}
         <header>
             <h3>
-            {{ pi_left.page.sourcecomponent.source|safe }},
-            Page <a href="/{{ mode|lower }}/browse/pageview/{{ pi_left.id }}/">{{ pi_left.textlabel|safe }}</a>
+                {{ pi_left.page.sourcecomponent.source.getWork }},<a href="/{{ mode|lower }}/browse/pageview/{{ pi_left.page.sourcecomponent.source.id }}/" title="Witness overview">{{ pi_left.page.sourcecomponent.source.getAcCode }} {{ pi_left.textlabel }}</a>
             </h3>
         </header>
         <img src="/iip/iipsrv.fcgi?FIF={{ pi_left.getJP2Path }}&CVT=JPG" height="800" width="500" id="image_one" class="osd-iip">
@@ -32,8 +31,7 @@
         {% if pi_right %}
         <header>
             <h3>
-            {{ pi_right.page.sourcecomponent.source|safe }},
-            Page <a href="/{{ mode|lower }}/browse/pageview/{{ pi_right.id }}/">{{ pi_right.textlabel|safe }}</a>
+                {{ pi_right.page.sourcecomponent.source.getWork }},<a href="/{{ mode|lower }}/browse/pageview/{{ pi_right.page.sourcecomponent.source.id }}/" title="Witness overview">{{ pi_right.page.sourcecomponent.source.getAcCode }} {{ pi_right.textlabel }}</a>
             </h3>
         </header>
         <img src="/iip/iipsrv.fcgi?FIF={{ pi_right.getJP2Path }}&CVT=JPG" height="800" width="500" id="image_two" class="osd-iip">

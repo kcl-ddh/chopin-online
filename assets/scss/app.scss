@@ -444,10 +444,6 @@ a:focus {
     margin-bottom: 0;
 }
 
-.rich-text ul {
-    margin-bottom: 0;
-}
-
 /* Collections */
 
 .collections-inline {
@@ -1287,6 +1283,7 @@ b.top-spacing {
 .rich-text ul,
 .rich-text ol {
     padding-bottom: .5rem !important;
+    margin-bottom: 0 !important;
 }
 
 /** Lozenges labels **/

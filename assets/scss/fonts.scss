@@ -14,7 +14,13 @@
 
 @font-face {
     font-family: ocve-debussy;
+    src: url('../../fonts/debussy_-webfont.eot');
+    src: url('../../fonts/debussy_-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../fonts/debussy_-webfont.woff2') format('woff2'),
+         url('../../fonts/debussy_-webfont.woff') format('woff');
     src: url('../../fonts/debussy_.ttf');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .debussy {

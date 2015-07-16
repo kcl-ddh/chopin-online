@@ -195,7 +195,10 @@ $(document).ready(function () {
     map.addControl(highlightCtrl);
     map.addControl(mouse);
     map.zoomToMaxExtent();
-
+    var center=new OpenLayers.LonLat();
+    center.lon=map.maxExtent.centerLonLat.lon
+    center.lat=Math.floor(map.maxExtent.centerLonLat.lat/2)
+    map.setCenter(center);
 
     vlayer.events.register("loadend",vlayer,loadselectedregion);
     highlightCtrl.activate();

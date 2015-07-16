@@ -7,17 +7,12 @@ body {
 
 body {
     position: relative;
-    /* font-family: "Museo Sans", sans-serif; */
 }
 
 header h1,
 header h2 {
     font-family: "Hero", sans-serif;
 }
-
-/* h3, h4, h5, h6 {
-    font-family: 'Museo Sans', sans-serif;
-} */
 
 section h1 {
     font-size: 1.5rem;
@@ -28,7 +23,6 @@ p {
 }
 
 li {
-    /* margin-bottom: .5em; */
     margin-bottom: .25em;
 }
 
@@ -352,7 +346,7 @@ a:focus {
             font-size: 12px;
             margin: 10px;
             a {
-                font-weight: 400;
+                font-weight: 300;
             }
         }
     }
@@ -461,7 +455,6 @@ a:focus {
     background: #e8e8e8;
     float: right;
     font-size: 16pt;
-    /* margin: -26px 20px 0 0; */
     margin: 5px 20px 0 0;
     padding: 5px 10px 0 10px;
 }
@@ -1001,7 +994,6 @@ b.top-spacing {
         font-size: rem-calc(12px);
         height: inherit;
         border-right: 1px solid darken(#e8e8e8, 10%);
-        /* padding: 0 rem-calc(20px); */
         padding: 0;
         margin: 0;
         label {
@@ -1224,7 +1216,6 @@ b.top-spacing {
 .barList li .caption {
     background: #fff;
     height: 30px;
-   /*  overflow: hidden; */
     position: absolute;
     line-height: 1;
     z-index: 1;
@@ -1238,7 +1229,6 @@ b.top-spacing {
 }
 
 .barList li .caption:hover {
-   /*  overflow: visible; */
     width: auto;
     background: rgba(255, 255, 255, 1);
 }

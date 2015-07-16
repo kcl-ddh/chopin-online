@@ -53,7 +53,6 @@ ul.search-results {
 
 /* Style everything after the last hr in the .rich-text div */
 .rich-text:last-of-type hr ~ * {
-    /* font-size: 9pt; */
     font-size: 1rem !important;
     line-height: 115%;
     text-align: justify;

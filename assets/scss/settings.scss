@@ -608,7 +608,7 @@ $input-error-message-font-weight: 300;
 // This changes up the styles for the close button
 // $joyride-tip-close-color: #777;
 // $joyride-tip-close-size: 24px;
-// $joyride-tip-close-weight: normal;
+$joyride-tip-close-weight: 300;
 
 // When Joyride is filling the screen, we use this style for the bg
 // $joyride-screenfill: rgba(0,0,0,0.5);
@@ -644,7 +644,7 @@ $input-error-message-font-weight: 300;
 
 // We use these to style the label text
 // $label-font-sizing: rem-calc(11);
-// $label-font-weight: normal;
+$label-font-weight: 300;
 // $label-font-color: #333;
 // $label-font-color-alt: #fff;
 // $label-font-family: $body-font-family;

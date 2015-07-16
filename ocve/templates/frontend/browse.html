@@ -156,7 +156,7 @@
                     <div class="large-3 columns">
                         <div id="instrumentFilterControl">
                             {% if instruments.count > 1 %}
-                                <button href="#" id="instrumentToggle" data-dropdown="instrumentFilters" aria-controls="instrumentFilters" aria-expanded="false" class="small radius button dropdown right">Filter by instrument</button>
+                                <a href="#" id="instrumentToggle" data-dropdown="instrumentFilters" aria-controls="instrumentFilters" aria-expanded="false" class="small radius button dropdown right" data-options="is_hover:true; hover_timeout:1000">Filter by instrument</a>
                                 <ul id="instrumentFilters" data-dropdown-content class="f-dropdown" aria-hidden="true">
                                     <li class="instrumentFilter" data-instrument_id="0">
                                         <a href="#" data-instrument_id="0">All</a>

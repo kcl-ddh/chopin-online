@@ -5,7 +5,12 @@
 
 @font-face {
     font-family: ocve-composer;
-    src: url('../../fonts/composer.ttf');
+    src: url('../../composer-webfont.eot');
+    src: url('../../composer-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../composer-webfont.woff2') format('woff2'),
+         url('../../composer-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .composer {
@@ -18,7 +23,6 @@
     src: url('../../fonts/debussy_-webfont.eot?#iefix') format('embedded-opentype'),
          url('../../fonts/debussy_-webfont.woff2') format('woff2'),
          url('../../fonts/debussy_-webfont.woff') format('woff');
-    /* src: url('../../fonts/debussy_.ttf'); */
     font-weight: normal;
     font-style: normal;
 }
@@ -35,7 +39,12 @@
 
 @font-face {
     font-family: ocve-gesetz;
-    src: url('../../fonts/gesetz.ttf');
+    src: url('../../gesetz-webfont.eot');
+    src: url('../../gesetz-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../gesetz-webfont.woff2') format('woff2'),
+         url('../../gesetz-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .gesetz {

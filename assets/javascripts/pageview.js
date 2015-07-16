@@ -62,16 +62,16 @@ function updateBrowseResults() {
 
 }
 
-$(window).resize(function () {
+/* $(window).resize(function () {
     winHeight = $(window).height();
     resizeModal(winHeight);
-});
+}); */
 
 $(document).ready(function () {
 
     /* Modal fix: https://github.com/zurb/foundation/issues/2971 */
-    winHeight = $(window).height();
-    resizeModal(winHeight);
+    /* winHeight = $(window).height();
+    resizeModal(winHeight); */
 
     /* Annotations panel */
     $("a.ctrl.show-annotations").click(function () {

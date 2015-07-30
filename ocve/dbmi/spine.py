@@ -144,7 +144,7 @@ def importXLS(request):
                             value=str(s.cell(row,col).value)
                             #response.write('<td>'+value+'</td>')
                             try:
-                                if len(value) > 0 and components[col] != 0:
+                                if len(value) > 0 and value != ' ' and components[col] != 0:
                                     implied=0
                                     value=value.replace('.0','')
                                     if '(I)' in value:
@@ -164,19 +164,22 @@ def importXLS(request):
                                         bs.source=sources[col]
                                         comp=None
                                         #Verify bar (needed for implied problems)
-                                        if BarRegion.objects.filter(bar=bar,pageimage__page__sourcecomponent=components[col]).count() > 0:
+                                        if BarRegion.objects.filter(bar__barlabel=bar.barlabel,pageimage__page__sourcecomponent=components[col]).count() > 0:
                                             bs.sourcecomponent=components[col]
                                         else:
                                             #Bar actually belongs to earlier component.
                                             #Try Previous component
-                                            prev=BarRegion.objects.filter(bar=bar,pageimage__page__sourcecomponent__orderno=sc.orderno-1,pageimage__page__sourcecomponent__source=sources[col])
+                                            prev=BarRegion.objects.filter(bar__barlabel=bar.barlabel,pageimage__page__sourcecomponent__orderno=sc.orderno-1,pageimage__page__sourcecomponent__source=sources[col])
                                             if prev.count() > 0:
                                                 bs.sourcecomponent=prev[0].pageimage.page.sourcecomponent
-                                        bs.save()
+                                        if bs.sourcecomponent_id == 1:
+                                            stop=0;
+                                        else:
+                                            bs.save()
                                     except IndexError:
                                         col
                                     try:
-                                         if BarRegion.objects.filter(pageimage__page__sourcecomponent=components[col]).count() == 0 or bar == BarRegion.objects.filter(pageimage__page__sourcecomponent=components[col]).order_by('pageimage__page__sourcecomponent__orderno','pageimage__page__orderno', 'bar').distinct().reverse()[:1][0].getHighestBar():
+                                         if BarRegion.objects.filter(pageimage__page__sourcecomponent=components[col]).count() == 0 or bar.barlabel == BarRegion.objects.filter(pageimage__page__sourcecomponent=components[col]).order_by('pageimage__page__sourcecomponent__orderno','pageimage__page__orderno', 'bar').distinct().reverse()[:1][0].getHighestBar().barlabel:
                                              #Last bar in component, Advance source component
                                              #if bs.implied == 1 and :
                                              #else:

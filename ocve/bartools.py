@@ -4,7 +4,25 @@ __author__ = 'Elliot'
 from models import *
 from django.utils.datastructures import MultiValueDictKeyError
 from django.conf import settings
-from itertools import chain
+from django.db import connections
+
+def mergeBarNumbers():
+    cursor = connections['ocve_db'].cursor()
+    for x in range(0, 1500):
+        bars= Bar.objects.filter(barlabel=x).order_by('id')
+        master=None
+        if bars.count() > 0:
+            #First bar
+            master=bars[0]
+        for b in bars:
+            if b != master:
+                sql="update ocve_bar_barregion set bar_id="+str(master.id)+" where bar_id="+str(b.id)
+                cursor.execute(sql)
+                sql="update ocve_barspine set bar_id="+str(master.id)+" where bar_id="+str(b.id)
+                cursor.execute(sql)
+                b.delete()
+
+
 
 #Convert barregions to geoJSON coordinates
 def toGeos(regions):

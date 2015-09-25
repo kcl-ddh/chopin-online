@@ -24,6 +24,7 @@ from django.db import connections
 from forms import AnnotationForm
 from dbmi.datatools import convertEntities
 from imagetools import verifyImageDimensions
+from bartools import mergeBarNumbers
 
 #IIP_URL = settings.IIP_URL
 IMAGE_SERVER_URL = settings.IMAGE_SERVER_URL
@@ -76,6 +77,7 @@ def shelfmarkview(request,acHash,mode="OCVE"):
 
 
 def cfeoBrowse(request):
+    mergeBarNumbers()
     return browse(request,"CFEO")
 
 
